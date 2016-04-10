@@ -1,0 +1,102 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{004304DB-FDF1-461B-80C9-5254AFA1A3CB}</ProjectGuid>
+    <OutputType>WinExe</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>MachShooting</RootNamespace>
+    <AssemblyName>MachShooting</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <PlatformTarget>AnyCPU</PlatformTarget>
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup>
+    <StartupObject />
+  </PropertyGroup>
+  <PropertyGroup />
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Back.cs" />
+    <Compile Include="Bom.cs" />
+    <Compile Include="Bullet.cs" />
+    <Compile Include="CircleLib\Capsule.cs" />
+    <Compile Include="CircleLib\Circle.cs" />
+    <Compile Include="CircleLib\Dot.cs" />
+    <Compile Include="CircleLib\Line.cs" />
+    <Compile Include="CircleLib\Process.cs" />
+    <Compile Include="CircleLib\Rect.cs" />
+    <Compile Include="CircleLib\Vec.cs" />
+    <Compile Include="Config.cs" />
+    <Compile Include="DxDLL.cs" />
+    <Compile Include="Enemy\Enemy.cs" />
+    <Compile Include="Enemy\List\Boar.cs" />
+    <Compile Include="Enemy\List\Gato.cs" />
+    <Compile Include="Enemy\List\Lapin.cs" />
+    <Compile Include="Enemy\List\Leone.cs" />
+    <Compile Include="Enemy\List\Nigalya.cs" />
+    <Compile Include="Enemy\List\Snake.cs" />
+    <Compile Include="Fps.cs" />
+    <Compile Include="Image.cs" />
+    <Compile Include="My\List\Charge.cs" />
+    <Compile Include="My\List\Double.cs" />
+    <Compile Include="My\List\Overall.cs" />
+    <Compile Include="My\List\Stability.cs" />
+    <Compile Include="My\List\SuperCharge.cs" />
+    <Compile Include="Radian.cs" />
+    <Compile Include="Screen\EquipmentMenu.cs" />
+    <Compile Include="Screen\Game.cs" />
+    <Compile Include="GameObject.cs" />
+    <Compile Include="My\My.cs" />
+    <Compile Include="AttackObject.cs" />
+    <Compile Include="My\MySub.cs" />
+    <Compile Include="Program.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Screen\MissionMenu.cs" />
+    <Compile Include="Screen\Screen.cs" />
+    <Compile Include="Screen\Title.cs" />
+    <Compile Include="SE.cs" />
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="App.config" />
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>xcopy "$(ProjectDir)BuildData" "$(TargetDir)" /Y /R /S /E</PostBuildEvent>
+  </PropertyGroup>
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>
