@@ -68,7 +68,7 @@ namespace MachShooting
                     list = new List<AttackObject>();
                     for (int i = 0; i < 36; i++)
                     {
-                        list.Add(new Bullet(this.Dot, 50,Vec.NewRadLength((i*10.0).ToRad(),10), Program.bulletBig[0], null));
+                        list.Add(new Bullet(this.Circle.Dot, 50,Vec.NewRadLength((i*10.0).ToRad(),10), Program.bulletBig[0], null));
                     }
                 }
             }

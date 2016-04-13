@@ -176,7 +176,7 @@ namespace MachShooting
         {
             get
             {
-                Dot dot = this.Dot;
+                Dot dot = this.Circle.Dot;
                 dot.Move(Vec.NewRadLength(this.Rad, this.R));
                 return dot;
             }
@@ -186,7 +186,7 @@ namespace MachShooting
         {
             get
             {
-                Dot dot = this.Dot;
+                Dot dot = this.Circle.Dot;
                 dot.Move(Vec.NewRadLength(new Vec(1, -1).Rad+this.Rad-this.Image.rad, this.R * Program.ROOT2));
                 return dot;
             }
@@ -196,7 +196,7 @@ namespace MachShooting
         {
             get
             {
-                Dot dot = this.Dot;
+                Dot dot = this.Circle.Dot;
                 dot.Move(Vec.NewRadLength(new Vec(-1, -1).Rad+this.Rad - this.Image.rad, this.R * Program.ROOT2));
                 return dot;
             }

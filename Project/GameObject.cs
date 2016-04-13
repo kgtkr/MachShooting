@@ -22,7 +22,7 @@ namespace MachShooting
         /// <summary>
         /// 前Fの点
         /// </summary>
-        private Dot dot;
+        private Dot dotF;
 
         /// <summary>
         /// 攻撃力。攻撃判定がないなら0
@@ -76,9 +76,10 @@ namespace MachShooting
         /// <summary>
         /// 前Fの点
         /// </summary>
-        public Dot Dot
+        public Dot DotF
         {
-            get { return this.dot; }
+            get { return this.dotF; }
+            set { this.dotF = value; }
         }
 
         /// <summary>
@@ -87,7 +88,7 @@ namespace MachShooting
         public int Power
         {
             get { return this.power; }
-            protected set { this.power = value; }
+            set { this.power = value; }
         }
 
         /// <summary>
@@ -191,7 +192,7 @@ namespace MachShooting
         public GameObject(Dot dot,int power,Image image,double rad)
         {
             this.circle = new Circle(dot,image.r);
-            this.dot = circle.Dot;
+            this.dotF = circle.Dot;
             this.power = power;
             this.draw = true;
             this.need = true;
@@ -206,7 +207,7 @@ namespace MachShooting
         /// </summary>
         public void Next()
         {
-            this.dot = this.circle.Dot;
+            this.dotF = this.circle.Dot;
             this.count++;
         }
 
@@ -232,8 +233,8 @@ namespace MachShooting
         /// <returns></returns>
         public static bool Hit(GameObject o1,GameObject o2)
         {
-            return Graphic.Hit(new Capsule(new Line(o1.circle.Dot, o1.dot), o1.R),
-                new Capsule(new Line(o2.circle.Dot, o2.dot), o2.R));
+            return Graphic.Hit(new Capsule(new Line(o1.circle.Dot, o1.dotF), o1.R),
+                new Capsule(new Line(o2.circle.Dot, o2.dotF), o2.R));
         }
 
         /// <summary>

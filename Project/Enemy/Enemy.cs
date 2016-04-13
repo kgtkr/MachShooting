@@ -38,6 +38,11 @@ namespace MachShooting
         /// やられ判定があるか
         /// </summary>
         private bool hit;
+
+        /// <summary>
+        /// 動作リスト
+        /// </summary>
+        private SyncTransfer syncTransfer=new SyncTransfer();
         #endregion
         #region プロパティ
         /// <summary>
@@ -81,6 +86,11 @@ namespace MachShooting
             protected set { this.hit = value; }
         }
 
+
+        protected SyncTransfer SyncTransfer
+        {
+            get { return this.syncTransfer; }
+        }
         #endregion
         #region コンストラクタ
         /// <summary>
@@ -112,7 +122,16 @@ namespace MachShooting
             Next();
             if (this.hp!=0)//生きているなら
             {
-                List<AttackObject> list= Process_Enemy();
+                List<AttackObject> list;
+                list=this.syncTransfer.Process();
+                if (list != null)
+                {
+                    list.AddList(Process_Enemy());
+                }
+                else
+                {
+                    list = Process_Enemy();
+                }
                 Input();
                 return list;
             }
@@ -120,6 +139,11 @@ namespace MachShooting
             {
                 return null;
             }
+        }
+
+        protected override void DrawGameObjectBefore()
+        {
+            this.syncTransfer.Draw();
         }
 
         /// <summary>

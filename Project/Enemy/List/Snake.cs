@@ -63,7 +63,7 @@ namespace MachShooting
                         this.count = 0;
                         this.Power = 30;
                         this.flag = 1;
-                        this.dot = this.My.Dot;
+                        this.dot = this.My.Circle.Dot;
                         Vec v = new Vec(this.dot.X - this.X, this.dot.Y - this.Y);
                         this.c = (int)(v.Length / 20)+1;
                         this.vec = v.Unit*20;
@@ -101,7 +101,7 @@ namespace MachShooting
                         {
                             list = new List<AttackObject>();
                             Vec v2 = new Vec(this.My.X - this.X, this.My.Y - this.Y);
-                            list.Add(new Bullet(this.Dot,30,Vec.NewRadLength(v2.Rad,10),Program.bulletSmall[0],null));
+                            list.Add(new Bullet(this.Circle.Dot,30,Vec.NewRadLength(v2.Rad,10),Program.bulletSmall[0],null));
                         }
                     }
                     break;

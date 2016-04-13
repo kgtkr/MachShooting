@@ -5,7 +5,7 @@
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{004304DB-FDF1-461B-80C9-5254AFA1A3CB}</ProjectGuid>
-    <OutputType>WinExe</OutputType>
+    <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
     <RootNamespace>MachShooting</RootNamespace>
     <AssemblyName>MachShooting</AssemblyName>
@@ -38,6 +38,7 @@
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
+    <Reference Include="System.Drawing" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -66,6 +67,12 @@
     <Compile Include="Enemy\List\Snake.cs" />
     <Compile Include="Fps.cs" />
     <Compile Include="Image.cs" />
+    <Compile Include="Transfer\AttackObject\AttackObjectTransfer.cs" />
+    <Compile Include="Transfer\AttackObject\BulletTargetTransfer.cs" />
+    <Compile Include="Transfer\Decision\SetPower.cs" />
+    <Compile Include="Transfer\Effect\Charge.cs" />
+    <Compile Include="Transfer\List\AsyncTransfer.cs" />
+    <Compile Include="Transfer\ITransfer.cs" />
     <Compile Include="My\List\Charge.cs" />
     <Compile Include="My\List\Double.cs" />
     <Compile Include="My\List\Overall.cs" />
@@ -84,10 +91,17 @@
     <Compile Include="Screen\Screen.cs" />
     <Compile Include="Screen\Title.cs" />
     <Compile Include="SE.cs" />
+    <Compile Include="Transfer\List\SyncTransfer.cs" />
+    <Compile Include="Transfer\List\TransferList.cs" />
+    <Compile Include="Transfer\Move\CircleTransfer.cs" />
+    <Compile Include="Transfer\Move\ULM.cs" />
+    <Compile Include="Transfer\Move\ULMTarget.cs" />
+    <Compile Include="Transfer\Move\Wait.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>xcopy "$(ProjectDir)BuildData" "$(TargetDir)" /Y /R /S /E</PostBuildEvent>

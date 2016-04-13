@@ -117,7 +117,7 @@ namespace MachShooting
             if (this.count % 30 == 0)
             {
                 list = new List<AttackObject>();
-                list.Add(new Bom(new Circle(this.My.Dot, 30), 40, 60, 10, 255, 0, 0));
+                list.Add(new Bom(new Circle(this.My.Circle.Dot, 30), 40, 60, 10, 255, 0, 0));
             }
 
             if (this.count > 120)
@@ -138,7 +138,7 @@ namespace MachShooting
                 list = new List<AttackObject>();
                 Vec v= new Vec(My.X - this.X, My.Y - this.Y);
                 v.Length = 10;
-                list.Add(new Bullet(this.Dot,30,v,Program.bulletBig[0],null));
+                list.Add(new Bullet(this.Circle.Dot,30,v,Program.bulletBig[0],null));
             }
 
             if (this.count > 120)
@@ -156,7 +156,7 @@ namespace MachShooting
 
             for (int i = 0; i < 36; i++)
             {
-                list.Add(new Bullet(this.Dot, 50, Vec.NewRadLength((i * 10.0).ToRad(), 10), Program.bulletBig[0], null));
+                list.Add(new Bullet(this.Circle.Dot, 50, Vec.NewRadLength((i * 10.0).ToRad(), 10), Program.bulletBig[0], null));
             }
 
             this.action = 0;
@@ -183,7 +183,7 @@ namespace MachShooting
                 else
                 {
                     List<AttackObject> list = new List<AttackObject>();
-                    list.Add(new Bom(new Circle(this.Dot, 300), 80, 90, 20, 255, 0, 0));
+                    list.Add(new Bom(new Circle(this.Circle.Dot, 300), 80, 90, 20, 255, 0, 0));
                     this.action = 0;
                     this.count = 0;
                     return list;

@@ -30,7 +30,7 @@ namespace MachShooting
         /// <param name="rad">ラジアン</param>
         /// <param name="image">画像</param>
         /// <param name="meta">メタ情報</param>
-        public Bullet(Dot dot, int power, Vec vec, Image image,int[] meta)
+        public Bullet(Dot dot, int power, Vec vec, Image image,int[] meta=null)
             : base(dot,power,image,vec.Rad,meta)
         {
             //角度計算
