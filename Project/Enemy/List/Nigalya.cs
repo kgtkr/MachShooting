@@ -17,15 +17,6 @@ namespace MachShooting
         #region 定数
         #endregion
         #region フィールド
-        /// <summary>
-        /// フラグ。0:待ち、1:移動
-        /// </summary>
-        private int flag = 0;
-
-        /// <summary>
-        /// 現在の行動が始まってからの時間
-        /// </summary>
-        private int count;
         #endregion
         #region プロパティ
         #endregion
@@ -39,50 +30,25 @@ namespace MachShooting
 
         protected override List<AttackObject> Process_Enemy()
         {
-            List<AttackObject> list = null;
-
-            if (this.flag == 0)
+            if (!this.SyncTransfer.Need)
             {
-                if (this.count == 300)
+                this.SyncTransfer.Add(new ChargeEffect(this, 300, (int)this.R * 3, System.Drawing.Color.Green));
+                this.SyncTransfer.Add(new SetPower(this, 40));
+                this.SyncTransfer.Add(new ULMTarget(this, this.My, 10, 30));
+                this.SyncTransfer.Add(new SetPower(this, 0));
+                AsyncTransfer at = new AsyncTransfer();
+                for (int i = 0; i < 36; i++)
                 {
-                    this.Rad = new Vec(this.My.X - this.X, this.My.Y - this.Y).Rad;
-
-                    this.Power = 40;
-
-                    this.flag = 1;
-                    this.count = 1;
+                    at.Add(new AttackObjectTransfer(this, new Bullet(this.Circle.Dot, 50, Vec.NewRadLength((i * 10.0).ToRad(), 10), Program.bulletBig[0], null)));
                 }
+                this.SyncTransfer.Add(at);
             }
-            else if (this.flag == 1)
-            {
-                Vec v = Vec.NewRadLength(this.Rad, 10);
-                this.X += v.X;
-                this.Y += v.Y;
-
-                if (this.count == 30)
-                {
-                    this.Power = 0;
-                    this.flag = 0;
-                    this.count = 0;
-
-                    list = new List<AttackObject>();
-                    for (int i = 0; i < 36; i++)
-                    {
-                        list.Add(new Bullet(this.Circle.Dot, 50,Vec.NewRadLength((i*10.0).ToRad(),10), Program.bulletBig[0], null));
-                    }
-                }
-            }
-            this.count++;
-            return list;
+            return null;
         }
 
         protected override void DrawGameObjectAfter()
         {
             base.DrawGameObjectAfter();
-            if (this.flag == 0)
-            {
-                DX.DrawCircle((int)this.X, (int)this.Y, (300 - this.count) / 5, Program.blue, DX.FALSE);
-            }
         }
         #endregion
         #region 実装メソッド

@@ -69,7 +69,7 @@
     <Compile Include="Image.cs" />
     <Compile Include="Transfer\AttackObject\AttackObjectTransfer.cs" />
     <Compile Include="Transfer\AttackObject\BulletTargetTransfer.cs" />
-    <Compile Include="Transfer\Decision\SetPower.cs" />
+    <Compile Include="Transfer\Property\SetPower.cs" />
     <Compile Include="Transfer\Effect\Charge.cs" />
     <Compile Include="Transfer\List\AsyncTransfer.cs" />
     <Compile Include="Transfer\ITransfer.cs" />
@@ -97,6 +97,9 @@
     <Compile Include="Transfer\Move\ULM.cs" />
     <Compile Include="Transfer\Move\ULMTarget.cs" />
     <Compile Include="Transfer\Move\Wait.cs" />
+    <Compile Include="Transfer\Move\Zigzag.cs" />
+    <Compile Include="Transfer\Property\SetRad.cs" />
+    <Compile Include="Transfer\Property\SetRadTarget.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />

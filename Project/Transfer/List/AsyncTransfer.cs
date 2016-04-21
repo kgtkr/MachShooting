@@ -15,7 +15,7 @@ namespace MachShooting
         /// 新しいイントランスを作成します
         /// </summary>
         /// <param name="transferList"></param>
-        public AsyncTransfer(List<ITransfer> transferList):base(transferList)
+        public AsyncTransfer(List<ITransfer> transferList=null):base(transferList)
         { 
         }
 

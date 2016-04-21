@@ -55,6 +55,7 @@ namespace MachShooting
         public BulletTargetTransfer(GameObject go,GameObject target, int power, int speed, Image image, int[] meta = null)
         {
             this.go = go;
+            this.target = target;
             this.power = power;
             this.speed = speed;
             this.image = image;
@@ -65,10 +66,11 @@ namespace MachShooting
         {
         }
 
-        public List<MachShooting.AttackObject> Process()
+        public List<AttackObject> Process()
         {
             if (this.need)
             {
+                this.need = false;
                 return new List<AttackObject> { new Bullet(this.go.Circle.Dot,
                     this.power,
                     Vec.NewRadLength(new Vec(this.target.X-this.go.X,this.target.Y-this.go.Y).Rad,this.speed),

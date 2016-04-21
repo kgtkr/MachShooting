@@ -30,6 +30,11 @@ namespace MachShooting
         private readonly int f;
 
         /// <summary>
+        /// ラジアンのズレ
+        /// </summary>
+        private readonly double rad;
+
+        /// <summary>
         /// 現在のカウント
         /// </summary>
         private int count;
@@ -51,12 +56,13 @@ namespace MachShooting
         {
         }
 
-        public ULMTarget(GameObject go,GameObject target,double speed,int f)
+        public ULMTarget(GameObject go,GameObject target,double speed,int f,double rad=0)
         {
             this.go = go;
             this.target = target;
             this.speed = speed;
             this.f = f;
+            this.rad = rad;
         }
 
         public List<AttackObject> Process()
@@ -65,7 +71,7 @@ namespace MachShooting
             {
                 if (this.count == 0)
                 {
-                    this.vec = Vec.NewRadLength(new Vec(this.target.X-this.go.X,this.target.Y-this.go.Y).Rad, this.speed);
+                    this.vec = Vec.NewRadLength(new Vec(this.target.X-this.go.X,this.target.Y-this.go.Y).Rad+this.rad, this.speed);
                 }
                 this.go.X += this.vec.X;
                 this.go.Y += this.vec.Y;
