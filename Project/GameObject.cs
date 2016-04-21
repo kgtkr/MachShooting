@@ -22,7 +22,7 @@ namespace MachShooting
         /// <summary>
         /// 前Fの点
         /// </summary>
-        private Dot dotF;
+        private Vec dotF;
 
         /// <summary>
         /// 攻撃力。攻撃判定がないなら0
@@ -76,7 +76,7 @@ namespace MachShooting
         /// <summary>
         /// 前Fの点
         /// </summary>
-        public Dot DotF
+        public Vec DotF
         {
             get { return this.dotF; }
             set { this.dotF = value; }
@@ -189,7 +189,7 @@ namespace MachShooting
         /// <param name="dot">座標</param>
         /// <param name="power">攻撃力</param>
         /// <param name="image">画像</param>
-        public GameObject(Dot dot,int power,Image image,double rad)
+        public GameObject(Vec dot,int power,Image image,double rad)
         {
             this.circle = new Circle(dot,image.r);
             this.dotF = circle.Dot;
@@ -219,7 +219,7 @@ namespace MachShooting
             if (!this.In)
             {
                 double rad = new Vec(this.X - Game.WINDOW_R, this.Y - Game.WINDOW_R).Rad;
-                this.circle.Dot = (Dot)Vec.NewRadLength(rad, Game.WINDOW_R - this.R);
+                this.circle.Dot = Vec.NewRadLength(rad, Game.WINDOW_R - this.R);
                 this.X += Game.WINDOW_R;
                 this.Y += Game.WINDOW_R;
             }

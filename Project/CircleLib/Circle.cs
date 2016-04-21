@@ -15,7 +15,7 @@ namespace CircleLib
         /// <summary>
         /// 中心座標
         /// </summary>
-        private Dot dot;
+        private Vec dot;
 
         /// <summary>
         /// 半径
@@ -26,7 +26,7 @@ namespace CircleLib
         /// <summary>
         /// 中心座標
         /// </summary>
-        public Dot Dot
+        public Vec Dot
         {
             get { return this.dot; }
             set { this.dot = value; }
@@ -65,7 +65,7 @@ namespace CircleLib
         {
             get
             {
-                return new Rect(new Dot(this.dot.X - this.r, this.dot.Y - this.r), new Dot(this.dot.X + this.r, this.dot.Y + this.r));
+                return new Rect(new Vec(this.dot.X - this.r, this.dot.Y - this.r), new Vec(this.dot.X + this.r, this.dot.Y + this.r));
             }
         }
         #endregion
@@ -75,7 +75,7 @@ namespace CircleLib
         /// </summary>
         /// <param name="dot">中心座標</param>
         /// <param name="r">半径</param>
-        public Circle(Dot dot, double r)
+        public Circle(Vec dot, double r)
         {
             this.dot = dot;
             this.r = r;
@@ -83,18 +83,8 @@ namespace CircleLib
 
         public Circle(double x,double y, double r)
         {
-            this.dot = new Dot(x, y);
+            this.dot = new Vec(x, y);
             this.r = r;
-        }
-        #endregion
-        #region メソッド
-        /// <summary>
-        /// 移動を行います
-        /// </summary>
-        /// <param name="vec"></param>
-        public void Move(Vec vec)
-        {
-            this.dot.Move(vec);
         }
         #endregion
     }

@@ -47,7 +47,7 @@ namespace MachShooting
         /// <summary>
         /// 中心座標
         /// </summary>
-        private Dot dot;
+        private Vec dot;
 
         public bool Need
         {

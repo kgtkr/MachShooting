@@ -103,7 +103,7 @@ namespace MachShooting
         /// <param name="my">自機</param>
         /// <param name="image">画像</param>
         public Enemy(string name, int power,  int maxHP,  My my,Image image)
-            : base(new Dot(Game.WINDOW_R,Game.WINDOW_R/2), power, image, new Vec(0, 1).Rad)
+            : base(new Vec(Game.WINDOW_R,Game.WINDOW_R/2), power, image, new Vec(0, 1).Rad)
         {
             this.name = name;
             this.hp = maxHP;

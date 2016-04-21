@@ -172,32 +172,32 @@ namespace MachShooting
             }
         }
 
-        protected Dot BulletDotC
+        protected Vec BulletDotC
         {
             get
             {
-                Dot dot = this.Circle.Dot;
-                dot.Move(Vec.NewRadLength(this.Rad, this.R));
+                Vec dot = this.Circle.Dot;
+                dot+=Vec.NewRadLength(this.Rad, this.R);
                 return dot;
             }
         }
 
-        protected Dot BulletDotR
+        protected Vec BulletDotR
         {
             get
             {
-                Dot dot = this.Circle.Dot;
-                dot.Move(Vec.NewRadLength(new Vec(1, -1).Rad+this.Rad-this.Image.rad, this.R * Program.ROOT2));
+                Vec dot = this.Circle.Dot;
+                dot+=Vec.NewRadLength(new Vec(1, -1).Rad+this.Rad-this.Image.rad, this.R * Program.ROOT2);
                 return dot;
             }
         }
 
-        protected Dot BulletDotL
+        protected Vec BulletDotL
         {
             get
             {
-                Dot dot = this.Circle.Dot;
-                dot.Move(Vec.NewRadLength(new Vec(-1, -1).Rad+this.Rad - this.Image.rad, this.R * Program.ROOT2));
+                Vec dot = this.Circle.Dot;
+                dot+=Vec.NewRadLength(new Vec(-1, -1).Rad+this.Rad - this.Image.rad, this.R * Program.ROOT2);
                 return dot;
             }
         }
@@ -210,7 +210,7 @@ namespace MachShooting
         /// <param name="maxDeathblowGauge">最大必殺技ゲージ(攻撃)</param>
         /// <param name="maxStrengthenGauge">最大必殺技ゲージ(自己強化)</param>
         public My(string name, Gauge maxDeathblowGauge, Gauge maxStrengthenGauge)
-            : base(new Dot(Game.WINDOW_R, Game.WINDOW_R), 0,Program.my, new Vec(0, -1).Rad)
+            : base(new Vec(Game.WINDOW_R, Game.WINDOW_R), 0,Program.my, new Vec(0, -1).Rad)
         {
             this.name = name;
             this.maxDeathblowGauge = maxDeathblowGauge;
@@ -725,7 +725,7 @@ namespace MachShooting
         /// <param name="image"></param>
         /// <param name="meta"></param>
         /// <returns></returns>
-        protected Bullet NewBullet(Dot dot, int power, Vec vec, Image image, int[] meta)
+        protected Bullet NewBullet(Vec dot, int power, Vec vec, Image image, int[] meta)
         {
             vec.Rad = this.ToMapRad(vec.Rad);
             return new Bullet(dot, power, vec, image, meta);

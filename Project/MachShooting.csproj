@@ -51,7 +51,6 @@
     <Compile Include="Bullet.cs" />
     <Compile Include="CircleLib\Capsule.cs" />
     <Compile Include="CircleLib\Circle.cs" />
-    <Compile Include="CircleLib\Dot.cs" />
     <Compile Include="CircleLib\Line.cs" />
     <Compile Include="CircleLib\Process.cs" />
     <Compile Include="CircleLib\Rect.cs" />

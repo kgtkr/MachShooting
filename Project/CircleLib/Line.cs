@@ -15,18 +15,18 @@ namespace CircleLib
         /// <summary>
         /// 点1
         /// </summary>
-        private Dot dot1;
+        private Vec dot1;
 
         /// <summary>
         /// 点2
         /// </summary>
-        private Dot dot2;
+        private Vec dot2;
         #endregion
         #region プロパティ
         /// <summary>
         /// 点1
         /// </summary>
-        public Dot Dot1
+        public Vec Dot1
         {
             get { return this.dot1; }
             set { this.dot1 = value; }
@@ -35,7 +35,7 @@ namespace CircleLib
         /// <summary>
         /// 点2
         /// </summary>
-        public Dot Dot2
+        public Vec Dot2
         {
             get { return this.dot2; }
             set { this.dot2 = value; }
@@ -104,7 +104,7 @@ namespace CircleLib
         /// </summary>
         /// <param name="e">0ならドット1、それ以外ならドット2</param>
         /// <returns></returns>
-        public Dot this[int e]
+        public Vec this[int e]
         {
             get
             {
@@ -117,21 +117,10 @@ namespace CircleLib
         /// </summary>
         /// <param name="dot1">点1</param>
         /// <param name="dot2">点2</param>
-        public Line(Dot dot1,Dot dot2)
+        public Line(Vec dot1, Vec dot2)
         {
             this.dot1 = dot1;
             this.dot2 = dot2;
-        }
-        #endregion
-        #region メソッド
-        /// <summary>
-        /// 移動を行います
-        /// </summary>
-        /// <param name="vec"></param>
-        public void Move(Vec vec)
-        {
-            this.dot1.Move(vec);
-            this.dot2.Move(vec);
         }
         #endregion
     }

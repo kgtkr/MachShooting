@@ -44,7 +44,7 @@ namespace CircleLib
         /// <summary>
         /// 点1
         /// </summary>
-        public Dot Dot1
+        public Vec Dot1
         {
             get { return this.line.Dot1; }
             set { this.line.Dot1 = value; }
@@ -53,7 +53,7 @@ namespace CircleLib
         /// <summary>
         /// 点2
         /// </summary>
-        public Dot Dot2
+        public Vec Dot2
         {
             get { return this.line.Dot2; }
             set { this.line.Dot2 = value; }
@@ -67,7 +67,7 @@ namespace CircleLib
             get { return this.Dot1.X; }
             set
             {
-                Dot dot = this.Dot1;
+                Vec dot = this.Dot1;
                 dot.X = value;
                 this.Dot1 = dot;
             }
@@ -81,7 +81,7 @@ namespace CircleLib
             get { return this.Dot1.Y; }
             set
             {
-                Dot dot = this.Dot1;
+                Vec dot = this.Dot1;
                 dot.Y = value;
                 this.Dot1 = dot;
             }
@@ -95,7 +95,7 @@ namespace CircleLib
             get { return this.Dot2.X; }
             set
             {
-                Dot dot = this.Dot2;
+                Vec dot = this.Dot2;
                 dot.X = value;
                 this.Dot2 = dot;
             }
@@ -109,7 +109,7 @@ namespace CircleLib
             get { return this.Dot2.Y; }
             set
             {
-                Dot dot = this.Dot2;
+                Vec dot = this.Dot2;
                 dot.Y = value;
                 this.Dot2 = dot;
             }
@@ -128,7 +128,7 @@ namespace CircleLib
                 double maxX = Math.Max(this.Dot1X, this.Dot2X)+this.r;
                 double maxY = Math.Max(this.Dot1Y, this.Dot2Y)+this.r;
 
-                return new Rect(new Dot(minX,minY), new Dot(maxX,maxY));
+                return new Rect(new Vec(minX,minY), new Vec(maxX,maxY));
             }
         }
         #endregion
@@ -142,16 +142,6 @@ namespace CircleLib
         {
             this.line = line;
             this.r = r;
-        }
-        #endregion
-        #region メソッド
-        /// <summary>
-        /// 移動を行います
-        /// </summary>
-        /// <param name="vec"></param>
-        public void Move(Vec vec)
-        {
-            this.line.Move(vec);
         }
         #endregion
     }

@@ -141,7 +141,7 @@ namespace CircleLib
         /// </summary>
         /// <param name="dot1">左上のX座標</param>
         /// <param name="dot2">右下のX座標</param>
-        public Rect(Dot dot1, Dot dot2)
+        public Rect(Vec dot1, Vec dot2)
         {
             double l = Math.Min(dot1.X, dot2.X);
             double r = Math.Max(dot1.X, dot2.X);

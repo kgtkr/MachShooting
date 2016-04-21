@@ -130,15 +130,6 @@ namespace CircleLib
         #endregion
         #region 演算子
         /// <summary>
-        /// ドットをベクトルに変換します
-        /// </summary>
-        /// <param name="dot"></param>
-        public static explicit operator Vec(Dot dot)
-        {
-            return new Vec(dot.X, dot.Y);
-        }
-
-        /// <summary>
         /// 同じならtrue
         /// </summary>
         /// <param name="v1"></param>

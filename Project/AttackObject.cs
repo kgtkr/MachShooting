@@ -68,7 +68,7 @@ namespace MachShooting
         /// <param name="power">攻撃力。0なら判定を持たない</param>
         /// <param name="image">画像</param>
         /// <param name="meta">メタ情報</param>
-        public AttackObject(Dot dot, int power, Image image,double rad,int[] meta):base(dot,power,image,rad)
+        public AttackObject(Vec dot, int power, Image image,double rad,int[] meta):base(dot,power,image,rad)
         {
             this.life = true;
             this.meta = meta;
