@@ -6,9 +6,12 @@ using System.Threading.Tasks;
 
 namespace MachShooting
 {
-    public class AttackObjectTransfer : ITransfer
+    /// <summary>
+    /// プロパティをセットします
+    /// </summary>
+    public class SetProperty : ITransfer
     {
-        private readonly Func<AttackObject> ao;
+        private readonly Action action;
 
         private bool need=true;
 
@@ -20,9 +23,10 @@ namespace MachShooting
             }
         }
 
-        public AttackObjectTransfer(Func<AttackObject> ao)
+        public SetProperty(Action action)
         {
-            this.ao = ao;
+            this.action = action;
+
         }
 
         public void Draw()
@@ -31,15 +35,13 @@ namespace MachShooting
 
         public List<AttackObject> Process()
         {
-            if (this.Need)
+            if (this.need)
             {
+                this.action();
                 this.need = false;
-                return new List<AttackObject> { this.ao() };
             }
-            else
-            {
-                return null;
-            }
+
+            return null;
         }
     }
 }

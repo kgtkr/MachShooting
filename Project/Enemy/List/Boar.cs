@@ -25,9 +25,9 @@ namespace MachShooting
             if (!this.SyncTransfer.Need)
             {
                 this.SyncTransfer.Add(new ChargeEffect(this,300,(int)this.R*3,Color.Red));
-                this.SyncTransfer.Add(new SetPower(this, 20));
+                this.SyncTransfer.Add(new SetProperty(()=>this.Power=20));
                 this.SyncTransfer.Add(new ULMTarget(this, this.My, 10, 60));
-                this.SyncTransfer.Add(new SetPower(this, 0));
+                this.SyncTransfer.Add(new SetProperty(()=>this.Power=0));
             }
             return null;
         }

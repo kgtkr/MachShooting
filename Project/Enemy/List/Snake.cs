@@ -33,21 +33,21 @@ namespace MachShooting
             if (!this.SyncTransfer.Need)
             {
                 this.SyncTransfer.Add(new ChargeEffect(this, 500, (int)this.R * 3, System.Drawing.Color.Red));
-                this.SyncTransfer.Add(new SetPower(this, 30));
+                this.SyncTransfer.Add(new SetProperty(() => this.Power = 30));
                 this.SyncTransfer.Add(new ULMTarget(this, this.My, 10, 30));
-                this.SyncTransfer.Add(new SetPower(this, 50));
+                this.SyncTransfer.Add(new SetProperty(() => this.Power = 50));
                 AsyncTransfer at = new AsyncTransfer();
                 at.Add(new CircleTransfer(this, 0, 0, Math.PI * 2 / 60, 3, 300));
                 SyncTransfer st = new SyncTransfer();
                 for (int i = 0; i < 60; i++)
                 {
                     st.Add(new Wait(4));
-                    st.Add(new BulletTargetTransfer(this, this.My, 30, 10, Program.bulletMedium[0]));
+                    this.SyncTransfer.Add(new AttackObjectTransfer(() => new Bullet(this.Circle.Dot, 30, Vec.NewRadLength((this.My.Circle.Dot - this.Circle.Dot).Rad, 10), Program.bulletMedium[0])));
                 }
                 at.Add(st);
                 this.SyncTransfer.Add(at);
                 this.SyncTransfer.Add(new ULMTarget(this, this.My, 30, 30));
-                this.SyncTransfer.Add(new SetPower(this, 0));
+                this.SyncTransfer.Add(new SetProperty(() => this.Power = 0));
             }
             return null;
         }
