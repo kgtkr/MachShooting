@@ -606,7 +606,7 @@ namespace MachShooting
                 for (int i = 0; i < 3; i++)
                 {
                     int y = GAUGE_Y + GAUGE_H * i + SPACE * i;
-                    DX.DrawBox(GAUGE_X, y, GAUGE_X + MAX_GAUGE, y + GAUGE_H, Program.white, DX.TRUE);
+                    DX.DrawBox(GAUGE_X, y, GAUGE_X + MAX_GAUGE, y + GAUGE_H, DXColor.Instance.white, DX.TRUE);
 
                     //中身
                     const int H = GAUGE_H - 2;
@@ -615,22 +615,22 @@ namespace MachShooting
                     switch (i)
                     {
                         case 0:
-                            color = Program.green;
+                            color = DXColor.Instance.green;
                             w = hp;
                             break;
                         case 1:
-                            color = (this.deathblowGauge == (int)this.maxDeathblowGauge && this.Count % 30 < 15) ? Program.white : Program.red;
+                            color = (this.deathblowGauge == (int)this.maxDeathblowGauge && this.Count % 30 < 15) ? DXColor.Instance.white : DXColor.Instance.red;
                             w = deathblow;
                             break;
                         case 2:
                             if (this.strengthen == 0)
                             {
-                                color = (this.strengthenGauge == (int)this.maxStrengthenGauge && this.Count % 30 < 15) ? Program.white : Program.yellow;
+                                color = (this.strengthenGauge == (int)this.maxStrengthenGauge && this.Count % 30 < 15) ? DXColor.Instance.white : DXColor.Instance.yellow;
                                 w = strengthen;
                             }
                             else
                             {
-                                color = Program.blue;
+                                color = DXColor.Instance.blue;
                                 w = strengthen2;
                             }
                             break;
@@ -639,8 +639,8 @@ namespace MachShooting
                 }
             }
             {//時間
-                DX.DrawCircle(45, 45, 35, Program.white);
-                DX.DrawCircle(45, 45, 32, Program.blue);
+                DX.DrawCircle(45, 45, 35, DXColor.Instance.white);
+                DX.DrawCircle(45, 45, 32, DXColor.Instance.blue);
                 double percent = (double)time / (double)Game.TIME_LIMIT_F * 100.0;
                 DX.DrawCircleGauge(45, 45, percent, Program.clock);
             }

@@ -133,9 +133,9 @@ namespace MachShooting
         /// </summary>
         public override void Draw()
         {
-            DX.DrawBox(0, 0, Program.WIDTH, Program.HEIGHT, Program.black, DX.TRUE);
+            DX.DrawBox(0, 0, Program.WIDTH, Program.HEIGHT, DXColor.Instance.black, DX.TRUE);
             DX.SetDrawScreen(this.screen);
-            DX.DrawBox(0, 0, Game.WINDOW_R * 2, Game.WINDOW_R * 2, Program.black, DX.TRUE);
+            DX.DrawBox(0, 0, Game.WINDOW_R * 2, Game.WINDOW_R * 2, DXColor.Instance.black, DX.TRUE);
 
             this.back.Draw();
 
@@ -175,17 +175,17 @@ namespace MachShooting
                 const int X = 15;
 
                 //枠
-                DX.DrawBox(SPACE1, SPACE1, Program.WIDTH - SPACE1, Program.HEIGHT - SPACE1, Program.blue, DX.TRUE);
-                DX.DrawBox(SPACE2, SPACE2, Program.WIDTH - SPACE2, Program.HEIGHT - SPACE2, Program.black, DX.TRUE);
+                DX.DrawBox(SPACE1, SPACE1, Program.WIDTH - SPACE1, Program.HEIGHT - SPACE1, DXColor.Instance.blue, DX.TRUE);
+                DX.DrawBox(SPACE2, SPACE2, Program.WIDTH - SPACE2, Program.HEIGHT - SPACE2, DXColor.Instance.black, DX.TRUE);
 
                 {
-                    uint color = this.stopIndex == 0 ? Program.red : Program.white;
+                    uint color = this.stopIndex == 0 ? DXColor.Instance.red : DXColor.Instance.white;
                     int w = DX.GetDrawStringWidthToHandle("再開", Program.GetStringByte("再開"), Program.font64);
                     DX.DrawStringToHandle(WIDTH / 2 - w / 2 + SPACE2, SPACE2 + 30, "再開", color, Program.font64);
                 }
 
                 {
-                    uint color = this.stopIndex == 1 ? Program.red : Program.white;
+                    uint color = this.stopIndex == 1 ? DXColor.Instance.red : DXColor.Instance.white;
                     int w = DX.GetDrawStringWidthToHandle("メニューへ", Program.GetStringByte("メニューへ"), Program.font64);
                     DX.DrawStringToHandle(WIDTH / 2 - w / 2 + SPACE2, SPACE2 + 15*3+64, "メニューへ", color, Program.font64);
                 }
@@ -204,14 +204,14 @@ namespace MachShooting
                 const int X = 15;
 
                 //枠
-                DX.DrawBox(SPACE1, SPACE1, Program.WIDTH - SPACE1, Program.HEIGHT - SPACE1, Program.blue, DX.TRUE);
-                DX.DrawBox(SPACE2, SPACE2, Program.WIDTH - SPACE2, Program.HEIGHT - SPACE2, Program.black, DX.TRUE);
+                DX.DrawBox(SPACE1, SPACE1, Program.WIDTH - SPACE1, Program.HEIGHT - SPACE1, DXColor.Instance.blue, DX.TRUE);
+                DX.DrawBox(SPACE2, SPACE2, Program.WIDTH - SPACE2, Program.HEIGHT - SPACE2, DXColor.Instance.black, DX.TRUE);
 
                 //敵名
                 int w = DX.GetDrawStringWidthToHandle(this.boss.Name, Program.GetStringByte(this.boss.Name), Program.font64);
-                DX.DrawStringToHandle(WIDTH / 2 - w / 2 + SPACE2, SPACE2 + 15, this.boss.Name, Program.white, Program.font64);
+                DX.DrawStringToHandle(WIDTH / 2 - w / 2 + SPACE2, SPACE2 + 15, this.boss.Name, DXColor.Instance.white, Program.font64);
                 //自機名
-                DX.DrawStringToHandle(X + SPACE2, SPACE2 + 64 + 10, this.my.Name, Program.white, Program.font32);
+                DX.DrawStringToHandle(X + SPACE2, SPACE2 + 64 + 10, this.my.Name, DXColor.Instance.white, Program.font32);
                 //クリア
                 if (!this.boss.Need)
                 {
@@ -219,17 +219,17 @@ namespace MachShooting
                     int m = this.timeF / 6 / 10 / 60;
                     int s = (this.timeF - m * 6 * 10 * 60) / 6 / 10;
                     int s2 = (this.timeF - m * 6 * 10 * 60 - s * 6 * 10) / 6;
-                    DX.DrawStringToHandle(X + SPACE2, SPACE2 + 64 + 10 + 32 + 5, "クリアタイム:" + m + "." + s + "." + s2, Program.white, Program.font32);
+                    DX.DrawStringToHandle(X + SPACE2, SPACE2 + 64 + 10 + 32 + 5, "クリアタイム:" + m + "." + s + "." + s2, DXColor.Instance.white, Program.font32);
                 }
                 //自機が死んだ
                 else if (!this.my.Need)
                 {
-                    DX.DrawStringToHandle(X + SPACE2, SPACE2 + 64 + 10 + 32 + 5, "自機が破壊された…", Program.white, Program.font32);
+                    DX.DrawStringToHandle(X + SPACE2, SPACE2 + 64 + 10 + 32 + 5, "自機が破壊された…", DXColor.Instance.white, Program.font32);
                 }
                 //タイムアップ
                 else
                 {
-                    DX.DrawStringToHandle(X + SPACE2, SPACE2 + 64 + 10 + 32 + 5, "時間切れです…", Program.white, Program.font32);
+                    DX.DrawStringToHandle(X + SPACE2, SPACE2 + 64 + 10 + 32 + 5, "時間切れです…", DXColor.Instance.white, Program.font32);
                 }
             }
         }

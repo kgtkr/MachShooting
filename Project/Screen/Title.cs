@@ -58,8 +58,8 @@ namespace MachShooting
         {
             if (this.Need)//必要なら
             {
-                DX.DrawStringToHandle(this.titleNowX, TITLE_Y, TITLE_MESSAGE, Program.white, this.TITLE_MESSAGE_FONT);
-                if (this.enterDisplay) DX.DrawStringToHandle(this.ENTER_X, ENTER_Y, ENTER_MESSAGE, Program.white, this.ENTER_MESSAGE_FONT);//表示するなら
+                DX.DrawStringToHandle(this.titleNowX, TITLE_Y, TITLE_MESSAGE, DXColor.Instance.white, this.TITLE_MESSAGE_FONT);
+                if (this.enterDisplay) DX.DrawStringToHandle(this.ENTER_X, ENTER_Y, ENTER_MESSAGE, DXColor.Instance.white, this.ENTER_MESSAGE_FONT);//表示するなら
             }
         }
 

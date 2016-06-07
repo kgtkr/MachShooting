@@ -83,6 +83,7 @@
     <Compile Include="Enemy\Snake.cs" />
     <Compile Include="Core\Fps.cs" />
     <Compile Include="Core\Image.cs" />
+    <Compile Include="Resource\DXColor.cs" />
     <Compile Include="Transfer\AttackObject\AttackObjectTransfer.cs" />
     <Compile Include="Transfer\Effect\Charge.cs" />
     <Compile Include="Transfer\List\AsyncTransfer.cs" />

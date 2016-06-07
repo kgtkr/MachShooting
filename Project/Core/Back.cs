@@ -48,7 +48,7 @@ namespace MachShooting
             }
             else//低負荷
             {
-                DX.DrawCircle(Game.WINDOW_R, Game.WINDOW_R, Game.WINDOW_R, Program.white,DX.FALSE);
+                DX.DrawCircle(Game.WINDOW_R, Game.WINDOW_R, Game.WINDOW_R, DXColor.Instance.white,DX.FALSE);
             }
         }
 

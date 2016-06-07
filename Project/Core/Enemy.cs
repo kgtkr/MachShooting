@@ -174,8 +174,8 @@ namespace MachShooting
 
             int w = (int)((double)this.hp / (double)this.maxHp * maxW);
 
-            DX.DrawBox(x, y, x + maxW, y + h, Program.white, DX.TRUE);
-            DX.DrawBox(x + 1, y, x + w + 1, y + h, Program.green, DX.TRUE);
+            DX.DrawBox(x, y, x + maxW, y + h, DXColor.Instance.white, DX.TRUE);
+            DX.DrawBox(x + 1, y, x + w + 1, y + h, DXColor.Instance.green, DX.TRUE);
         }
         #endregion
         #region 抽象メソッド

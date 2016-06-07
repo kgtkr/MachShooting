@@ -168,47 +168,6 @@ namespace MachShooting
         /// </summary>
         public static int font64;
         #endregion
-        #region 色
-        /// <summary>
-        /// 赤
-        /// </summary>
-        public static uint red;
-
-        /// <summary>
-        /// 緑
-        /// </summary>
-        public static uint green;
-
-        /// <summary>
-        /// 青
-        /// </summary>
-        public static uint blue;
-
-        /// <summary>
-        /// 白
-        /// </summary>
-        public static uint white;
-
-        /// <summary>
-        /// 黒
-        /// </summary>
-        public static uint black;
-
-        /// <summary>
-        /// 黄
-        /// </summary>
-        public static uint yellow;
-
-        /// <summary>
-        /// シアン
-        /// </summary>
-        public static uint cyan;
-
-        /// <summary>
-        /// マゼンタ
-        /// </summary>
-        public static uint magenta;
-        #endregion
 
         /*選択情報*/
         private static int missionData;
@@ -250,7 +209,7 @@ namespace MachShooting
                 int startTime = DX.GetNowCount();//フレームの始まった時間を取得
                 fps.Update();
                 string fpsString = "FPS:" + fps.FPS.ToString("#0.0");//FPS取得
-                uint fpsColor = fps.FPS > 55 ? Program.white : Program.red;//FPSが55以下なら赤で描画
+                uint fpsColor = fps.FPS > 55 ? DXColor.Instance.white : DXColor.Instance.red;//FPSが55以下なら赤で描画
 
                 if (count % Config.Instance.fps == 0)
                 {
@@ -325,16 +284,6 @@ namespace MachShooting
             Program.font16 = DX.LoadFontDataToHandle("Data/Font/16.dft");
             Program.font32 = DX.LoadFontDataToHandle("Data/Font/32.dft");
             Program.font64 = DX.LoadFontDataToHandle("Data/Font/64.dft");
-
-            /*=色=*/
-            Program.red = DX.GetColor(255, 0, 0);
-            Program.green = DX.GetColor(0, 255, 0);
-            Program.blue = DX.GetColor(0, 0, 255);
-            Program.white = DX.GetColor(255, 255, 255);
-            Program.black = DX.GetColor(0, 0, 0);
-            Program.yellow = DX.GetColor(255, 255, 0);
-            Program.cyan = DX.GetColor(0, 255, 255);
-            Program.magenta = DX.GetColor(255, 0, 255);
 
 
         }

@@ -55,19 +55,19 @@ namespace MachShooting
             {
                 if (this.specialAttack < (this.Strengthen == 0 ? 60 : 30))//30～59|15～29
                 {
-                    DX.DrawCircle((int)this.X, (int)this.Y, 5, Program.red, DX.FALSE);
+                    DX.DrawCircle((int)this.X, (int)this.Y, 5, DXColor.Instance.red, DX.FALSE);
                 }
                 else if (this.specialAttack < (this.Strengthen == 0 ? 120 : 60))//60～119|30～59
                 {
-                    DX.DrawCircle((int)this.X, (int)this.Y, 10, Program.red, DX.FALSE);
+                    DX.DrawCircle((int)this.X, (int)this.Y, 10, DXColor.Instance.red, DX.FALSE);
                 }
                 else if (this.specialAttack < (this.Strengthen == 0 ? 180 : 89))//120～179|60～90
                 {
-                    DX.DrawCircle((int)this.X, (int)this.Y, 15, Program.red, DX.FALSE);
+                    DX.DrawCircle((int)this.X, (int)this.Y, 15, DXColor.Instance.red, DX.FALSE);
                 }
                 else//180～|90～
                 {
-                    DX.DrawCircle((int)this.X, (int)this.Y, 20, Program.red, DX.FALSE);
+                    DX.DrawCircle((int)this.X, (int)this.Y, 20, DXColor.Instance.red, DX.FALSE);
                 }
             }
         }

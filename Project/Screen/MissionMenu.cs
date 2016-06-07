@@ -58,7 +58,7 @@ namespace MachShooting
                     int x = Program.WIDTH / 2 - DX.GetDrawStringWidthToHandle(MESSAGE, Program.GetStringByte(MESSAGE), font) / 2;
 
                     //描画
-                    DX.DrawStringToHandle(x, Y, MESSAGE, Program.white, font);
+                    DX.DrawStringToHandle(x, Y, MESSAGE, DXColor.Instance.white, font);
                 }
                 //敵一覧
                 {
@@ -73,7 +73,7 @@ namespace MachShooting
                     //描画
                     for (int i = 0; i < MissionMenu.missionData.Length; i++)
                     {
-                        uint color = i == this.missionIndex ? Program.red : Program.white;
+                        uint color = i == this.missionIndex ? DXColor.Instance.red : DXColor.Instance.white;
                         string name = MissionMenu.missionData[i];
                         int x = Program.WIDTH / 2 - DX.GetDrawStringWidthToHandle(name, Program.GetStringByte(name), font) / 2;
                         DX.DrawStringToHandle(x, y, name, color, font);
