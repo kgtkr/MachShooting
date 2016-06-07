@@ -1,5 +1,4 @@
 ﻿//*新しい効果音を追加するには？
-//SE.fileNameに拡張子を除いたファイル名を追加
 //MP3に新しい音楽名を追加
 
 using System;
@@ -8,60 +7,67 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using DxLibDLL;
+using System.Collections.ObjectModel;
 
 namespace MachShooting
 {
     /// <summary>
     /// 効果音管理クラス
     /// </summary>
-    public static class SE
+    public class SE
     {
         /// <summary>
-        /// ファイル名
+        /// このクラスのインスタンスです
         /// </summary>
-        private static string[] fileName={ "avoidance",
-        "bom",
-        "cancel",
-        "deathblow",
-        "hp1",
-        "hp2",
-        "OK",
-        "shot",
-        "shotHit",
-        "strengthen"};
+        private static SE instance;
+
+        /// <summary>
+        /// このクラスのインスタンス
+        /// </summary>
+        public static SE Instance
+        {
+            get
+            {
+                if (SE.instance == null)
+                {
+                    SE.instance = new SE();
+                }
+
+                return SE.instance;
+            }
+        }
 
         /// <summary>
         /// 音楽
         /// </summary>
-        private　static Dictionary<MP3,Music> music;
+        private Dictionary<MP3,Music> music;
 
-        /// <summary>
-        /// ロードします
-        /// </summary>
-        public static void Load()
+        private SE()
         {
-            SE.music = new Dictionary<MP3, Music>();
+            this.music = new Dictionary<MP3, Music>();
 
-            for (int i = 0; i < SE.fileName.Length; i++)
+            var fileName= Enum.GetValues(typeof(MP3));
+
+            foreach(MP3 mp3 in fileName)
             {
-                SE.music.Add((MP3)i, new Music(DX.LoadSoundMem("Data/Sound/SE/"+((MP3)i).GetFileName() +".mp3")));
+                this.music.Add(mp3, new Music(DX.LoadSoundMem("Data/Sound/SE/" + mp3 + ".mp3")));
             }
         }
 
         /// <summary>
         /// 効果音を流します。毎F呼び出してください
         /// </summary>
-        public static void Update()
+        public void Update()
         {
-            foreach(MP3 mp3 in SE.music.Keys.ToArray())
+            foreach(MP3 mp3 in this.music.Keys.ToArray())
             {
-                Music music = SE.music[mp3];
-                if (SE.music[mp3].play)
+                Music music = this.music[mp3];
+                if (this.music[mp3].play)
                 {
                     PlaySE(music.handle);
                     music.play = false;
-                    SE.music[mp3] = music;
                 }
+                this.music[mp3] = music;
             }
         }
 
@@ -69,28 +75,18 @@ namespace MachShooting
         /// 再生予約します
         /// </summary>
         /// <param name="mp3">再生予約する音楽</param>
-        public static void Play(MP3 mp3)
+        public void Play(MP3 mp3)
         {
-            Music music = SE.music[mp3];
+            Music music = this.music[mp3];
             music.play = true;
-            SE.music[mp3] = music;
-        }
-
-        /// <summary>
-        /// ファイル名を取得します
-        /// </summary>
-        /// <param name="mp3"></param>
-        /// <returns></returns>
-        private static string GetFileName(this MP3 mp3)
-        {
-            return SE.fileName[(int)mp3];
+            this.music[mp3] = music;
         }
 
         /// <summary>
         /// 効果音を流します
         /// </summary>
         /// <param name="se">ハンドル</param>
-        private static void PlaySE(int se)
+        private void PlaySE(int se)
         {
             //コピー
             int h = DX.DuplicateSoundMem(se);

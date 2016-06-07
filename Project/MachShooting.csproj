@@ -73,7 +73,7 @@
     <Compile Include="Core\Graphic\Process.cs" />
     <Compile Include="Core\Graphic\Rect.cs" />
     <Compile Include="Core\Graphic\Vec.cs" />
-    <Compile Include="Core\Config.cs" />
+    <Compile Include="Resource\Config.cs" />
     <Compile Include="Core\Enemy.cs" />
     <Compile Include="Enemy\Boar.cs" />
     <Compile Include="Enemy\Gato.cs" />
@@ -104,7 +104,7 @@
     <Compile Include="Screen\MissionMenu.cs" />
     <Compile Include="Screen\Screen.cs" />
     <Compile Include="Screen\Title.cs" />
-    <Compile Include="SE.cs" />
+    <Compile Include="Resource\SE.cs" />
     <Compile Include="Transfer\List\SyncTransfer.cs" />
     <Compile Include="Transfer\List\TransferList.cs" />
     <Compile Include="Transfer\Move\CircleTransfer.cs" />

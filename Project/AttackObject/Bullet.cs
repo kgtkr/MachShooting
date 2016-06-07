@@ -34,7 +34,7 @@ namespace MachShooting
             : base(dot, power, image, vec.Rad, meta)
         {
             //角度計算
-            SE.Play(MP3.shot);
+            SE.Instance.Play(MP3.shot);
             this.vec = vec;
             this.Rad = vec.Rad;
         }

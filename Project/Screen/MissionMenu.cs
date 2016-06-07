@@ -116,13 +116,13 @@ namespace MachShooting
                 {
                     this.Need = false;
                     this.Decision = true;
-                    SE.Play(MP3.OK);
+                    SE.Instance.Play(MP3.OK);
                 }
                 else if (key2[Config.Instance.key[KeyComfig.MENU_BACK]] == DX.TRUE)//戻る
                 {
                     this.Need = false;
                     this.Decision = false;
-                    SE.Play(MP3.cancel);
+                    SE.Instance.Play(MP3.cancel);
                 }
             }
         }

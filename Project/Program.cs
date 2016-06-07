@@ -261,7 +261,7 @@ namespace MachShooting
                     }
                 }
 
-                SE.Update();
+                SE.Instance.Update();
 
                 //キー情報取得
                 byte[] key = new byte[256];
@@ -319,9 +319,6 @@ namespace MachShooting
             Program.hit = DX.LoadGraph("Data/Image/Effect/Hit.png");
             Program.special = DX.LoadGraph("Data/Image/Effect/Special.png");
             Program.charge = DX.LoadGraph("Data/Image/Effect/Charge.png");
-
-            /*=音声=*/
-            SE.Load();
 
             /*=フォント=*/
             Program.font8 = DX.LoadFontDataToHandle("Data/Font/8.dft");
