@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
+using System.Collections.ObjectModel;
 
 namespace MachShooting
 {
@@ -18,23 +19,39 @@ namespace MachShooting
         /// <summary>
         /// キーコンフィグ
         /// </summary>
-        public Dictionary<KeyComfig, int> key = new Dictionary<KeyComfig, int>();
+        public IReadOnlyDictionary<KeyComfig, int> key
+        {
+            get;
+            private set;
+        }
 
         /// <summary>
         /// FPS
         /// 60/X
         /// </summary>
-        public int fps;
+        public int fps
+        {
+            get;
+            private set;
+        }
 
         /// <summary>
         /// 低負荷モード
         /// </summary>
-        public bool low;
+        public bool low
+        {
+            get;
+            private set;
+        }
 
         /// <summary>
         /// フルスクリーン
         /// </summary>
-        public bool full;
+        public bool full
+        {
+            get;
+            private set;
+        }
 
         /// <summary>
         /// このクラスのインスタンス
@@ -55,13 +72,15 @@ namespace MachShooting
         private Config()
         {
             {
+                var keyMap = new Dictionary<KeyComfig, int>();
                 var ini = ReadINI("keyconfig.ini");
                 foreach (string key in ini.Keys)
                 {
                     KeyComfig k = (KeyComfig)Enum.Parse(typeof(KeyComfig), key);
                     int v = (int)Enum.Parse(typeof(Key), ini[key]);
-                    this.key.Add(k, v);
+                    keyMap.Add(k, v);
                 }
+                this.key = new ReadOnlyDictionary<KeyComfig,int>(keyMap);
             }
 
             {
