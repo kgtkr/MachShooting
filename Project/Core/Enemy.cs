@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using DxLibDLL;
-using CircleLib;
+using MachShooting.Graphic;
 
 namespace MachShooting
 {
@@ -42,7 +42,7 @@ namespace MachShooting
         /// <summary>
         /// 動作リスト
         /// </summary>
-        private SyncTransfer syncTransfer=new SyncTransfer();
+        private SyncTransfer syncTransfer = new SyncTransfer();
         #endregion
         #region プロパティ
         /// <summary>
@@ -77,14 +77,7 @@ namespace MachShooting
             get { return this.maxHp; }
         }
 
-        /// <summary>
-        /// やられ判定
-        /// </summary>
-        public bool Hit
-        {
-            get { return this.hit; }
-            protected set { this.hit = value; }
-        }
+        
 
 
         protected SyncTransfer SyncTransfer
@@ -102,8 +95,8 @@ namespace MachShooting
         /// <param name="maxHP">最大HP</param>
         /// <param name="my">自機</param>
         /// <param name="image">画像</param>
-        public Enemy(string name, int power,  int maxHP,  My my,Image image)
-            : base(new Vec(Game.WINDOW_R,Game.WINDOW_R/2), power, image, new Vec(0, 1).Rad)
+        public Enemy(string name, int power, int maxHP, My my, Image image)
+            : base(new Vec(Game.WINDOW_R, Game.WINDOW_R / 2), power, image, new Vec(0, 1).Rad)
         {
             this.name = name;
             this.hp = maxHP;
@@ -120,10 +113,10 @@ namespace MachShooting
         public List<AttackObject> Process()
         {
             Next();
-            if (this.hp!=0)//生きているなら
+            if (this.hp != 0)//生きているなら
             {
                 List<AttackObject> list;
-                list=this.syncTransfer.Process();
+                list = this.syncTransfer.Process();
                 if (list != null)
                 {
                     list.AddList(Process_Enemy());
@@ -153,13 +146,13 @@ namespace MachShooting
         /// <returns>受けたダメージ</returns>
         public override int Suffer(int power)
         {
-            if (this.hp!=0 && this.Hit)//生きているかつやられ判定がある
+            if (this.hp != 0 && this.hit)//生きているかつやられ判定がある
             {
                 this.hp -= power;
                 if (this.hp <= 0)
                 {
                     this.hp = 0;
-                    this.Need = false; 
+                    this.Need = false;
                 }
                 return power;
             }

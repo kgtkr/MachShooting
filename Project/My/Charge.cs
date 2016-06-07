@@ -4,14 +4,14 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using DxLibDLL;
-using CircleLib;
+using MachShooting.Graphic;
 
 namespace MachShooting
 {
     /// <summary>
-    /// 通常型
+    /// 溜め型
     /// </summary>
-    public class Stability : My
+    public class Charge : My
     {
         #region 定数
         #endregion
@@ -32,19 +32,45 @@ namespace MachShooting
         private int deathblow;
 
         /// <summary>
-        /// カウンター攻撃
+        /// カウンター
         /// </summary>
         private int counterAttack;
         #endregion
         #region プロパティ
         #endregion
         #region コンストラクタ
-        public Stability()
-            : base("通常型",Gauge.SMALL, Gauge.MEDIUM)
+        /// <summary>
+        /// 新しいイントランスを作成します
+        /// </summary>
+        public Charge()
+            : base("溜め型", Gauge.LARGE, Gauge.MEDIUM)
         {
         }
         #endregion
         #region メソッド
+        protected override void DrawGameObjectAfter()
+        {
+            base.DrawGameObjectAfter();
+            if (this.Action == MyAction.SPECIAL)
+            {
+                if (this.specialAttack < (this.Strengthen == 0 ? 60 : 30))//30～59|15～29
+                {
+                    DX.DrawCircle((int)this.X, (int)this.Y, 5, Program.red, DX.FALSE);
+                }
+                else if (this.specialAttack < (this.Strengthen == 0 ? 120 : 60))//60～119|30～59
+                {
+                    DX.DrawCircle((int)this.X, (int)this.Y, 10, Program.red, DX.FALSE);
+                }
+                else if (this.specialAttack < (this.Strengthen == 0 ? 180 : 89))//120～179|60～90
+                {
+                    DX.DrawCircle((int)this.X, (int)this.Y, 15, Program.red, DX.FALSE);
+                }
+                else//180～|90～
+                {
+                    DX.DrawCircle((int)this.X, (int)this.Y, 20, Program.red, DX.FALSE);
+                }
+            }
+        }
         #endregion
         #region 実装メソッド
         /// <summary>
@@ -60,11 +86,11 @@ namespace MachShooting
                 attack = new List<AttackObject>();
                 this.conventionalAttack = 0;
 
-                attack.Add(NewBullet(this.BulletDotC, this.Strengthen == 0 ? 12:14, new Vec(0, -10), Program.bulletSmall[0], this.AttackObjectMeta));
+                attack.Add(NewBullet(this.BulletDotC, 16, new Vec(0, -10), Program.bulletMedium[0], this.AttackObjectMeta));
             }
             else
             {
-                if (this.conventionalAttack >= 10)
+                if (this.conventionalAttack >= 30)
                 {
                     this.Action = MyAction.NONE;
                 }
@@ -83,20 +109,33 @@ namespace MachShooting
             List<AttackObject> attack = null;
             if (start)
             {
-                attack= new List<AttackObject>();
                 this.specialAttack = 0;
-
-                attack.Add(NewBullet(this.BulletDotC, this.Strengthen==0? 27:32, new Vec(0, -10), Program.bulletMedium[0], this.AttackObjectMeta));
             }
             else
             {
-                this.Speed = 1;
-                if (this.specialAttack >= 20)
+                if (key[Config.Instance.key[KeyComfig.GAME_SPECIAL]] == DX.FALSE && this.specialAttack >= (this.Strengthen == 0 ? 30 : 15))
                 {
+                    attack = new List<AttackObject>();
+                    if (this.specialAttack < (this.Strengthen == 0 ? 60 : 30))//30～59|15～29
+                    {
+                        attack.Add(NewBullet(this.BulletDotC, 30, new Vec(0, -10), Program.bulletSmall[0], this.AttackObjectMeta));
+                    }
+                    else if (this.specialAttack < (this.Strengthen == 0 ? 120 : 60))//60～119|30～59
+                    {
+                        attack.Add(NewBullet(this.BulletDotC, 66, new Vec(0, -10), Program.bulletSmall[0], this.AttackObjectMeta));
+                    }
+                    else if (this.specialAttack < (this.Strengthen == 0 ? 180 : 89))//120～179|60～90
+                    {
+                        attack.Add(NewBullet(this.BulletDotC, 144, new Vec(0, -10), Program.bulletMedium[0], this.AttackObjectMeta));
+                    }
+                    else//180～|90～
+                    {
+                        attack.Add(NewBullet(this.BulletDotC, 234, new Vec(0, -10), Program.bulletBig[0], this.AttackObjectMeta));
+                    }
                     this.Action = MyAction.NONE;
                 }
+                this.specialAttack++;
             }
-            this.specialAttack++;
             return attack;
         }
 
@@ -114,14 +153,10 @@ namespace MachShooting
             }
             else
             {
-                if (this.deathblow < 60)//始まる前
-                {
-                    this.Speed = 1;
-                }
-                else if (this.deathblow == 60)//撃つ
+                if (this.deathblow == (this.Strengthen == 0 ? 180 : 90))//撃つ
                 {
                     attack = new List<AttackObject>();
-                    attack.Add(NewBullet(this.BulletDotC, this.Strengthen==0? 145:174, new Vec(0, -10), Program.bulletBig[0], this.AttackObjectMeta));
+                    attack.Add(NewBullet(this.BulletDotC, 468, new Vec(0, -10), Program.bomb, this.AttackObjectMeta));
                     this.Action = MyAction.NONE;
                 }
             }
@@ -130,7 +165,7 @@ namespace MachShooting
         }
 
         /// <summary>
-        /// 自己強化系必殺技
+        /// 自己強化
         /// </summary>
         /// <param name="key"></param>
         /// <param name="start"></param>
@@ -138,7 +173,7 @@ namespace MachShooting
         {
             if (start)
             {
-                this.Strengthen = 900;
+                this.Strengthen = 450;
             }
             else
             {
@@ -156,16 +191,12 @@ namespace MachShooting
             List<AttackObject> attack = null;
             if (start)
             {
+                attack = new List<AttackObject>();
                 this.counterAttack = 0;
+                attack.Add(NewBullet(this.BulletDotC, 60, new Vec(0, -10), Program.bulletBig[0], this.AttackObjectMeta));
             }
             else
             {
-                if (this.counterAttack%2==0)
-                {
-                    attack = new List<AttackObject>();
-                    attack.Add(NewBullet(this.BulletDotC, this.Strengthen==0? 4:5, new Vec(0, -10), Program.bulletSmall[0], this.AttackObjectMeta));
-                }
-
                 if (this.counterAttack >= 30)
                 {
                     this.Action = MyAction.NONE;

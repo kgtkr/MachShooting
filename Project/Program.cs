@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 using DxLibDLL;
 using System.IO;
 using System.Diagnostics;
-using CircleLib;
+using MachShooting.Graphic;
 
 namespace MachShooting
 {
@@ -26,7 +26,7 @@ namespace MachShooting
         /// <summary>
         /// 画面の幅
         /// </summary>
-        public const int WIDTH = 640;        
+        public const int WIDTH = 640;
         /// <summary>
         /// 画面の高さ
         /// </summary>
@@ -62,7 +62,7 @@ namespace MachShooting
         /// </summary>
         private static Game game;
         #endregion
-        #region ファイル
+
         #region 画像
         /// <summary>
         /// 背景画像
@@ -168,11 +168,6 @@ namespace MachShooting
         /// </summary>
         public static int font64;
         #endregion
-        #endregion
-        /*=ミッション=*/
-        //ミッション<カテゴリ名(フォルダ),カテゴリの中身<ミッション名(ファイル名),ミッション内容(ファイルの中身)>>
-        private static String[] mission;
-
         #region 色
         /// <summary>
         /// 赤
@@ -225,13 +220,10 @@ namespace MachShooting
         /// </summary>
         public static void Main()
         {
-            //設定
-            Config.Load();
-
             /*前処理*/
             DX.SetOutApplicationLogValidFlag(DX.FALSE);//ログを出力しない
             DX.SetMainWindowText("MachShooting");//タイトル設定
-            DX.ChangeWindowMode(Config.full?DX.FALSE:DX.TRUE);//ウィンドウモード
+            DX.ChangeWindowMode(Config.Instance.full ? DX.FALSE : DX.TRUE);//ウィンドウモード
 
             /*DXライブラリの読み込み*/
             if (DX.DxLib_Init() == -1)
@@ -260,7 +252,7 @@ namespace MachShooting
                 string fpsString = "FPS:" + fps.FPS.ToString("#0.0");//FPS取得
                 uint fpsColor = fps.FPS > 55 ? Program.white : Program.red;//FPSが55以下なら赤で描画
 
-                if (count % Config.fps == 0)
+                if (count % Config.Instance.fps == 0)
                 {
                     if (DX.ClearDrawScreen() != 0)//画面消去。×が押されたら終了
                     {
@@ -282,11 +274,11 @@ namespace MachShooting
                 }
                 lastKey = key;
 
-                Update(key,key2);
-                if (count % Config.fps == 0) DX.DrawStringToHandle(0, 0, fpsString, fpsColor, Program.font16);
+                Update(key, key2);
+                if (count % Config.Instance.fps == 0) DX.DrawStringToHandle(0, 0, fpsString, fpsColor, Program.font16);
 
 
-                if (count % Config.fps == 0) DX.ScreenFlip();//裏画面を表画面に表示
+                if (count % Config.Instance.fps == 0) DX.ScreenFlip();//裏画面を表画面に表示
                 if (DX.ProcessMessage() != 0)
                 {
                     DX.DxLib_End();
@@ -305,26 +297,26 @@ namespace MachShooting
             /*=画像=*/
             Program.back = DX.LoadGraph("Data/Image/back.png");
 
-            Program.my =new Image( DX.LoadGraph("Data/Image/My/1.png"),15,new Vec(0,-1).Rad);
+            Program.my = new Image(DX.LoadGraph("Data/Image/My/1.png"), 15, new Vec(0, -1).Rad);
 
             Program.clock = DX.LoadGraph("Data/Image/Clock.png");
 
-            Program.bomb = new Image(DX.LoadGraph("Data/Image/Bullet/bomb.png"),140, Math.PI);
-            for (int i = 0; i < 10; i++) Program.bulletSmall[i] = new Image(DX.LoadGraph("Data/Image/Bullet/Small/" + (i + 1) + ".png"),4, new Vec(0, -1).Rad);
+            Program.bomb = new Image(DX.LoadGraph("Data/Image/Bullet/bomb.png"), 140, Math.PI);
+            for (int i = 0; i < 10; i++) Program.bulletSmall[i] = new Image(DX.LoadGraph("Data/Image/Bullet/Small/" + (i + 1) + ".png"), 4, new Vec(0, -1).Rad);
             for (int i = 0; i < 10; i++) Program.bulletMedium[i] = new Image(DX.LoadGraph("Data/Image/Bullet/Medium/" + (i + 1) + ".png"), 8, new Vec(0, -1).Rad);
             for (int i = 0; i < 10; i++) Program.bulletBig[i] = new Image(DX.LoadGraph("Data/Image/Bullet/Big/" + (i + 1) + ".png"), 14, new Vec(0, -1).Rad);
 
             /*=敵=*/
-            Program.boar= new Image(DX.LoadGraph("Data/Image/Enemy/boar.png"),15, new Vec(0, 1).Rad);
-            Program.gato = new Image(DX.LoadGraph("Data/Image/Enemy/gato.png"),15, new Vec(0, 1).Rad);
-            Program.lapin = new Image(DX.LoadGraph("Data/Image/Enemy/lapin.png"),15, new Vec(0, 1).Rad);
+            Program.boar = new Image(DX.LoadGraph("Data/Image/Enemy/boar.png"), 15, new Vec(0, 1).Rad);
+            Program.gato = new Image(DX.LoadGraph("Data/Image/Enemy/gato.png"), 15, new Vec(0, 1).Rad);
+            Program.lapin = new Image(DX.LoadGraph("Data/Image/Enemy/lapin.png"), 15, new Vec(0, 1).Rad);
             Program.nigalya = new Image(DX.LoadGraph("Data/Image/Enemy/nigalya.png"), 20, new Vec(0, 1).Rad);
             Program.snake = new Image(DX.LoadGraph("Data/Image/Enemy/snake.png"), 15, new Vec(0, 1).Rad);
             Program.leone = new Image(DX.LoadGraph("Data/Image/Enemy/leone.png"), 50, new Vec(0, 1).Rad);
 
 
             //エフェクト
-            Program.hit= DX.LoadGraph("Data/Image/Effect/Hit.png");
+            Program.hit = DX.LoadGraph("Data/Image/Effect/Hit.png");
             Program.special = DX.LoadGraph("Data/Image/Effect/Special.png");
             Program.charge = DX.LoadGraph("Data/Image/Effect/Charge.png");
 
@@ -353,13 +345,13 @@ namespace MachShooting
         /// <summary>
         /// タイトル画面、ゲーム画面等を場合に応じて呼び出します
         /// </summary>
-        private static void Update(byte[] key,byte[] key2)
+        private static void Update(byte[] key, byte[] key2)
         {
 
             if (Program.title != null)//タイトル画面なら
             {
                 Program.title.Process(key, key2);
-                if (count % Config.fps == 0) Program.title.Draw();
+                if (count % Config.Instance.fps == 0) Program.title.Draw();
                 if (!Program.title.Need)
                 {
                     Program.title = null;
@@ -369,7 +361,7 @@ namespace MachShooting
             else if (Program.equipmentMenu != null)//装備選択画面なら
             {
                 Program.equipmentMenu.Process(key, key2);
-                if (count % Config.fps == 0) Program.equipmentMenu.Draw();
+                if (count % Config.Instance.fps == 0) Program.equipmentMenu.Draw();
                 if (!Program.equipmentMenu.Need)
                 {
                     Program.equipment = Program.equipmentMenu.Equipment;
@@ -380,7 +372,7 @@ namespace MachShooting
             else if (Program.missionMenu != null)//敵選択画面なら
             {
                 Program.missionMenu.Process(key, key2);
-                if (count % Config.fps == 0) Program.missionMenu.Draw();
+                if (count % Config.Instance.fps == 0) Program.missionMenu.Draw();
                 if (!Program.missionMenu.Need)
                 {
                     if (Program.missionMenu.Decision)
@@ -399,7 +391,7 @@ namespace MachShooting
             else//ゲーム画面なら
             {
                 Program.game.Process(key, key2);
-                if(count%Config.fps==0) Program.game.Draw();
+                if (count % Config.Instance.fps == 0) Program.game.Draw();
                 if (!Program.game.Need)
                 {
                     DX.SetBackgroundColor(0, 0, 0);
@@ -445,7 +437,7 @@ namespace MachShooting
             if (list == null) return false;
             if (list.Count == 0) return false;
 
-            foreach(ITransfer t in list)
+            foreach (ITransfer t in list)
             {
                 if (t.Need)
                 {

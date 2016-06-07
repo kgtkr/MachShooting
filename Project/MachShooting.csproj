@@ -11,6 +11,21 @@
     <AssemblyName>MachShooting</AssemblyName>
     <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <PublishUrl>publish\</PublishUrl>
+    <Install>true</Install>
+    <InstallFrom>Disk</InstallFrom>
+    <UpdateEnabled>false</UpdateEnabled>
+    <UpdateMode>Foreground</UpdateMode>
+    <UpdateInterval>7</UpdateInterval>
+    <UpdateIntervalUnits>Days</UpdateIntervalUnits>
+    <UpdatePeriodically>false</UpdatePeriodically>
+    <UpdateRequired>false</UpdateRequired>
+    <MapFileExtensions>true</MapFileExtensions>
+    <ApplicationRevision>0</ApplicationRevision>
+    <ApplicationVersion>1.0.0.%2a</ApplicationVersion>
+    <IsWebBootstrapper>false</IsWebBootstrapper>
+    <UseApplicationTrust>false</UseApplicationTrust>
+    <BootstrapperEnabled>true</BootstrapperEnabled>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -36,6 +51,9 @@
   </PropertyGroup>
   <PropertyGroup />
   <ItemGroup>
+    <Reference Include="DxLibDotNet">
+      <HintPath>.\DxLibDotNet.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Drawing" />
@@ -46,42 +64,41 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Back.cs" />
-    <Compile Include="Bom.cs" />
-    <Compile Include="Bullet.cs" />
-    <Compile Include="CircleLib\Capsule.cs" />
-    <Compile Include="CircleLib\Circle.cs" />
-    <Compile Include="CircleLib\Line.cs" />
-    <Compile Include="CircleLib\Process.cs" />
-    <Compile Include="CircleLib\Rect.cs" />
-    <Compile Include="CircleLib\Vec.cs" />
-    <Compile Include="Config.cs" />
-    <Compile Include="DxDLL.cs" />
-    <Compile Include="Enemy\Enemy.cs" />
-    <Compile Include="Enemy\List\Boar.cs" />
-    <Compile Include="Enemy\List\Gato.cs" />
-    <Compile Include="Enemy\List\Lapin.cs" />
-    <Compile Include="Enemy\List\Leone.cs" />
-    <Compile Include="Enemy\List\Nigalya.cs" />
-    <Compile Include="Enemy\List\Snake.cs" />
-    <Compile Include="Fps.cs" />
-    <Compile Include="Image.cs" />
+    <Compile Include="Core\Back.cs" />
+    <Compile Include="AttackObject\Bom.cs" />
+    <Compile Include="AttackObject\Bullet.cs" />
+    <Compile Include="Core\Graphic\Capsule.cs" />
+    <Compile Include="Core\Graphic\Circle.cs" />
+    <Compile Include="Core\Graphic\Line.cs" />
+    <Compile Include="Core\Graphic\Process.cs" />
+    <Compile Include="Core\Graphic\Rect.cs" />
+    <Compile Include="Core\Graphic\Vec.cs" />
+    <Compile Include="Core\Config.cs" />
+    <Compile Include="Core\Enemy.cs" />
+    <Compile Include="Enemy\Boar.cs" />
+    <Compile Include="Enemy\Gato.cs" />
+    <Compile Include="Enemy\Lapin.cs" />
+    <Compile Include="Enemy\Leone.cs" />
+    <Compile Include="Enemy\Nigalya.cs" />
+    <Compile Include="Enemy\Snake.cs" />
+    <Compile Include="Core\Fps.cs" />
+    <Compile Include="Core\Image.cs" />
     <Compile Include="Transfer\AttackObject\AttackObjectTransfer.cs" />
     <Compile Include="Transfer\Effect\Charge.cs" />
     <Compile Include="Transfer\List\AsyncTransfer.cs" />
-    <Compile Include="Transfer\ITransfer.cs" />
-    <Compile Include="My\List\Charge.cs" />
-    <Compile Include="My\List\Double.cs" />
-    <Compile Include="My\List\Overall.cs" />
-    <Compile Include="My\List\Stability.cs" />
-    <Compile Include="My\List\SuperCharge.cs" />
-    <Compile Include="Radian.cs" />
+    <Compile Include="Core\ITransfer.cs" />
+    <Compile Include="My\Charge.cs" />
+    <Compile Include="My\Double.cs" />
+    <Compile Include="My\Overall.cs" />
+    <Compile Include="My\Stability.cs" />
+    <Compile Include="My\SuperCharge.cs" />
+    <Compile Include="Core\Radian.cs" />
     <Compile Include="Screen\EquipmentMenu.cs" />
     <Compile Include="Screen\Game.cs" />
-    <Compile Include="GameObject.cs" />
-    <Compile Include="My\My.cs" />
-    <Compile Include="AttackObject.cs" />
-    <Compile Include="My\MySub.cs" />
+    <Compile Include="Core\GameObject.cs" />
+    <Compile Include="Core\My.cs" />
+    <Compile Include="Core\AttackObject.cs" />
+    <Compile Include="My\MyList.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Screen\MissionMenu.cs" />
@@ -100,7 +117,18 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
-  <ItemGroup />
+  <ItemGroup>
+    <BootstrapperPackage Include=".NETFramework,Version=v4.5">
+      <Visible>False</Visible>
+      <ProductName>Microsoft .NET Framework 4.5 %28x86 および x64%29</ProductName>
+      <Install>true</Install>
+    </BootstrapperPackage>
+    <BootstrapperPackage Include="Microsoft.Net.Framework.3.5.SP1">
+      <Visible>False</Visible>
+      <ProductName>.NET Framework 3.5 SP1</ProductName>
+      <Install>false</Install>
+    </BootstrapperPackage>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>xcopy "$(ProjectDir)BuildData" "$(TargetDir)" /Y /R /S /E</PostBuildEvent>

@@ -284,7 +284,7 @@ namespace MachShooting
                     }
                 }
 
-                if(key2[Config.key[KeyComfig.GAME_STOP]] == DX.TRUE)
+                if(key2[Config.Instance.key[KeyComfig.GAME_STOP]] == DX.TRUE)
                 {
                     this.battle = 1;
                 }
@@ -299,14 +299,14 @@ namespace MachShooting
             }
             else if (battle == 1)//一時停止
             {
-                if(key2[Config.key[KeyComfig.MENU_UP]]==DX.TRUE^
-                    key2[Config.key[KeyComfig.MENU_DOWN]] == DX.TRUE)
+                if(key2[Config.Instance.key[KeyComfig.MENU_UP]]==DX.TRUE^
+                    key2[Config.Instance.key[KeyComfig.MENU_DOWN]] == DX.TRUE)
                 {
                     this.stopIndex++;
                     this.stopIndex %= 2;
                 }
 
-                if (key2[Config.key[KeyComfig.MENU_OK]] == DX.TRUE)
+                if (key2[Config.Instance.key[KeyComfig.MENU_OK]] == DX.TRUE)
                 {
                     if (this.stopIndex == 0)
                     {
@@ -317,7 +317,7 @@ namespace MachShooting
                         this.Need = false;
                     }
                 }
-                else if (key2[Config.key[KeyComfig.MENU_BACK]] == DX.TRUE)
+                else if (key2[Config.Instance.key[KeyComfig.MENU_BACK]] == DX.TRUE)
                 {
                     this.stopIndex = 0;
                     this.battle = 0;
@@ -325,7 +325,7 @@ namespace MachShooting
             }
             else//リザルト
             {
-                if (key2[Config.key[KeyComfig.MENU_OK]] == DX.TRUE)
+                if (key2[Config.Instance.key[KeyComfig.MENU_OK]] == DX.TRUE)
                 {
                     this.Need = false;
                 }

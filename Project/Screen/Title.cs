@@ -80,7 +80,7 @@ namespace MachShooting
                 this.enterFrame--;//残り時間を減らす
 
                 //キーが押されたか？
-                if (key2[Config.key[KeyComfig.MENU_OK]] == DX.TRUE)//Zが押されたなら
+                if (key2[Config.Instance.key[KeyComfig.MENU_OK]] == DX.TRUE)//Zが押されたなら
                 {
                     SE.Play(MP3.OK);
                     this.Need = false;

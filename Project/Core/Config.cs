@@ -8,30 +8,51 @@ using System.Threading.Tasks;
 
 namespace MachShooting
 {
-    public static class Config
+    public class Config
     {
+        /// <summary>
+        /// このクラスのインスタンスです
+        /// </summary>
+        private static Config instance;
+
         /// <summary>
         /// キーコンフィグ
         /// </summary>
-        public static Dictionary<KeyComfig, int> key = new Dictionary<KeyComfig, int>();
+        public Dictionary<KeyComfig, int> key = new Dictionary<KeyComfig, int>();
 
         /// <summary>
         /// FPS
         /// 60/X
         /// </summary>
-        public static int fps;
+        public int fps;
 
         /// <summary>
         /// 低負荷モード
         /// </summary>
-        public static bool low;
+        public bool low;
 
         /// <summary>
         /// フルスクリーン
         /// </summary>
-        public static bool full;
+        public bool full;
 
-        public static void Load()
+        /// <summary>
+        /// このクラスのインスタンス
+        /// </summary>
+        public static Config Instance
+        {
+            get
+            {
+                if (Config.instance == null)
+                {
+                    Config.instance = new Config();
+                }
+
+                return Config.instance;
+            }
+        }
+
+        private Config()
         {
             {
                 var ini = ReadINI("keyconfig.ini");
@@ -39,7 +60,7 @@ namespace MachShooting
                 {
                     KeyComfig k = (KeyComfig)Enum.Parse(typeof(KeyComfig), key);
                     int v = (int)Enum.Parse(typeof(Key), ini[key]);
-                    Config.key.Add(k, v);
+                    this.key.Add(k, v);
                 }
             }
 
@@ -51,7 +72,7 @@ namespace MachShooting
             }
         }
 
-        private static Dictionary<string,string> ReadINI(string path)
+        private Dictionary<string,string> ReadINI(string path)
         {
             Dictionary<string, string> ini = new Dictionary<string, string>();
 

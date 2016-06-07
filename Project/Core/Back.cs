@@ -14,7 +14,7 @@ namespace MachShooting
     {
         public void Draw()
         {
-            if (!Config.low)
+            if (!Config.Instance.low)
             {
                 //Zバッファで描画可能領域
                 DX.SetUseZBufferFlag(DX.TRUE);

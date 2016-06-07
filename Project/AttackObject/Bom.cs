@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using CircleLib;
+using MachShooting.Graphic;
 using DxLibDLL;
 
 namespace MachShooting

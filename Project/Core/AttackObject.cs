@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using DxLibDLL;
-using CircleLib;
+using MachShooting.Graphic;
 
 namespace MachShooting
 {
@@ -68,7 +68,7 @@ namespace MachShooting
         /// <param name="power">攻撃力。0なら判定を持たない</param>
         /// <param name="image">画像</param>
         /// <param name="meta">メタ情報</param>
-        public AttackObject(Vec dot, int power, Image image,double rad,int[] meta):base(dot,power,image,rad)
+        public AttackObject(Vec dot, int power, Image image, double rad, int[] meta) : base(dot, power, image, rad)
         {
             this.life = true;
             this.meta = meta;
@@ -82,7 +82,7 @@ namespace MachShooting
         /// <param name="damage">ダメージ</param>
         public override void Attack(int damage)
         {
-            if (this.life&&damage!=0)
+            if (this.life && damage != 0)
             {
                 SE.Play(MP3.shotHit);
                 this.damage = Power;

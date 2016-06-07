@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using DxLibDLL;
-using CircleLib;
+using MachShooting.Graphic;
 
 namespace MachShooting
 {
@@ -118,7 +118,7 @@ namespace MachShooting
                 {
                     attack = new List<AttackObject>();
                     this.Speed = 1;
-                    if (key[Config.key[KeyComfig.GAME_ATTACK]] == DX.FALSE && this.conventionalAttack >= (this.Strengthen == 0 ? 30 : 15))
+                    if (key[Config.Instance.key[KeyComfig.GAME_ATTACK]] == DX.FALSE && this.conventionalAttack >= (this.Strengthen == 0 ? 30 : 15))
                     {
                         if (this.conventionalAttack < (this.Strengthen == 0 ? 60 : 30))//30～59|15～29
                         {
@@ -146,7 +146,7 @@ namespace MachShooting
                 else
                 {
                     this.add++;
-                    if (key[Config.key[KeyComfig.GAME_SPECIAL]] == DX.TRUE)//追加
+                    if (key[Config.Instance.key[KeyComfig.GAME_SPECIAL]] == DX.TRUE)//追加
                     {
                         attack = new List<AttackObject>();
                         attack.AddList(SpecialAttack(key, true));

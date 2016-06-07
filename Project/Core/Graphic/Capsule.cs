@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CircleLib
+namespace MachShooting.Graphic
 {
     /// <summary>
     /// カプセル
@@ -123,12 +123,12 @@ namespace CircleLib
         {
             get
             {
-                double minX = Math.Min(this.Dot1X, this.Dot2X)-this.r;
-                double minY = Math.Min(this.Dot1Y, this.Dot2Y)-this.r;
-                double maxX = Math.Max(this.Dot1X, this.Dot2X)+this.r;
-                double maxY = Math.Max(this.Dot1Y, this.Dot2Y)+this.r;
+                double minX = Math.Min(this.Dot1X, this.Dot2X) - this.r;
+                double minY = Math.Min(this.Dot1Y, this.Dot2Y) - this.r;
+                double maxX = Math.Max(this.Dot1X, this.Dot2X) + this.r;
+                double maxY = Math.Max(this.Dot1Y, this.Dot2Y) + this.r;
 
-                return new Rect(new Vec(minX,minY), new Vec(maxX,maxY));
+                return new Rect(new Vec(minX, minY), new Vec(maxX, maxY));
             }
         }
         #endregion
@@ -138,7 +138,7 @@ namespace CircleLib
         /// </summary>
         /// <param name="line">線分</param>
         /// <param name="r">半径</param>
-        public Capsule(Line line,double r)
+        public Capsule(Line line, double r)
         {
             this.line = line;
             this.r = r;

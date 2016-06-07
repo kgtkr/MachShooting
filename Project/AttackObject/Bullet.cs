@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using CircleLib;
+using MachShooting.Graphic;
 
 namespace MachShooting
 {
@@ -30,8 +30,8 @@ namespace MachShooting
         /// <param name="rad">ラジアン</param>
         /// <param name="image">画像</param>
         /// <param name="meta">メタ情報</param>
-        public Bullet(Vec dot, int power, Vec vec, Image image,int[] meta=null)
-            : base(dot,power,image,vec.Rad,meta)
+        public Bullet(Vec dot, int power, Vec vec, Image image, int[] meta = null)
+            : base(dot, power, image, vec.Rad, meta)
         {
             //角度計算
             SE.Play(MP3.shot);

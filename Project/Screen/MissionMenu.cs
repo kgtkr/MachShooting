@@ -93,14 +93,14 @@ namespace MachShooting
 
                 /*押されているかつ、最初か最後でないなら*/
 
-                if (key2[Config.key[KeyComfig.MENU_DOWN]] == DX.TRUE)
+                if (key2[Config.Instance.key[KeyComfig.MENU_DOWN]] == DX.TRUE)
                 {
                     if (this.missionIndex + 1 != mn)
                     {
                         this.missionIndex++;
                     }
                 }
-                else if (key2[Config.key[KeyComfig.MENU_UP]] == DX.TRUE)
+                else if (key2[Config.Instance.key[KeyComfig.MENU_UP]] == DX.TRUE)
                 {
                     if (this.missionIndex != 0)
                     {
@@ -108,17 +108,17 @@ namespace MachShooting
                     }
                 }
 
-                if (key2[Config.key[KeyComfig.MENU_OK]] == DX.TRUE)//Zが押されたなら
+                if (key2[Config.Instance.key[KeyComfig.MENU_OK]] == DX.TRUE)//Zが押されたなら
                 {
                     this.ok1 = true;
                 }
-                if(this.ok1&& key[Config.key[KeyComfig.MENU_OK]] == DX.FALSE)
+                if(this.ok1&& key[Config.Instance.key[KeyComfig.MENU_OK]] == DX.FALSE)
                 {
                     this.Need = false;
                     this.Decision = true;
                     SE.Play(MP3.OK);
                 }
-                else if (key2[Config.key[KeyComfig.MENU_BACK]] == DX.TRUE)//戻る
+                else if (key2[Config.Instance.key[KeyComfig.MENU_BACK]] == DX.TRUE)//戻る
                 {
                     this.Need = false;
                     this.Decision = false;

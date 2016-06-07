@@ -75,14 +75,14 @@ namespace MachShooting
             if (this.Need)
             {
                 //押されているかつ要素の最後でないなら
-                if (key2[Config.key[KeyComfig.MENU_DOWN]] == DX.TRUE)//下
+                if (key2[Config.Instance.key[KeyComfig.MENU_DOWN]] == DX.TRUE)//下
                 {
                     if (this.index + 1 != 5)
                     {
                         this.index++;
                     }
                 }
-                else if (key2[Config.key[KeyComfig.MENU_UP]] == DX.TRUE)//上
+                else if (key2[Config.Instance.key[KeyComfig.MENU_UP]] == DX.TRUE)//上
                 {
                     if (this.index != 0)
                     {
@@ -91,7 +91,7 @@ namespace MachShooting
                 }
 
                 //決定
-                if (key2[Config.key[KeyComfig.MENU_OK]] == DX.TRUE)//決定
+                if (key2[Config.Instance.key[KeyComfig.MENU_OK]] == DX.TRUE)//決定
                 {
                     this.Need = false;
                     this.Decision = true;

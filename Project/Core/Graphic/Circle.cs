@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CircleLib
+namespace MachShooting.Graphic
 {
     /// <summary>
     /// 円
@@ -81,7 +81,7 @@ namespace CircleLib
             this.r = r;
         }
 
-        public Circle(double x,double y, double r)
+        public Circle(double x, double y, double r)
         {
             this.dot = new Vec(x, y);
             this.r = r;

@@ -4,12 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace CircleLib
+namespace MachShooting.Graphic
 {
     /// <summary>
     /// 図形操作
     /// </summary>
-    public static partial class Graphic
+    public static partial class GraphicProcess
     {
         /// <summary>
         /// 矩形と矩形の当たり判定を行います

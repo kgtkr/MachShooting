@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using DxLibDLL;
-using CircleLib;
+using MachShooting.Graphic;
 
 namespace MachShooting
 {

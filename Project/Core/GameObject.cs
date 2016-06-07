@@ -4,23 +4,23 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using DxLibDLL;
-using CircleLib;
+using MachShooting.Graphic;
 
 namespace MachShooting
 {
     /// <summary>
-    /// ゲームに出てくるオブジェクト
+    /// ゲームに出てくるオブジェクトのベースクラス
     /// </summary>
     public abstract class GameObject
     {
         #region フィールド
         /// <summary>
-        /// 現在の円
+        /// このオブジェクトの座標と半径を表す円
         /// </summary>
         private Circle circle;
 
         /// <summary>
-        /// 前Fの点
+        /// 前Fの座標
         /// </summary>
         private Vec dotF;
 
@@ -30,12 +30,12 @@ namespace MachShooting
         private int power;
 
         /// <summary>
-        /// 必要か
+        /// このオブジェクトは必要か
         /// </summary>
         private bool need;
 
         /// <summary>
-        /// 描画を行うか？
+        /// 自動的な描画を行うか？
         /// </summary>
         private bool draw;
 
@@ -65,7 +65,7 @@ namespace MachShooting
         }
 
         /// <summary>
-        /// ラジアン
+        /// 方向
         /// </summary>
         public double Rad
         {
@@ -74,7 +74,7 @@ namespace MachShooting
         }
 
         /// <summary>
-        /// 前Fの点
+        /// 前Fの座標
         /// </summary>
         public Vec DotF
         {
@@ -105,7 +105,7 @@ namespace MachShooting
         /// </summary>
         public bool In
         {
-            get { return new Vec(this.X-Game.WINDOW_R,this.Y-Game.WINDOW_R).LengthSquare <= (Game.WINDOW_R - this.R) * (Game.WINDOW_R - this.R); }
+            get { return new Vec(this.X - Game.WINDOW_R, this.Y - Game.WINDOW_R).LengthSquare <= (Game.WINDOW_R - this.R) * (Game.WINDOW_R - this.R); }
         }
 
         /// <summary>
@@ -179,19 +179,27 @@ namespace MachShooting
                 this.circle.R = value;
             }
         }
+
+        /// <summary>
+        /// 座標
+        /// </summary>
+        public Vec Dot
+        {
+            get { return this.circle.Dot; }
+            set { this.circle.Dot = value; }
+        }
         #endregion
         #endregion
         #region コンストラクタ
-
         /// <summary>
-        /// 
+        /// 位置、攻撃力、画像、ラジアンを使って初期化します
         /// </summary>
         /// <param name="dot">座標</param>
         /// <param name="power">攻撃力</param>
         /// <param name="image">画像</param>
-        public GameObject(Vec dot,int power,Image image,double rad)
+        public GameObject(Vec dot, int power, Image image, double rad)
         {
-            this.circle = new Circle(dot,image.r);
+            this.circle = new Circle(dot, image.r);
             this.dotF = circle.Dot;
             this.power = power;
             this.draw = true;
@@ -231,9 +239,9 @@ namespace MachShooting
         /// <param name="o1">オブジェクト1</param>
         /// <param name="o2">オブジェクト2></param>
         /// <returns></returns>
-        public static bool Hit(GameObject o1,GameObject o2)
+        public static bool Hit(GameObject o1, GameObject o2)
         {
-            return Graphic.Hit(new Capsule(new Line(o1.circle.Dot, o1.dotF), o1.R),
+            return GraphicProcess.Hit(new Capsule(new Line(o1.circle.Dot, o1.dotF), o1.R),
                 new Capsule(new Line(o2.circle.Dot, o2.dotF), o2.R));
         }
 
@@ -297,7 +305,7 @@ namespace MachShooting
         /// <returns>失敗したら-1</returns>
         public int DrawGraph(Image grHandle)
         {
-            return DX.DrawRotaGraph((int)this.X, (int)this.Y,1,this.rad-grHandle.rad,grHandle.image, DX.TRUE);
+            return DX.DrawRotaGraph((int)this.X, (int)this.Y, 1, this.rad - grHandle.rad, grHandle.image, DX.TRUE);
         }
         #endregion
         #region 抽象メソッド

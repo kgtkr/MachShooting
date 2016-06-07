@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using CircleLib;
+using MachShooting.Graphic;
 using DxLibDLL;
 
 namespace MachShooting
@@ -37,7 +37,7 @@ namespace MachShooting
                         this.SyncTransfer.Add(new ChargeEffect(this, 120, (int)this.R * 3, System.Drawing.Color.Brown));
                         for (int i = 0; i < 4; i++)
                         {
-                            this.SyncTransfer.Add(new AttackObjectTransfer(()=>new Bom(new Circle(this.My.Circle.Dot, 30), 40, 60, 10, 255, 0, 0)));
+                            this.SyncTransfer.Add(new AttackObjectTransfer(() => new Bom(new Circle(this.My.Circle.Dot, 30), 40, 60, 10, 255, 0, 0)));
                             this.SyncTransfer.Add(new Wait(30));
                         }
                         break;
@@ -61,7 +61,7 @@ namespace MachShooting
                         break;
                     case 5:
                         this.SyncTransfer.Add(new ChargeEffect(this, 180, (int)this.R * 5, System.Drawing.Color.Red));
-                        this.SyncTransfer.Add(new AttackObjectTransfer(()=> new Bom(new Circle(this.Circle.Dot, 300), 80, 90, 20, 255, 0, 0)));
+                        this.SyncTransfer.Add(new AttackObjectTransfer(() => new Bom(new Circle(this.Circle.Dot, 300), 80, 90, 20, 255, 0, 0)));
                         break;
                 }
             }

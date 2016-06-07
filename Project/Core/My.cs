@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using DxLibDLL;
-using CircleLib;
+using MachShooting.Graphic;
 
 namespace MachShooting
 {
@@ -149,7 +149,7 @@ namespace MachShooting
             get { return this.strengthen; }
             set { this.strengthen = value; }
         }
-        
+
         /// <summary>
         /// スピード
         /// 毎フレームリセットされます
@@ -177,7 +177,7 @@ namespace MachShooting
             get
             {
                 Vec dot = this.Circle.Dot;
-                dot+=Vec.NewRadLength(this.Rad, this.R);
+                dot += Vec.NewRadLength(this.Rad, this.R);
                 return dot;
             }
         }
@@ -187,7 +187,7 @@ namespace MachShooting
             get
             {
                 Vec dot = this.Circle.Dot;
-                dot+=Vec.NewRadLength(new Vec(1, -1).Rad+this.Rad-this.Image.rad, this.R * Program.ROOT2);
+                dot += Vec.NewRadLength(new Vec(1, -1).Rad + this.Rad - this.Image.rad, this.R * Program.ROOT2);
                 return dot;
             }
         }
@@ -197,7 +197,7 @@ namespace MachShooting
             get
             {
                 Vec dot = this.Circle.Dot;
-                dot+=Vec.NewRadLength(new Vec(-1, -1).Rad+this.Rad - this.Image.rad, this.R * Program.ROOT2);
+                dot += Vec.NewRadLength(new Vec(-1, -1).Rad + this.Rad - this.Image.rad, this.R * Program.ROOT2);
                 return dot;
             }
         }
@@ -210,7 +210,7 @@ namespace MachShooting
         /// <param name="maxDeathblowGauge">最大必殺技ゲージ(攻撃)</param>
         /// <param name="maxStrengthenGauge">最大必殺技ゲージ(自己強化)</param>
         public My(string name, Gauge maxDeathblowGauge, Gauge maxStrengthenGauge)
-            : base(new Vec(Game.WINDOW_R, Game.WINDOW_R), 0,Program.my, new Vec(0, -1).Rad)
+            : base(new Vec(Game.WINDOW_R, Game.WINDOW_R), 0, Program.my, new Vec(0, -1).Rad)
         {
             this.name = name;
             this.maxDeathblowGauge = maxDeathblowGauge;
@@ -236,7 +236,7 @@ namespace MachShooting
         /// <param name="key">キー1</param>
         /// <param name="key2">キー2</param>
         /// <returns>アタックオブジェクトリスト。ないならnull</returns>
-        public List<AttackObject> Process(byte[] key, byte[] key2,Enemy enemy)
+        public List<AttackObject> Process(byte[] key, byte[] key2, Enemy enemy)
         {
             Next();
             this.Draw = this.hit;
@@ -254,35 +254,35 @@ namespace MachShooting
             if (this.strengthenGauge > (int)this.maxStrengthenGauge) this.strengthenGauge = (int)this.maxStrengthenGauge;
 
             //ラジアン
-            if (key[Config.key[KeyComfig.GAME_CAMERA_ROTATION_LEFT]] == DX.TRUE)
+            if (key[Config.Instance.key[KeyComfig.GAME_CAMERA_ROTATION_LEFT]] == DX.TRUE)
             {
-                this.Rad -=(1.0).ToRad();
+                this.Rad -= (1.0).ToRad();
             }
-            if (key[Config.key[KeyComfig.GAME_CAMERA_ROTATION_RIGHT]] == DX.TRUE)
+            if (key[Config.Instance.key[KeyComfig.GAME_CAMERA_ROTATION_RIGHT]] == DX.TRUE)
             {
                 this.Rad += (1.0).ToRad();
             }
-            if (key2[Config.key[KeyComfig.GAME_TARGET_CAMERA]] == DX.TRUE)
+            if (key2[Config.Instance.key[KeyComfig.GAME_TARGET_CAMERA]] == DX.TRUE)
             {
-                this.Rad = new Vec(enemy.X-this.X, enemy.Y-this.Y).Rad;
+                this.Rad = new Vec(enemy.X - this.X, enemy.Y - this.Y).Rad;
             }
-            if (key2[Config.key[KeyComfig.GAME_CAMERA_LEFT]] ==DX.TRUE)
+            if (key2[Config.Instance.key[KeyComfig.GAME_CAMERA_LEFT]] == DX.TRUE)
             {
-                this.Rad = new Vec(-1, 0).Rad+this.Rad-this.Image.rad;
+                this.Rad = new Vec(-1, 0).Rad + this.Rad - this.Image.rad;
             }
-            if (key2[Config.key[KeyComfig.GAME_CAMERA_RIGHT]] == DX.TRUE)
+            if (key2[Config.Instance.key[KeyComfig.GAME_CAMERA_RIGHT]] == DX.TRUE)
             {
                 this.Rad = new Vec(1, 0).Rad + this.Rad - this.Image.rad;
             }
-            if (key2[Config.key[KeyComfig.GAME_CAMERA_DOWN]] == DX.TRUE)
+            if (key2[Config.Instance.key[KeyComfig.GAME_CAMERA_DOWN]] == DX.TRUE)
             {
                 this.Rad = new Vec(0, 1).Rad + this.Rad - this.Image.rad;
             }
 
             /*自己強化を行う*/
-            if (this.strengthen==0)
+            if (this.strengthen == 0)
             {
-                if (key[Config.key[KeyComfig.GAME_STRENGTHEN]] == DX.TRUE)
+                if (key[Config.Instance.key[KeyComfig.GAME_STRENGTHEN]] == DX.TRUE)
                 {
                     if (this.strengthenGauge == (int)this.maxStrengthenGauge)
                     {
@@ -293,7 +293,7 @@ namespace MachShooting
                     }
                 }
             }
-            if (this.strengthen!=0)
+            if (this.strengthen != 0)
             {
                 Strengthen_(key, false);
             }
@@ -301,22 +301,22 @@ namespace MachShooting
             //何もしてないならキー取得
             if (this.action == MyAction.NONE)
             {
-                if (key[Config.key[KeyComfig.GAME_ATTACK]] == DX.TRUE)
+                if (key[Config.Instance.key[KeyComfig.GAME_ATTACK]] == DX.TRUE)
                 {
                     this.action = MyAction.ATTACK;
                     attack.AddList(ConventionalAttack(key, true));
                 }
-                else if (key[Config.key[KeyComfig.GAME_SPECIAL]] == DX.TRUE)
+                else if (key[Config.Instance.key[KeyComfig.GAME_SPECIAL]] == DX.TRUE)
                 {
                     this.action = MyAction.SPECIAL;
                     attack.AddList(SpecialAttack(key, true));
                 }
-                else if (key[Config.key[KeyComfig.GAME_AVOIDANCE]] == DX.TRUE)
+                else if (key[Config.Instance.key[KeyComfig.GAME_AVOIDANCE]] == DX.TRUE)
                 {
                     this.action = MyAction.AVOIDANCE;
                     Avoidance(key, true);
                 }
-                else if (key[Config.key[KeyComfig.GAME_DEATHBLOW]] == DX.TRUE)
+                else if (key[Config.Instance.key[KeyComfig.GAME_DEATHBLOW]] == DX.TRUE)
                 {
                     if (this.deathblowGauge == (int)this.maxDeathblowGauge)
                     {
@@ -381,7 +381,7 @@ namespace MachShooting
         private void Move(byte[] key)
         {
             Direction d = My.getDirection(key);
-            double rad=0;
+            double rad = 0;
             switch (d)
             {
                 case Direction.UP_LEFT:
@@ -428,15 +428,15 @@ namespace MachShooting
             //上下左右の情報取得
             int x = 2;//1:左、3:右
             int y = 2;//1:上、3:下
-            if (!(key[Config.key[KeyComfig.GAME_LEFT]] == DX.TRUE && key[Config.key[KeyComfig.GAME_RIGHT]] == DX.TRUE))//左右両方が一遍に押されていない
+            if (!(key[Config.Instance.key[KeyComfig.GAME_LEFT]] == DX.TRUE && key[Config.Instance.key[KeyComfig.GAME_RIGHT]] == DX.TRUE))//左右両方が一遍に押されていない
             {
-                if (key[Config.key[KeyComfig.GAME_LEFT]] == DX.TRUE) x = 1;//左
-                if (key[Config.key[KeyComfig.GAME_RIGHT]] == DX.TRUE) x = 3;//右
+                if (key[Config.Instance.key[KeyComfig.GAME_LEFT]] == DX.TRUE) x = 1;//左
+                if (key[Config.Instance.key[KeyComfig.GAME_RIGHT]] == DX.TRUE) x = 3;//右
             }
-            if (!(key[Config.key[KeyComfig.GAME_UP]] == DX.TRUE && key[Config.key[KeyComfig.GAME_DOWN]] == DX.TRUE))//上下両方が一遍に押されていない
+            if (!(key[Config.Instance.key[KeyComfig.GAME_UP]] == DX.TRUE && key[Config.Instance.key[KeyComfig.GAME_DOWN]] == DX.TRUE))//上下両方が一遍に押されていない
             {
-                if (key[Config.key[KeyComfig.GAME_UP]] == DX.TRUE) y = 1;//上
-                if (key[Config.key[KeyComfig.GAME_DOWN]] == DX.TRUE) y = 3;//下
+                if (key[Config.Instance.key[KeyComfig.GAME_UP]] == DX.TRUE) y = 1;//上
+                if (key[Config.Instance.key[KeyComfig.GAME_DOWN]] == DX.TRUE) y = 3;//下
             }
 
 
@@ -555,7 +555,7 @@ namespace MachShooting
             }
             else
             {
-                if (key[Config.key[KeyComfig.GAME_ATTACK]] == DX.TRUE)//カウンター
+                if (key[Config.Instance.key[KeyComfig.GAME_ATTACK]] == DX.TRUE)//カウンター
                 {
                     this.action = MyAction.COUNTER;
                     return CounterAttack(key, true);
@@ -586,7 +586,7 @@ namespace MachShooting
         {
             {//3ゲージ
                 //最大の長さ
-                const int MAX_GAUGE = Program.WIDTH/2-20;
+                const int MAX_GAUGE = Program.WIDTH / 2 - 20;
                 //X座標
                 const int GAUGE_X = 10;
                 //高さ
@@ -594,8 +594,8 @@ namespace MachShooting
                 //余白
                 const int SPACE = 2;
                 //一番上のY座標
-                const int GAUGE_Y = Program.HEIGHT-SPACE*3-GAUGE_H*3;
-                
+                const int GAUGE_Y = Program.HEIGHT - SPACE * 3 - GAUGE_H * 3;
+
 
                 //各ゲージの長さ
                 int hp = (int)((double)this.hp / (double)My.MAX_HP * MAX_GAUGE);
@@ -619,7 +619,7 @@ namespace MachShooting
                             w = hp;
                             break;
                         case 1:
-                            color =(this.deathblowGauge==(int)this.maxDeathblowGauge&&this.Count%30<15) ?Program.white: Program.red;
+                            color = (this.deathblowGauge == (int)this.maxDeathblowGauge && this.Count % 30 < 15) ? Program.white : Program.red;
                             w = deathblow;
                             break;
                         case 2:
@@ -687,8 +687,8 @@ namespace MachShooting
                 DX.SetDrawBlendMode(DX.DX_BLENDMODE_ADD, 255);
                 int size;
                 DX.GetGraphSize(Program.special, out size, out size);
-                double ext = (double)(this.R*4)/size;
-                DX.DrawRotaGraph((int)this.X, (int)this.Y, ext,Math.PI / 180* (360*5-(this.Count % 360)*5), Program.special, DX.TRUE);
+                double ext = (double)(this.R * 4) / size;
+                DX.DrawRotaGraph((int)this.X, (int)this.Y, ext, Math.PI / 180 * (360 * 5 - (this.Count % 360) * 5), Program.special, DX.TRUE);
                 DX.SetDrawBright(255, 255, 255);
             }
 
@@ -859,23 +859,23 @@ namespace MachShooting
         /// <summary>
         /// 特大
         /// </summary>
-        SUPER_LARGE=2000,
+        SUPER_LARGE = 2000,
         /// <summary>
         /// 大
         /// </summary>
-        LARGE=1500,
+        LARGE = 1500,
         /// <summary>
         /// 中
         /// </summary>
-        MEDIUM=1000,
+        MEDIUM = 1000,
         /// <summary>
         /// 小
         /// </summary>
-        SMALL=500,
+        SMALL = 500,
         /// <summary>
         /// 特小
         /// </summary>
-        SUPER_SMALL=300
+        SUPER_SMALL = 300
     }
     #endregion
     #endregion
