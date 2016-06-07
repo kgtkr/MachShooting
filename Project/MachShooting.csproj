@@ -84,6 +84,7 @@
     <Compile Include="Core\Fps.cs" />
     <Compile Include="Core\Image.cs" />
     <Compile Include="Resource\DXColor.cs" />
+    <Compile Include="Resource\Font.cs" />
     <Compile Include="Transfer\AttackObject\AttackObjectTransfer.cs" />
     <Compile Include="Transfer\Effect\Charge.cs" />
     <Compile Include="Transfer\List\AsyncTransfer.cs" />

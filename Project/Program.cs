@@ -147,27 +147,7 @@ namespace MachShooting
         public static int special;
         #endregion
         #endregion
-        #region フォント
-        /// <summary>
-        /// 8px
-        /// </summary>
-        public static int font8;
-
-        /// <summary>
-        /// 16px
-        /// </summary>
-        public static int font16;
-
-        /// <summary>
-        /// 32px
-        /// </summary>
-        public static int font32;
-
-        /// <summary>
-        /// 64px
-        /// </summary>
-        public static int font64;
-        #endregion
+        
 
         /*選択情報*/
         private static int missionData;
@@ -234,7 +214,7 @@ namespace MachShooting
                 lastKey = key;
 
                 Update(key, key2);
-                if (count % Config.Instance.fps == 0) DX.DrawStringToHandle(0, 0, fpsString, fpsColor, Program.font16);
+                if (count % Config.Instance.fps == 0) DX.DrawStringToHandle(0, 0, fpsString, fpsColor, Font.Instance.font16);
 
 
                 if (count % Config.Instance.fps == 0) DX.ScreenFlip();//裏画面を表画面に表示
@@ -278,12 +258,6 @@ namespace MachShooting
             Program.hit = DX.LoadGraph("Data/Image/Effect/Hit.png");
             Program.special = DX.LoadGraph("Data/Image/Effect/Special.png");
             Program.charge = DX.LoadGraph("Data/Image/Effect/Charge.png");
-
-            /*=フォント=*/
-            Program.font8 = DX.LoadFontDataToHandle("Data/Font/8.dft");
-            Program.font16 = DX.LoadFontDataToHandle("Data/Font/16.dft");
-            Program.font32 = DX.LoadFontDataToHandle("Data/Font/32.dft");
-            Program.font64 = DX.LoadFontDataToHandle("Data/Font/64.dft");
 
 
         }

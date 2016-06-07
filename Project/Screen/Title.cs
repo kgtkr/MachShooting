@@ -29,7 +29,7 @@ namespace MachShooting
         public const string TITLE_MESSAGE = "MachShooting";
 
         //メッセージのフォント
-        public readonly int TITLE_MESSAGE_FONT = Program.font64;
+        public readonly int TITLE_MESSAGE_FONT = Font.Instance.font64;
 
 
         /*エンターキーを押して下さい関係*/
@@ -52,7 +52,7 @@ namespace MachShooting
         public const string ENTER_MESSAGE = "Zキーを押して下さい...";
 
         //メッセージのフォント
-        public readonly int ENTER_MESSAGE_FONT = Program.font32;
+        public readonly int ENTER_MESSAGE_FONT = Font.Instance.font32;
 
         public override void Draw()
         {

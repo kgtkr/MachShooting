@@ -40,7 +40,7 @@ namespace MachShooting
                     const int Y = 30;
 
                     //変数
-                    int font = Program.font32;
+                    int font = Font.Instance.font32;
                     int x = Program.WIDTH / 2 - DX.GetDrawStringWidthToHandle(MESSAGE, Program.GetStringByte(MESSAGE), font) / 2;
 
                     //描画
@@ -54,7 +54,7 @@ namespace MachShooting
                     const int NUMBER = 5;//武器の種類
 
                     //変数
-                    int font = Program.font16;
+                    int font = Font.Instance.font16;
                     int y = Y;
 
                     //描画

@@ -180,14 +180,14 @@ namespace MachShooting
 
                 {
                     uint color = this.stopIndex == 0 ? DXColor.Instance.red : DXColor.Instance.white;
-                    int w = DX.GetDrawStringWidthToHandle("再開", Program.GetStringByte("再開"), Program.font64);
-                    DX.DrawStringToHandle(WIDTH / 2 - w / 2 + SPACE2, SPACE2 + 30, "再開", color, Program.font64);
+                    int w = DX.GetDrawStringWidthToHandle("再開", Program.GetStringByte("再開"), Font.Instance.font64);
+                    DX.DrawStringToHandle(WIDTH / 2 - w / 2 + SPACE2, SPACE2 + 30, "再開", color, Font.Instance.font64);
                 }
 
                 {
                     uint color = this.stopIndex == 1 ? DXColor.Instance.red : DXColor.Instance.white;
-                    int w = DX.GetDrawStringWidthToHandle("メニューへ", Program.GetStringByte("メニューへ"), Program.font64);
-                    DX.DrawStringToHandle(WIDTH / 2 - w / 2 + SPACE2, SPACE2 + 15*3+64, "メニューへ", color, Program.font64);
+                    int w = DX.GetDrawStringWidthToHandle("メニューへ", Program.GetStringByte("メニューへ"), Font.Instance.font64);
+                    DX.DrawStringToHandle(WIDTH / 2 - w / 2 + SPACE2, SPACE2 + 15*3+64, "メニューへ", color, Font.Instance.font64);
                 }
             }
             else if (this.battle == 2)
@@ -208,10 +208,10 @@ namespace MachShooting
                 DX.DrawBox(SPACE2, SPACE2, Program.WIDTH - SPACE2, Program.HEIGHT - SPACE2, DXColor.Instance.black, DX.TRUE);
 
                 //敵名
-                int w = DX.GetDrawStringWidthToHandle(this.boss.Name, Program.GetStringByte(this.boss.Name), Program.font64);
-                DX.DrawStringToHandle(WIDTH / 2 - w / 2 + SPACE2, SPACE2 + 15, this.boss.Name, DXColor.Instance.white, Program.font64);
+                int w = DX.GetDrawStringWidthToHandle(this.boss.Name, Program.GetStringByte(this.boss.Name), Font.Instance.font64);
+                DX.DrawStringToHandle(WIDTH / 2 - w / 2 + SPACE2, SPACE2 + 15, this.boss.Name, DXColor.Instance.white, Font.Instance.font64);
                 //自機名
-                DX.DrawStringToHandle(X + SPACE2, SPACE2 + 64 + 10, this.my.Name, DXColor.Instance.white, Program.font32);
+                DX.DrawStringToHandle(X + SPACE2, SPACE2 + 64 + 10, this.my.Name, DXColor.Instance.white, Font.Instance.font32);
                 //クリア
                 if (!this.boss.Need)
                 {
@@ -219,17 +219,17 @@ namespace MachShooting
                     int m = this.timeF / 6 / 10 / 60;
                     int s = (this.timeF - m * 6 * 10 * 60) / 6 / 10;
                     int s2 = (this.timeF - m * 6 * 10 * 60 - s * 6 * 10) / 6;
-                    DX.DrawStringToHandle(X + SPACE2, SPACE2 + 64 + 10 + 32 + 5, "クリアタイム:" + m + "." + s + "." + s2, DXColor.Instance.white, Program.font32);
+                    DX.DrawStringToHandle(X + SPACE2, SPACE2 + 64 + 10 + 32 + 5, "クリアタイム:" + m + "." + s + "." + s2, DXColor.Instance.white, Font.Instance.font32);
                 }
                 //自機が死んだ
                 else if (!this.my.Need)
                 {
-                    DX.DrawStringToHandle(X + SPACE2, SPACE2 + 64 + 10 + 32 + 5, "自機が破壊された…", DXColor.Instance.white, Program.font32);
+                    DX.DrawStringToHandle(X + SPACE2, SPACE2 + 64 + 10 + 32 + 5, "自機が破壊された…", DXColor.Instance.white, Font.Instance.font32);
                 }
                 //タイムアップ
                 else
                 {
-                    DX.DrawStringToHandle(X + SPACE2, SPACE2 + 64 + 10 + 32 + 5, "時間切れです…", DXColor.Instance.white, Program.font32);
+                    DX.DrawStringToHandle(X + SPACE2, SPACE2 + 64 + 10 + 32 + 5, "時間切れです…", DXColor.Instance.white, Font.Instance.font32);
                 }
             }
         }
