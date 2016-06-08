@@ -57,7 +57,7 @@ namespace MachShooting
             {
                 DX.SetDrawBright(this.color.R, this.color.G, this.color.B);
                 double ex = 1 - ((double)this.count / this.f);
-                DX.DrawRotaGraph((int)this.go.X, (int)this.go.Y, ex, this.go.Rad, Program.charge, DX.TRUE);
+                DX.DrawRotaGraph((int)this.go.X, (int)this.go.Y, ex, this.go.Rad, DXImage.Instance.charge, DX.TRUE);
                 DX.SetDrawBright(255, 255, 255);
             }
         }

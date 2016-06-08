@@ -21,7 +21,7 @@ namespace MachShooting
         #region プロパティ
         #endregion
         #region コンストラクタ
-        public Nigalya(My my) : base("ネガリャー", 0, 2000, my, Program.nigalya)
+        public Nigalya(My my) : base("ネガリャー", 0, 2000, my, DXImage.Instance.nigalya)
         {
 
         }
@@ -39,7 +39,7 @@ namespace MachShooting
                 AsyncTransfer at = new AsyncTransfer();
                 for (int i = 0; i < 36; i++)
                 {
-                    at.Add(new AttackObjectTransfer(() => new Bullet(this.Circle.Dot, 50, Vec.NewRadLength((i * 10.0).ToRad(), 10), Program.bulletBig[0], null)));
+                    at.Add(new AttackObjectTransfer(() => new Bullet(this.Circle.Dot, 50, Vec.NewRadLength((i * 10.0).ToRad(), 10), DXImage.Instance.bulletBig[0], null)));
                 }
                 this.SyncTransfer.Add(at);
             }

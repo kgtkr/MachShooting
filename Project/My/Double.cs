@@ -62,8 +62,8 @@ namespace MachShooting
                 attack = new List<AttackObject>();
                 this.conventionalAttack = 0;
 
-                attack.Add(NewBullet(this.BulletDotR, this.Strengthen == 0 ? 2 : 3, new Vec(0, -10), Program.bulletSmall[0], this.AttackObjectMeta));
-                attack.Add(NewBullet(this.BulletDotL, this.Strengthen == 0 ? 2 : 3, new Vec(0, -10), Program.bulletSmall[0], this.AttackObjectMeta));
+                attack.Add(NewBullet(this.BulletDotR, this.Strengthen == 0 ? 2 : 3, new Vec(0, -10), DXImage.Instance.bulletSmall[0], this.AttackObjectMeta));
+                attack.Add(NewBullet(this.BulletDotL, this.Strengthen == 0 ? 2 : 3, new Vec(0, -10), DXImage.Instance.bulletSmall[0], this.AttackObjectMeta));
             }
             else
             {
@@ -93,8 +93,8 @@ namespace MachShooting
                 if (this.counterAttack % 4 == 0)
                 {
                     attack = new List<AttackObject>();
-                    attack.Add(NewBullet(this.BulletDotR, this.Strengthen == 0 ? 4 : 5, new Vec(0, -10), Program.bulletSmall[0], this.AttackObjectMeta));
-                    attack.Add(NewBullet(this.BulletDotL, this.Strengthen == 0 ? 4 : 5, new Vec(0, -10), Program.bulletSmall[0], this.AttackObjectMeta));
+                    attack.Add(NewBullet(this.BulletDotR, this.Strengthen == 0 ? 4 : 5, new Vec(0, -10), DXImage.Instance.bulletSmall[0], this.AttackObjectMeta));
+                    attack.Add(NewBullet(this.BulletDotL, this.Strengthen == 0 ? 4 : 5, new Vec(0, -10), DXImage.Instance.bulletSmall[0], this.AttackObjectMeta));
                 }
                 if (this.counterAttack >= 30)
                 {
@@ -123,8 +123,8 @@ namespace MachShooting
                 if (this.deathblow % 2 == 0)
                 {
                     attack = new List<AttackObject>();
-                    attack.Add(NewBullet(this.BulletDotR, this.Strengthen == 0 ? 2 : 3, new Vec(0, -10), Program.bulletSmall[0], this.AttackObjectMeta));
-                    attack.Add(NewBullet(this.BulletDotL, this.Strengthen == 0 ? 2 : 3, new Vec(0, -10), Program.bulletSmall[0], this.AttackObjectMeta));
+                    attack.Add(NewBullet(this.BulletDotR, this.Strengthen == 0 ? 2 : 3, new Vec(0, -10), DXImage.Instance.bulletSmall[0], this.AttackObjectMeta));
+                    attack.Add(NewBullet(this.BulletDotL, this.Strengthen == 0 ? 2 : 3, new Vec(0, -10), DXImage.Instance.bulletSmall[0], this.AttackObjectMeta));
                 }
                 if (this.deathblow >= 120)
                 {
@@ -148,8 +148,8 @@ namespace MachShooting
                 this.specialAttack = 0;
 
                 attack = new List<AttackObject>();
-                attack.Add(NewBullet(this.BulletDotR, this.Strengthen == 0 ? 3 : 4, new Vec(0, -10), Program.bulletSmall[0], this.AttackObjectMeta));
-                attack.Add(NewBullet(this.BulletDotL, this.Strengthen == 0 ? 3 : 4, new Vec(0, -10), Program.bulletSmall[0], this.AttackObjectMeta));
+                attack.Add(NewBullet(this.BulletDotR, this.Strengthen == 0 ? 3 : 4, new Vec(0, -10), DXImage.Instance.bulletSmall[0], this.AttackObjectMeta));
+                attack.Add(NewBullet(this.BulletDotL, this.Strengthen == 0 ? 3 : 4, new Vec(0, -10), DXImage.Instance.bulletSmall[0], this.AttackObjectMeta));
             }
             else
             {

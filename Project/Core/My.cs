@@ -210,7 +210,7 @@ namespace MachShooting
         /// <param name="maxDeathblowGauge">最大必殺技ゲージ(攻撃)</param>
         /// <param name="maxStrengthenGauge">最大必殺技ゲージ(自己強化)</param>
         public My(string name, Gauge maxDeathblowGauge, Gauge maxStrengthenGauge)
-            : base(new Vec(Game.WINDOW_R, Game.WINDOW_R), 0, Program.my, new Vec(0, -1).Rad)
+            : base(new Vec(Game.WINDOW_R, Game.WINDOW_R), 0, DXImage.Instance.my, new Vec(0, -1).Rad)
         {
             this.name = name;
             this.maxDeathblowGauge = maxDeathblowGauge;
@@ -642,7 +642,7 @@ namespace MachShooting
                 DX.DrawCircle(45, 45, 35, DXColor.Instance.white);
                 DX.DrawCircle(45, 45, 32, DXColor.Instance.blue);
                 double percent = (double)time / (double)Game.TIME_LIMIT_F * 100.0;
-                DX.DrawCircleGauge(45, 45, percent, Program.clock);
+                DX.DrawCircleGauge(45, 45, percent, DXImage.Instance.clock);
             }
         }
 
@@ -686,9 +686,9 @@ namespace MachShooting
                 DX.SetDrawBright(255, 255, 0);
                 DX.SetDrawBlendMode(DX.DX_BLENDMODE_ADD, 255);
                 int size;
-                DX.GetGraphSize(Program.special, out size, out size);
+                DX.GetGraphSize(DXImage.Instance.special, out size, out size);
                 double ext = (double)(this.R * 4) / size;
-                DX.DrawRotaGraph((int)this.X, (int)this.Y, ext, Math.PI / 180 * (360 * 5 - (this.Count % 360) * 5), Program.special, DX.TRUE);
+                DX.DrawRotaGraph((int)this.X, (int)this.Y, ext, Math.PI / 180 * (360 * 5 - (this.Count % 360) * 5), DXImage.Instance.special, DX.TRUE);
                 DX.SetDrawBright(255, 255, 255);
             }
 
@@ -697,9 +697,9 @@ namespace MachShooting
                 DX.SetDrawBright(255, 0, 0);
                 DX.SetDrawBlendMode(DX.DX_BLENDMODE_ADD, 255);
                 int size;
-                DX.GetGraphSize(Program.special, out size, out size);
+                DX.GetGraphSize(DXImage.Instance.special, out size, out size);
                 double ext = (double)(this.R * 8) / size;
-                DX.DrawRotaGraph((int)this.X, (int)this.Y, ext, Math.PI / 180 * (360 * 10 - (this.Count % 360) * 10), Program.special, DX.TRUE);
+                DX.DrawRotaGraph((int)this.X, (int)this.Y, ext, Math.PI / 180 * (360 * 10 - (this.Count % 360) * 10), DXImage.Instance.special, DX.TRUE);
                 DX.SetDrawBright(255, 255, 255);
             }
             if (this.Action == MyAction.DASH)
@@ -707,9 +707,9 @@ namespace MachShooting
                 DX.SetDrawBright(0, 0, 255);
                 DX.SetDrawBlendMode(DX.DX_BLENDMODE_ADD, 255);
                 int size;
-                DX.GetGraphSize(Program.special, out size, out size);
+                DX.GetGraphSize(DXImage.Instance.special, out size, out size);
                 double ext = (double)(this.R * 4) / size;
-                DX.DrawRotaGraph((int)this.X, (int)this.Y, ext, Math.PI / 180 * (360 * 10 - (this.Count % 360) * 10), Program.special, DX.TRUE);
+                DX.DrawRotaGraph((int)this.X, (int)this.Y, ext, Math.PI / 180 * (360 * 10 - (this.Count % 360) * 10), DXImage.Instance.special, DX.TRUE);
                 DX.SetDrawBright(255, 255, 255);
             }
             DX.SetDrawBlendMode(DX.DX_BLENDMODE_NOBLEND, 0);

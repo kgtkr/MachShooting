@@ -128,7 +128,7 @@ namespace MachShooting
             }
             else
             {
-                DX.SetDrawBright(255, 0, 0); DX.SetDrawBlendMode(DX.DX_BLENDMODE_ALPHA, 255 - this.effect * (255 / 30)); int size = this.effect * (int)this.R; DX.DrawExtendGraph((int)(this.X - size), (int)(this.Y - size), (int)(this.X + size), (int)(this.Y + size), Program.hit, DX.TRUE); DX.SetDrawBlendMode(DX.DX_BLENDMODE_NOBLEND, 0); DX.SetDrawBright(255, 255, 255);
+                DX.SetDrawBright(255, 0, 0); DX.SetDrawBlendMode(DX.DX_BLENDMODE_ALPHA, 255 - this.effect * (255 / 30)); int size = this.effect * (int)this.R; DX.DrawExtendGraph((int)(this.X - size), (int)(this.Y - size), (int)(this.X + size), (int)(this.Y + size), DXImage.Instance.hit, DX.TRUE); DX.SetDrawBlendMode(DX.DX_BLENDMODE_NOBLEND, 0); DX.SetDrawBright(255, 255, 255);
             }
         }
         #endregion

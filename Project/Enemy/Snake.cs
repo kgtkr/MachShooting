@@ -21,7 +21,7 @@ namespace MachShooting
         #region プロパティ
         #endregion
         #region コンストラクタ
-        public Snake(My my) : base("スネーク", 0, 1500, my, Program.snake)
+        public Snake(My my) : base("スネーク", 0, 1500, my, DXImage.Instance.snake)
         {
 
         }
@@ -42,7 +42,7 @@ namespace MachShooting
                 for (int i = 0; i < 60; i++)
                 {
                     st.Add(new Wait(4));
-                    this.SyncTransfer.Add(new AttackObjectTransfer(() => new Bullet(this.Circle.Dot, 30, Vec.NewRadLength((this.My.Circle.Dot - this.Circle.Dot).Rad, 10), Program.bulletMedium[0])));
+                    this.SyncTransfer.Add(new AttackObjectTransfer(() => new Bullet(this.Circle.Dot, 30, Vec.NewRadLength((this.My.Circle.Dot - this.Circle.Dot).Rad, 10), DXImage.Instance.bulletMedium[0])));
                 }
                 at.Add(st);
                 this.SyncTransfer.Add(at);

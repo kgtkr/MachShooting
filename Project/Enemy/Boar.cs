@@ -15,7 +15,7 @@ namespace MachShooting
     /// </summary>
     public class Boar : Enemy
     {
-        public Boar(My my) : base("ボア", 0, 1500, my, Program.boar)
+        public Boar(My my) : base("ボア", 0, 1500, my, DXImage.Instance.boar)
         {
 
         }

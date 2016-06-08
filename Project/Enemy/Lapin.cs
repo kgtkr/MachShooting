@@ -15,7 +15,7 @@ namespace MachShooting
     /// </summary>
     public class Lapin : Enemy
     {
-        public Lapin(My my) : base("ラパン", 0, 1500, my, Program.lapin)
+        public Lapin(My my) : base("ラパン", 0, 1500, my, DXImage.Instance.lapin)
         {
 
         }

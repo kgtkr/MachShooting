@@ -65,18 +65,18 @@ namespace MachShooting
                 for (int i = 0; i < 11; i++)
                 {
                     int d = this.Strengthen == 0 ? 2 : 3;
-                    Image img = Program.bulletSmall[0];
+                    Image img = DXImage.Instance.bulletSmall[0];
 
                     switch (i)
                     {
                         case 5:
                             d *= 6;
-                            img= Program.bulletBig[0];
+                            img= DXImage.Instance.bulletBig[0];
                             break;
                         case 4:
                         case 6:
                             d *= 2;
-                            img = Program.bulletMedium[0];
+                            img = DXImage.Instance.bulletMedium[0];
                             break;
                     }
 
@@ -109,18 +109,18 @@ namespace MachShooting
                 for (int i = 0; i < 11; i++)
                 {
                     int d = this.Strengthen == 0 ? 2 : 3;
-                    Image img = Program.bulletSmall[0];
+                    Image img = DXImage.Instance.bulletSmall[0];
 
                     switch (i)
                     {
                         case 5:
                             d *= 6;
-                            img = Program.bulletBig[0];
+                            img = DXImage.Instance.bulletBig[0];
                             break;
                         case 4:
                         case 6:
                             d *= 2;
-                            img = Program.bulletMedium[0];
+                            img = DXImage.Instance.bulletMedium[0];
                             break;
                     }
 
@@ -157,7 +157,7 @@ namespace MachShooting
                     attack = new List<AttackObject>();
                     for (int i = 0; i < 36; i++)
                     {
-                        attack.Add(NewBullet(this.BulletDotC, this.Strengthen == 0 ? 1 : 2,Vec.NewRadLength((i * 10.0 + this.deathblow % 360).ToRad(),15), Program.bulletSmall[0], this.AttackObjectMeta));
+                        attack.Add(NewBullet(this.BulletDotC, this.Strengthen == 0 ? 1 : 2,Vec.NewRadLength((i * 10.0 + this.deathblow % 360).ToRad(),15), DXImage.Instance.bulletSmall[0], this.AttackObjectMeta));
                     }
                 }
             }
@@ -184,7 +184,7 @@ namespace MachShooting
                 attack = new List<AttackObject>();
                 for (int i = 0; i < 27; i++)
                 {
-                    attack.Add(NewBullet(this.BulletDotC, this.Strengthen == 0 ? 2 : 3, Vec.NewRadLength((i*15.0).ToRad(),10), Program.bulletSmall[0], this.AttackObjectMeta));
+                    attack.Add(NewBullet(this.BulletDotC, this.Strengthen == 0 ? 2 : 3, Vec.NewRadLength((i*15.0).ToRad(),10), DXImage.Instance.bulletSmall[0], this.AttackObjectMeta));
                 }
             }
             else

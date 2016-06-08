@@ -36,7 +36,7 @@ namespace MachShooting
         /// <param name="power">パワー</param>
         /// <param name="wait">待ち時間</param>
         /// <param name="len">長さ</param>
-        public Bom(Circle c,int power,int wait,int len,int r,int g,int b) : base(c.Dot,0,new Image(Program.charge,c.R,0),0,null)
+        public Bom(Circle c,int power,int wait,int len,int r,int g,int b) : base(c.Dot,0,new Image(DXImage.Instance.charge,c.R,0),0,null)
         {
             this.p = power;
             this.wait = wait;

@@ -26,7 +26,7 @@ namespace MachShooting
                 //画像サイズ
                 int imgW;
                 int imgH;
-                DX.GetGraphSize(Program.back, out imgW, out imgH);
+                DX.GetGraphSize(DXImage.Instance.back, out imgW, out imgH);
 
                 //描画回数
                 int x = (Game.WINDOW_R * 2) / imgW + 1;
@@ -38,7 +38,7 @@ namespace MachShooting
                 {
                     for (int j = 0; j < x; j++)
                     {
-                        DX.DrawGraph(j * imgW, i * imgH, Program.back, DX.FALSE);
+                        DX.DrawGraph(j * imgW, i * imgH, DXImage.Instance.back, DX.FALSE);
                     }
                 }
 
