@@ -12,11 +12,30 @@ namespace MachShooting
     /// </summary>
     public class Fps
     {
+        private static Fps instance;
+
+        public static Fps Instance
+        {
+            get
+            {
+                if (Fps.instance == null)
+                {
+                    Fps.instance = new Fps();
+                }
+
+                return Fps.instance;
+            }
+        }
+
+        private Fps()
+        {
+        }
+
         #region フィールド
         /// <summary>
         /// 何Fに一回カウントするか
         /// </summary>
-        private int f;
+        private const int WAIT=50;
 
         /// <summary>
         /// 0:前回の時間 1:今回の時間
@@ -49,31 +68,14 @@ namespace MachShooting
         public void Update()
         {
             if (counter == 0) time[0] = DX.GetNowCount();//もし最後のカウントから50fたったなら一週目の時間取得
-            if (counter == f - 1)//50f目ならfpsを取得
+            if (counter == Fps.WAIT - 1)//時間ならfpsを取得
             {
                 time[1] = DX.GetNowCount();//今回の時間
-                fps = 1000.0 / ((time[1] - time[0]) / (double)f);
+                fps = 1000.0 / ((time[1] - time[0]) / (double)Fps.WAIT);
                 time[0] = time[1];//今回の時間を前回の時間に代入
                 counter = 0;//カウント初期化
             }
             counter++;//カウントする
-        }
-
-        /// <summary>
-        /// 新しいFPSカウンターを作ります
-        /// </summary>
-        /// <param name="f">何フレームに一度計測するか</param>
-        public Fps(int f)
-        {
-            this.f = f;
-        }
-
-        /// <summary>
-        /// 新しいFPSカウンターを作ります
-        /// </summary>
-        public Fps()
-        {
-            this.f = 50;
         }
         #endregion
     }

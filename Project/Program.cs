@@ -36,11 +36,6 @@ namespace MachShooting
         /// </summary>
         public const double ROOT2 = 1.41421356;
         #endregion
-        #region 変数
-        /// <summary>
-        /// FPS
-        /// </summary>
-        private static readonly Fps fps = new Fps(50);
         #region 各画面
         /// <summary>
         /// タイトル
@@ -63,14 +58,9 @@ namespace MachShooting
         private static Game game;
         #endregion
 
-        
-        
-
         /*選択情報*/
         private static int missionData;
         private static Equipment equipment;
-
-        #endregion
         /// <summary>
         /// メインメソッド
         /// </summary>
@@ -101,9 +91,9 @@ namespace MachShooting
             while (true)
             {
                 int startTime = DX.GetNowCount();//フレームの始まった時間を取得
-                fps.Update();
-                string fpsString = "FPS:" + fps.FPS.ToString("#0.0");//FPS取得
-                uint fpsColor = fps.FPS > 55 ? DXColor.Instance.white : DXColor.Instance.red;//FPSが55以下なら赤で描画
+                Fps.Instance.Update();
+                string fpsString = "FPS:" + Fps.Instance.FPS.ToString("#0.0");//FPS取得
+                uint fpsColor = Fps.Instance.FPS > 55 ? DXColor.Instance.white : DXColor.Instance.red;//FPSが55以下なら赤で描画
 
                 if (count % Config.Instance.fps == 0)
                 {
