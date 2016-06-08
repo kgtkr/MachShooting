@@ -39,7 +39,7 @@ namespace MachShooting
                 AsyncTransfer at = new AsyncTransfer();
                 for (int i = 0; i < 36; i++)
                 {
-                    at.Add(new AttackObjectTransfer(() => new Bullet(this.Circle.Dot, 50, Vec.NewRadLength((i * 10.0).ToRad(), 10), DXImage.Instance.bulletBig[0], null)));
+                    at.Add(new AttackObjectTransfer(() => new Bullet(this.Circle.Dot, 50, Vec.NewRadLength((i * 10.0).ToRad(), 10), DXImage.Instance.bulletBig, System.Drawing.Color.Red)));
                 }
                 this.SyncTransfer.Add(at);
             }

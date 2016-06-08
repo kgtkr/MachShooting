@@ -27,7 +27,7 @@ namespace MachShooting
                 this.SyncTransfer.Add(new Zigzag(this, this.My, 10 * Program.ROOT2, 10 * Program.ROOT2, 4, 6));
                 this.SyncTransfer.Add(new SetProperty(() => this.Power = 0));
                 this.SyncTransfer.Add(new ULM(this, Vec.NewRadLength(this.ToMapRad(Radian.UP), 10), 20));
-                this.SyncTransfer.Add(new AttackObjectTransfer(() => new Bullet(this.Circle.Dot, 20, Vec.NewRadLength((this.My.Circle.Dot - this.Circle.Dot).Rad, 10), DXImage.Instance.bulletSmall[0])));
+                this.SyncTransfer.Add(new AttackObjectTransfer(() => new Bullet(this.Circle.Dot, 20, Vec.NewRadLength((this.My.Circle.Dot - this.Circle.Dot).Rad, 10), DXImage.Instance.bulletSmall,System.Drawing.Color.Red)));
             }
 
             return null;

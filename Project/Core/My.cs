@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using DxLibDLL;
 using MachShooting.Graphic;
+using System.Drawing;
 
 namespace MachShooting
 {
@@ -725,10 +726,10 @@ namespace MachShooting
         /// <param name="image"></param>
         /// <param name="meta"></param>
         /// <returns></returns>
-        protected Bullet NewBullet(Vec dot, int power, Vec vec, Image image, int[] meta)
+        protected Bullet NewBullet(Vec dot, int power, Vec vec, Image image,Color color, int[] meta)
         {
             vec.Rad = this.ToMapRad(vec.Rad);
-            return new Bullet(dot, power, vec, image, meta);
+            return new Bullet(dot, power, vec, image,color, meta);
         }
         #endregion
         #region 実装メソッド

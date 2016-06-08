@@ -60,7 +60,7 @@ namespace MachShooting
                 attack = new List<AttackObject>();
                 this.conventionalAttack = 0;
 
-                attack.Add(NewBullet(this.BulletDotC, this.Strengthen == 0 ? 12 : 14, new Vec(0, -10), DXImage.Instance.bulletSmall[0], this.AttackObjectMeta));
+                attack.Add(NewBullet(this.BulletDotC, this.Strengthen == 0 ? 12 : 14, new Vec(0, -10), DXImage.Instance.bulletSmall, System.Drawing.Color.Red, this.AttackObjectMeta));
             }
             else
             {
@@ -86,7 +86,7 @@ namespace MachShooting
                 attack = new List<AttackObject>();
                 this.specialAttack = 0;
 
-                attack.Add(NewBullet(this.BulletDotC, this.Strengthen == 0 ? 27 : 32, new Vec(0, -10), DXImage.Instance.bulletMedium[0], this.AttackObjectMeta));
+                attack.Add(NewBullet(this.BulletDotC, this.Strengthen == 0 ? 27 : 32, new Vec(0, -10), DXImage.Instance.bulletMedium, System.Drawing.Color.Red, this.AttackObjectMeta));
             }
             else
             {
@@ -121,7 +121,7 @@ namespace MachShooting
                 else if (this.deathblow == 60)//撃つ
                 {
                     attack = new List<AttackObject>();
-                    attack.Add(NewBullet(this.BulletDotC, this.Strengthen == 0 ? 145 : 174, new Vec(0, -10), DXImage.Instance.bulletBig[0], this.AttackObjectMeta));
+                    attack.Add(NewBullet(this.BulletDotC, this.Strengthen == 0 ? 145 : 174, new Vec(0, -10), DXImage.Instance.bulletBig, System.Drawing.Color.Red, this.AttackObjectMeta));
                     this.Action = MyAction.NONE;
                 }
             }
@@ -163,7 +163,7 @@ namespace MachShooting
                 if (this.counterAttack % 2 == 0)
                 {
                     attack = new List<AttackObject>();
-                    attack.Add(NewBullet(this.BulletDotC, this.Strengthen == 0 ? 4 : 5, new Vec(0, -10), DXImage.Instance.bulletSmall[0], this.AttackObjectMeta));
+                    attack.Add(NewBullet(this.BulletDotC, this.Strengthen == 0 ? 4 : 5, new Vec(0, -10), DXImage.Instance.bulletSmall, System.Drawing.Color.Red, this.AttackObjectMeta));
                 }
 
                 if (this.counterAttack >= 30)

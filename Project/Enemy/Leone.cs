@@ -45,7 +45,7 @@ namespace MachShooting
                         this.SyncTransfer.Add(new ChargeEffect(this, 120, (int)this.R * 3, System.Drawing.Color.Orange));
                         for (int i = 0; i < 12; i++)
                         {
-                            this.SyncTransfer.Add(new AttackObjectTransfer(() => new Bullet(this.Circle.Dot, 30, Vec.NewRadLength((this.My.Circle.Dot - this.Circle.Dot).Rad, 10), DXImage.Instance.bulletBig[0])));
+                            this.SyncTransfer.Add(new AttackObjectTransfer(() => new Bullet(this.Circle.Dot, 30, Vec.NewRadLength((this.My.Circle.Dot - this.Circle.Dot).Rad, 10), DXImage.Instance.bulletBig, System.Drawing.Color.Red)));
                             this.SyncTransfer.Add(new Wait(10));
                         }
                         break;
@@ -55,7 +55,7 @@ namespace MachShooting
                         for (int i = 0; i < 36; i++)
                         {
                             double rad = (i * 10.0).ToRad();
-                            at.Add(new AttackObjectTransfer(() => new Bullet(this.Circle.Dot, 50, Vec.NewRadLength(rad, 10), DXImage.Instance.bulletBig[0], null)));
+                            at.Add(new AttackObjectTransfer(() => new Bullet(this.Circle.Dot, 50, Vec.NewRadLength(rad, 10), DXImage.Instance.bulletBig, System.Drawing.Color.Red)));
                         }
                         this.SyncTransfer.Add(at);
                         break;

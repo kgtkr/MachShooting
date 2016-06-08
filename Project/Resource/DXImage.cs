@@ -66,7 +66,7 @@ namespace MachShooting
         /// <summary>
         /// 小弾
         /// </summary>
-        public IReadOnlyList<Image> bulletSmall
+        public Image bulletSmall
         {
             get;
             private set;
@@ -75,7 +75,7 @@ namespace MachShooting
         /// <summary>
         /// 中弾
         /// </summary>
-        public IReadOnlyList<Image> bulletMedium
+        public Image bulletMedium
         {
             get;
             private set;
@@ -84,7 +84,7 @@ namespace MachShooting
         /// <summary>
         /// 大弾
         /// </summary>
-        public IReadOnlyList<Image> bulletBig
+        public Image bulletBig
         {
             get;
             private set;
@@ -186,15 +186,9 @@ namespace MachShooting
 
             this.bomb = new Image(DX.LoadGraph("Data/Image/Bullet/bomb.png"), 140, Math.PI);
 
-            var big = new List<Image>(10);
-            var medium = new List<Image>(10);
-            var small = new List<Image>(10);
-            for (int i = 0; i < 10; i++) small.Add(new Image(DX.LoadGraph("Data/Image/Bullet/Small/" + (i + 1) + ".png"), 4, new Vec(0, -1).Rad));
-            for (int i = 0; i < 10; i++) medium.Add(new Image(DX.LoadGraph("Data/Image/Bullet/Medium/" + (i + 1) + ".png"), 8, new Vec(0, -1).Rad));
-            for (int i = 0; i < 10; i++) big.Add(new Image(DX.LoadGraph("Data/Image/Bullet/Big/" + (i + 1) + ".png"), 14, new Vec(0, -1).Rad));
-            this.bulletSmall = small.AsReadOnly();
-            this.bulletMedium = medium.AsReadOnly();
-            this.bulletBig = big.AsReadOnly();
+            this.bulletSmall=new Image(DX.LoadGraph("Data/Image/Bullet/small.png"), 4, new Vec(0, -1).Rad);
+            this.bulletMedium=new Image(DX.LoadGraph("Data/Image/Bullet/medium.png"), 8, new Vec(0, -1).Rad);
+            this.bulletBig=new Image(DX.LoadGraph("Data/Image/Bullet/big.png"), 14, new Vec(0, -1).Rad);
 
 
             /*=敵=*/

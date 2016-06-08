@@ -59,7 +59,14 @@ namespace MachShooting
         #endregion
 
         /*選択情報*/
+        /// <summary>
+        /// 選択しているクエスト
+        /// </summary>
         private static int missionData;
+
+        /// <summary>
+        /// 選択している装備
+        /// </summary>
         private static Equipment equipment;
         /// <summary>
         /// メインメソッド

@@ -4,6 +4,8 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using MachShooting.Graphic;
+using System.Drawing;
+using DxLibDLL;
 
 namespace MachShooting
 {
@@ -17,6 +19,8 @@ namespace MachShooting
         /// 1Fで動く座標
         /// </summary>
         private readonly Vec vec;
+
+        private readonly Color color;
         #endregion
         #region プロパティ
         #endregion
@@ -30,9 +34,10 @@ namespace MachShooting
         /// <param name="rad">ラジアン</param>
         /// <param name="image">画像</param>
         /// <param name="meta">メタ情報</param>
-        public Bullet(Vec dot, int power, Vec vec, Image image, int[] meta = null)
+        public Bullet(Vec dot, int power, Vec vec, Image image, Color color,int[] meta = null)
             : base(dot, power, image, vec.Rad, meta)
         {
+            this.color = color;
             //角度計算
             SE.Instance.Play(MP3.shot);
             this.vec = vec;
@@ -57,6 +62,14 @@ namespace MachShooting
                 this.Need = false;
             }
             return null;
+        }
+
+        protected override void DrawGameObjectAfter()
+        {
+            DX.SetDrawBright(this.color.R, this.color.G, this.color.B);
+            base.DrawGameObjectAfter();
+            DX.SetDrawBright(255, 255, 255);
+
         }
         #endregion
     }
