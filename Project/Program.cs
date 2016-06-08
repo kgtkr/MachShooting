@@ -80,6 +80,7 @@ namespace MachShooting
 
             /*ライブラリの設定*/
             DX.SetDrawScreen(DX.DX_SCREEN_BACK);//裏画面に描画する設定
+            DX.SetDrawMode(DX.DX_DRAWMODE_BILINEAR);
 
             title = new Title();
             //前フレームのキーを作成
