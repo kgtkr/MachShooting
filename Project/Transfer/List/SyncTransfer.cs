@@ -50,8 +50,7 @@ namespace MachShooting
         }
 
         public override List<AttackObject> Process()
-        {
-            
+        {           
             bool loop = true;
             List<AttackObject> list = null;
 
