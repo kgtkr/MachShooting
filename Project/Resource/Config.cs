@@ -26,10 +26,9 @@ namespace MachShooting
         }
 
         /// <summary>
-        /// FPS
-        /// 60/X
+        /// フレームスキップ
         /// </summary>
-        public int fps
+        public int frameSkip
         {
             get;
             private set;
@@ -86,7 +85,7 @@ namespace MachShooting
             {
                 var ini = ReadINI("config.ini");
                 low = ini["LOW_MODE"] == "true";
-                fps = int.Parse(ini["FPS"]);
+                frameSkip = int.Parse(ini["FRAME_SKIP"]);
                 full = ini["FULL_SCREEN"] == "true";
             }
         }
