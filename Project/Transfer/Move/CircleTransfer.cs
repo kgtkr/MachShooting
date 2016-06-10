@@ -15,11 +15,6 @@ namespace MachShooting
         private readonly GameObject go;
 
         /// <summary>
-        /// 初期半径
-        /// </summary>
-        private readonly double r;
-
-        /// <summary>
         /// 初期ラジアン
         /// </summary>
         private readonly double rad;
@@ -28,11 +23,6 @@ namespace MachShooting
         /// ラジアン速度
         /// </summary>
         private readonly double speedRad;
-
-        /// <summary>
-        /// 1Fで変わる半径
-        /// </summary>
-        private readonly double rF;
 
         /// <summary>
         /// 何F続くか
@@ -49,6 +39,11 @@ namespace MachShooting
         /// </summary>
         private Vec dot;
 
+        /// <summary>
+        /// 半径
+        /// </summary>
+        private Func<int,int> r;
+
         public bool Need
         {
             get
@@ -57,13 +52,12 @@ namespace MachShooting
             }
         }
 
-        public CircleTransfer(GameObject go,double r,double rad,double speedRad,double rF,int f)
+        public CircleTransfer(GameObject go,Func<int,int> r,double rad,double speedRad,int f)
         {
             this.go = go;
             this.r = r;
             this.rad = rad;
             this.speedRad = speedRad;
-            this.rF = rF;
             this.f = f;
         }
 
@@ -81,7 +75,7 @@ namespace MachShooting
                 }
 
                 double rad = this.rad + this.speedRad * this.count;
-                double r = this.r + this.rF * this.count;
+                double r = this.r(this.count);
                 Vec vec = Vec.NewRadLength(rad, r);
 
                 this.go.X = this.dot.X+vec.X;

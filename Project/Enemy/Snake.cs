@@ -37,7 +37,10 @@ namespace MachShooting
                 this.SyncTransfer.Add(new ULMTarget(this, this.My, 10, 30));
                 this.SyncTransfer.Add(new SetProperty(() => this.Power = 50));
                 AsyncTransfer at = new AsyncTransfer();
-                at.Add(new CircleTransfer(this, 0, 0, Math.PI * 2 / 60, 3, 300));
+
+                //1Fで変わる半径
+                const int fR = 5;
+                at.Add(new CircleTransfer(this, (int count)=>count<=100?count*fR:count<=200?100*fR:-(count-200)*fR+100*fR,0, Math.PI * 2 / 60, 300));
                 SyncTransfer st = new SyncTransfer();
                 for (int i = 0; i < 60; i++)
                 {
@@ -46,7 +49,6 @@ namespace MachShooting
                 }
                 at.Add(st);
                 this.SyncTransfer.Add(at);
-                this.SyncTransfer.Add(new ULMTarget(this, this.My, 30, 30));
                 this.SyncTransfer.Add(new SetProperty(() => this.Power = 0));
             }
             return null;
