@@ -77,7 +77,7 @@ namespace MachShooting
         /// </summary>
         /// <param name="enemy">敵</param>
         /// <param name="equipment">装備</param>
-        public Game(int enemy, Equipment equipment)
+        public Game(EnemyHeader enemy, Equipment equipment)
         {
             switch (equipment)
             {
@@ -100,27 +100,9 @@ namespace MachShooting
 
 
             this.back = new Back();
-            switch (enemy)
-            {
-                case 0:
-                    this.boss = new Boar(this.my);
-                    break;
-                case 1:
-                    this.boss = new Gato(this.my);
-                    break;
-                case 2:
-                    this.boss = new Lapin(this.my);
-                    break;
-                case 3:
-                    this.boss = new Nigalya(this.my);
-                    break;
-                case 4:
-                    this.boss = new Snake(my);
-                    break;
-                case 5:
-                    this.boss = new Leone(my);
-                    break;
-            }
+
+            this.boss = new Enemy(enemy, my);
+
             this.battle = 0;
             this.myAttack = new List<AttackObject>();
             this.enemyAttack = new List<AttackObject>();

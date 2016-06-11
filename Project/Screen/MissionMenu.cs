@@ -16,30 +16,34 @@ namespace MachShooting
         #endregion
         #region フィールド
         /// <summary>
-        /// 現在選択されているインデックス
+        /// 一覧
         /// </summary>
-        private int missionIndex = 0;
+        private EnemyHeaderTree tree;
 
         /// <summary>
-        /// 敵一覧
+        /// 現在のインデックス
         /// </summary>
-        private static string[] missionData = { "ボア", "ガトー", "ラパン" , "ネガリャー" ,"スネーク","レオーネ"};
+        private int index = 0;
 
         /// <summary>
         /// OK1段階目
         /// </summary>
         private bool ok1;
+
+        /// <summary>
+        /// カテゴリが選択されているならメニュー
+        /// ないならnull
+        /// </summary>
+        private MissionMenu menu;
         #endregion
         #region プロパティ
         /// <summary>
-        /// 現在選択されている敵ID
+        /// 選択された敵(Decision=trueの場合のみ)
         /// </summary>
-        public int MissionData
+        public EnemyHeader MissionData
         {
-            get
-            {
-                return this.missionIndex;
-            }
+            get;
+            private set;
         }
         #endregion
         #region メソッド
@@ -47,38 +51,54 @@ namespace MachShooting
         {
             if (this.Need)//必要なら
             {
-                //メッセージ
+                if (this.menu == null)
                 {
-                    //定数
-                    const string MESSAGE = "敵を選択して下さい";
-                    const int Y = 30;
-
-                    //変数
-                    int font = Font.Instance.font32;
-                    int x = Program.WIDTH / 2 - DX.GetDrawStringWidthToHandle(MESSAGE, Program.GetStringByte(MESSAGE), font) / 2;
-
-                    //描画
-                    DX.DrawStringToHandle(x, Y, MESSAGE, DXColor.Instance.white, font);
-                }
-                //敵一覧
-                {
-                    //定数
-                    const int Y = 100;
-                    const int SPACE = 20;
-
-                    //変数
-                    int font = Font.Instance.font16;
-                    int y = Y;
-
-                    //描画
-                    for (int i = 0; i < MissionMenu.missionData.Length; i++)
+                    //メッセージ
                     {
-                        uint color = i == this.missionIndex ? DXColor.Instance.red : DXColor.Instance.white;
-                        string name = MissionMenu.missionData[i];
-                        int x = Program.WIDTH / 2 - DX.GetDrawStringWidthToHandle(name, Program.GetStringByte(name), font) / 2;
-                        DX.DrawStringToHandle(x, y, name, color, font);
-                        y += SPACE;
+                        //定数
+                        const string MESSAGE = "敵を選択して下さい";
+                        const int Y = 30;
+
+                        //変数
+                        int font = Font.Instance.font32;
+                        int x = Program.WIDTH / 2 - DX.GetDrawStringWidthToHandle(MESSAGE, Program.GetStringByte(MESSAGE), font) / 2;
+
+                        //描画
+                        DX.DrawStringToHandle(x, Y, MESSAGE, DXColor.Instance.white, font);
                     }
+                    //敵一覧
+                    {
+                        //定数
+                        const int Y = 100;
+                        const int SPACE = 20;
+
+                        //変数
+                        int font = Font.Instance.font16;
+                        int y = Y;
+
+                        //描画
+                        for (int i = 0; i < this.tree.Header.Count; i++)
+                        {
+                            uint color = i == this.index ? DXColor.Instance.red : DXColor.Instance.white;
+                            string name = this.tree.Header[i].name;
+                            int x = Program.WIDTH / 2 - DX.GetDrawStringWidthToHandle(name, Program.GetStringByte(name), font) / 2;
+                            DX.DrawStringToHandle(x, y, name, color, font);
+                            y += SPACE;
+                        }
+
+                        for (int i = 0; i < this.tree.Tree.Count; i++)
+                        {
+                            uint color = i == this.index - this.tree.Header.Count ? DXColor.Instance.red : DXColor.Instance.white;
+                            string name = "+" + this.tree.Tree[i].Name;
+                            int x = Program.WIDTH / 2 - DX.GetDrawStringWidthToHandle(name, Program.GetStringByte(name), font) / 2;
+                            DX.DrawStringToHandle(x, y, name, color, font);
+                            y += SPACE;
+                        }
+                    }
+                }
+                else
+                {
+                    this.menu.Draw();
                 }
             }
         }
@@ -87,42 +107,77 @@ namespace MachShooting
         {
             if (this.Need)//必要なら
             {
-                //数取得
-                int mn = MissionMenu.missionData.Length;//ミッションの数
-
-
-                /*押されているかつ、最初か最後でないなら*/
-
-                if (key2[Config.Instance.key[KeyComfig.MENU_DOWN]] == DX.TRUE)
+                if (this.menu == null)
                 {
-                    if (this.missionIndex + 1 != mn)
+                    //数取得
+                    int mn = this.tree.Header.Count + this.tree.Tree.Count;
+
+
+                    /*押されているかつ、最初か最後でないなら*/
+
+                    if (key2[Config.Instance.key[KeyComfig.MENU_DOWN]] == DX.TRUE)
                     {
-                        this.missionIndex++;
+                        if (this.index + 1 != mn)
+                        {
+                            this.index++;
+                        }
+                    }
+                    else if (key2[Config.Instance.key[KeyComfig.MENU_UP]] == DX.TRUE)
+                    {
+                        if (this.index != 0)
+                        {
+                            this.index--;
+                        }
+                    }
+
+                    if (key2[Config.Instance.key[KeyComfig.MENU_OK]] == DX.TRUE)//Zが押されたなら
+                    {
+                        this.ok1 = true;
+                    }
+
+                    if (this.ok1 && key[Config.Instance.key[KeyComfig.MENU_OK]] == DX.FALSE && this.tree.Header.Count + this.tree.Tree.Count != 0)
+                    {
+                        //ミッションなら
+                        if (this.index < this.tree.Header.Count)
+                        {
+                            this.Need = false;
+                            this.Decision = true;
+                            this.MissionData = this.tree.Header[this.index];
+                        }
+                        else//カテゴリなら
+                        {
+                            this.menu = new MissionMenu(this.tree.Tree[this.index-this.tree.Header.Count]);
+                        }
+
+                        SE.Instance.Play(MP3.OK);
+
+                        this.ok1 = false;
+                    }
+
+                    else if (key2[Config.Instance.key[KeyComfig.MENU_BACK]] == DX.TRUE)//戻る
+                    {
+                        this.Need = false;
+                        this.Decision = false;
+                        SE.Instance.Play(MP3.cancel);
                     }
                 }
-                else if (key2[Config.Instance.key[KeyComfig.MENU_UP]] == DX.TRUE)
+                else
                 {
-                    if (this.missionIndex != 0)
+                    this.menu.Process(key, key2);
+                    if (!this.menu.Need)
                     {
-                        this.missionIndex--;
+                        if (this.menu.Decision)
+                        {
+                            this.Need = false;
+                            this.Decision = true;
+                            this.MissionData = this.menu.MissionData;
+                            this.menu = null;
+                        }
+                        else
+                        {
+                            this.menu = null;
+                        }
                     }
-                }
-
-                if (key2[Config.Instance.key[KeyComfig.MENU_OK]] == DX.TRUE)//Zが押されたなら
-                {
-                    this.ok1 = true;
-                }
-                if(this.ok1&& key[Config.Instance.key[KeyComfig.MENU_OK]] == DX.FALSE)
-                {
-                    this.Need = false;
-                    this.Decision = true;
-                    SE.Instance.Play(MP3.OK);
-                }
-                else if (key2[Config.Instance.key[KeyComfig.MENU_BACK]] == DX.TRUE)//戻る
-                {
-                    this.Need = false;
-                    this.Decision = false;
-                    SE.Instance.Play(MP3.cancel);
                 }
             }
         }
@@ -131,8 +186,9 @@ namespace MachShooting
         /// <summary>
         /// 新しいメニューを作成します
         /// </summary>
-        public MissionMenu()
+        public MissionMenu(EnemyHeaderTree tree)
         {
+            this.tree = tree;
         }
         #endregion
         

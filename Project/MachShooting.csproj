@@ -54,9 +54,18 @@
     <Reference Include="DxLibDotNet">
       <HintPath>.\DxLibDotNet.dll</HintPath>
     </Reference>
+    <Reference Include="KopiLua">
+      <HintPath>.\KopiLua.dll</HintPath>
+    </Reference>
+    <Reference Include="NLua">
+      <HintPath>.\NLua.dll</HintPath>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Drawing" />
+    <Reference Include="System.IO.Compression" />
+    <Reference Include="System.IO.Compression.FileSystem" />
+    <Reference Include="System.IO.Log" />
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />
@@ -67,6 +76,7 @@
     <Compile Include="Core\Back.cs" />
     <Compile Include="AttackObject\Bom.cs" />
     <Compile Include="AttackObject\Bullet.cs" />
+    <Compile Include="Resource\EnemyHeader.cs" />
     <Compile Include="Core\Graphic\Capsule.cs" />
     <Compile Include="Core\Graphic\Circle.cs" />
     <Compile Include="Core\Graphic\Line.cs" />
@@ -75,21 +85,11 @@
     <Compile Include="Core\Graphic\Vec.cs" />
     <Compile Include="Resource\Config.cs" />
     <Compile Include="Core\Enemy.cs" />
-    <Compile Include="Enemy\Boar.cs" />
-    <Compile Include="Enemy\Gato.cs" />
-    <Compile Include="Enemy\Lapin.cs" />
-    <Compile Include="Enemy\Leone.cs" />
-    <Compile Include="Enemy\Nigalya.cs" />
-    <Compile Include="Enemy\Snake.cs" />
     <Compile Include="Core\Fps.cs" />
     <Compile Include="Core\Image.cs" />
     <Compile Include="Resource\DXColor.cs" />
     <Compile Include="Resource\DXImage.cs" />
     <Compile Include="Resource\Font.cs" />
-    <Compile Include="Transfer\AttackObject\AttackObjectTransfer.cs" />
-    <Compile Include="Transfer\Effect\Charge.cs" />
-    <Compile Include="Transfer\List\AsyncTransfer.cs" />
-    <Compile Include="Core\ITransfer.cs" />
     <Compile Include="My\Charge.cs" />
     <Compile Include="My\Double.cs" />
     <Compile Include="My\Overall.cs" />
@@ -108,14 +108,6 @@
     <Compile Include="Screen\Screen.cs" />
     <Compile Include="Screen\Title.cs" />
     <Compile Include="Resource\SE.cs" />
-    <Compile Include="Transfer\List\SyncTransfer.cs" />
-    <Compile Include="Transfer\List\TransferList.cs" />
-    <Compile Include="Transfer\Move\CircleTransfer.cs" />
-    <Compile Include="Transfer\Move\ULM.cs" />
-    <Compile Include="Transfer\Move\ULMTarget.cs" />
-    <Compile Include="Transfer\Move\Wait.cs" />
-    <Compile Include="Transfer\Move\Zigzag.cs" />
-    <Compile Include="Transfer\Property\SetProperty.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
@@ -132,6 +124,7 @@
       <Install>false</Install>
     </BootstrapperPackage>
   </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
     <PostBuildEvent>xcopy "$(ProjectDir)BuildData" "$(TargetDir)" /Y /R /S /E</PostBuildEvent>

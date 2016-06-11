@@ -83,14 +83,14 @@ namespace MachShooting
             }
 
             {
-                var ini = ReadINI("config.ini");
+                var ini = Config.ReadINI("config.ini");
                 low = ini["LOW_MODE"] == "true";
                 frameSkip = int.Parse(ini["FRAME_SKIP"]);
                 full = ini["FULL_SCREEN"] == "true";
             }
         }
 
-        private Dictionary<string,string> ReadINI(string path)
+        public static Dictionary<string,string> ReadINI(string path)
         {
             Dictionary<string, string> ini = new Dictionary<string, string>();
 

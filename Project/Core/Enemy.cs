@@ -5,24 +5,25 @@ using System.Text;
 using System.Threading.Tasks;
 using DxLibDLL;
 using MachShooting.Graphic;
+using NLua;
 
 namespace MachShooting
 {
     /// <summary>
     /// 敵の親クラス
     /// </summary>
-    public abstract class Enemy : GameObject
+    public class Enemy : GameObject
     {
         #region フィールド
         /// <summary>
         /// 名前
         /// </summary>
-        private readonly string name;
+        private string name;
 
         /// <summary>
         /// 最大HP
         /// </summary>
-        private readonly int maxHp;
+        private int maxHp;
 
         /// <summary>
         /// HP
@@ -40,9 +41,29 @@ namespace MachShooting
         private bool hit;
 
         /// <summary>
-        /// 動作リスト
+        /// luaオブジェクト
         /// </summary>
-        private SyncTransfer syncTransfer = new SyncTransfer();
+        private Lua lua;
+
+        /// <summary>
+        /// 初期化関数
+        /// </summary>
+        private LuaFunction initFunc;
+
+        /// <summary>
+        /// 処理関数
+        /// </summary>
+        private LuaFunction updateFunc;
+
+        /// <summary>
+        /// 描画関数
+        /// </summary>
+        private LuaFunction drawFunc;
+
+        /// <summary>
+        /// 終了関数
+        /// </summary>
+        private LuaFunction disposeFunc;
         #endregion
         #region プロパティ
         /// <summary>
@@ -52,40 +73,8 @@ namespace MachShooting
         {
             get { return this.name; }
         }
-
-        /// <summary>
-        /// 自機
-        /// </summary>
-        protected My My
-        {
-            get { return this.my; }
-        }
-
-        /// <summary>
-        /// HP
-        /// </summary>
-        protected int Hp
-        {
-            get { return this.hp; }
-        }
-
-        /// <summary>
-        /// 最大HP
-        /// </summary>
-        protected int MaxHp
-        {
-            get { return this.maxHp; }
-        }
-
-        
-
-
-        protected SyncTransfer SyncTransfer
-        {
-            get { return this.syncTransfer; }
-        }
         #endregion
-        #region コンストラクタ
+        #region イントランス作成
         /// <summary>
         /// 新しいイントランスを作成します
         /// </summary>
@@ -95,14 +84,25 @@ namespace MachShooting
         /// <param name="maxHP">最大HP</param>
         /// <param name="my">自機</param>
         /// <param name="image">画像</param>
-        public Enemy(string name, int power, int maxHP, My my, Image image)
-            : base(new Vec(Game.WINDOW_R, Game.WINDOW_R / 2), power, image, new Vec(0, 1).Rad)
+        public Enemy(EnemyHeader h,My my)
+            : base(new Vec(Game.WINDOW_R, Game.WINDOW_R / 2), 0, new Image(DX.LoadGraph(h.image),h.r, new Vec(0, 1).Rad), new Vec(0, 1).Rad)
         {
-            this.name = name;
-            this.hp = maxHP;
-            this.maxHp = maxHP;
+            this.name = h.name;
+            this.hp = h.hp;
+            this.maxHp = h.hp;
             this.my = my;
             this.hit = true;
+            this.Draw = false;
+
+            this.lua = new Lua();
+            this.lua.DoFile("script/" + h.script + ".lua");
+
+            this.initFunc = lua.GetFunction("init");
+            this.updateFunc = lua.GetFunction("update");
+            this.drawFunc = lua.GetFunction("draw");
+            this.disposeFunc = lua.GetFunction("dispose");
+
+            this.initFunc.Call(new object[] { h, this.Image.image });
         }
         #endregion
         #region メソッド
@@ -115,16 +115,8 @@ namespace MachShooting
             Next();
             if (this.hp != 0)//生きているなら
             {
-                List<AttackObject> list;
-                list = this.syncTransfer.Process();
-                if (list != null)
-                {
-                    list.AddList(Process_Enemy());
-                }
-                else
-                {
-                    list = Process_Enemy();
-                }
+                List<AttackObject> list = (List<AttackObject>)this.updateFunc.Call(new object[] { this.my.Dot })[0];
+
                 Input();
                 return list;
             }
@@ -136,7 +128,7 @@ namespace MachShooting
 
         protected override void DrawGameObjectBefore()
         {
-            this.syncTransfer.Draw();
+            this.drawFunc.Call();
         }
 
         /// <summary>
@@ -177,13 +169,6 @@ namespace MachShooting
             DX.DrawBox(x, y, x + maxW, y + h, DXColor.Instance.white, DX.TRUE);
             DX.DrawBox(x + 1, y, x + w + 1, y + h, DXColor.Instance.green, DX.TRUE);
         }
-        #endregion
-        #region 抽象メソッド
-        /// <summary>
-        /// 処理を行います
-        /// </summary>
-        /// <returns>攻撃オブジェクト。ないならnull</returns>
-        protected abstract List<AttackObject> Process_Enemy();
         #endregion
     }
 }

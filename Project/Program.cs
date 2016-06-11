@@ -62,7 +62,7 @@ namespace MachShooting
         /// <summary>
         /// 選択しているクエスト
         /// </summary>
-        private static int missionData;
+        private static EnemyHeader missionData;
 
         /// <summary>
         /// 選択している装備
@@ -164,7 +164,7 @@ namespace MachShooting
                 {
                     Program.equipment = Program.equipmentMenu.Equipment;
                     Program.equipmentMenu = null;
-                    Program.missionMenu = new MissionMenu();
+                    Program.missionMenu = new MissionMenu(EnemyHeaderTree.Instance);
                 }
             }
             else if (Program.missionMenu != null)//敵選択画面なら
@@ -223,27 +223,6 @@ namespace MachShooting
             {
                 list1.AddRange(list2);
             }
-        }
-
-        /// <summary>
-        /// リストが必要かを調べます
-        /// </summary>
-        /// <param name="list"></param>
-        /// <returns></returns>
-        public static bool ITransferListNeed(this List<ITransfer> list)
-        {
-            if (list == null) return false;
-            if (list.Count == 0) return false;
-
-            foreach (ITransfer t in list)
-            {
-                if (t.Need)
-                {
-                    return true;
-                }
-            }
-
-            return false;
         }
     }
 }
