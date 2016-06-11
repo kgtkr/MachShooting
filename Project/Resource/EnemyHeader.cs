@@ -101,6 +101,10 @@ namespace MachShooting
             get;
             private set;
         }
+        public string className{
+            get;
+            private set;
+        }
 
         public EnemyHeader(string path)
         {
@@ -110,6 +114,7 @@ namespace MachShooting
             this.hp = int.Parse(h["HP"]);
             this.image = h["IMAGE"];
             this.r = double.Parse(h["R"]);
+            this.className = h["CLASS"];
         }
     }
 }

@@ -12,38 +12,63 @@ namespace MachShooting
     /// <summary>
     /// 敵の親クラス
     /// </summary>
-    public class Enemy : GameObject
+    public class Enemy : GameObject, IDisposable
     {
         #region フィールド
         /// <summary>
         /// 名前
         /// </summary>
-        private string name;
+        public string name
+        {
+            get;
+            private set;
+        }
 
         /// <summary>
         /// 最大HP
         /// </summary>
-        private int maxHp;
+        public int maxHp
+        {
+            get;
+            private set;
+        }
 
         /// <summary>
         /// HP
         /// </summary>
-        private int hp;
+        public int hp
+        {
+            get;
+            private set;
+        }
 
         /// <summary>
         /// 自機
         /// </summary>
-        private readonly My my;
+        public My my
+        {
+            get;
+            private set;
+        }
 
         /// <summary>
         /// やられ判定があるか
         /// </summary>
-        private bool hit;
+        public bool hit
+        {
+            get;
+            private set;
+        }
 
         /// <summary>
         /// luaオブジェクト
         /// </summary>
         private Lua lua;
+
+        /// <summary>
+        /// luaオブジェクト
+        /// </summary>
+        private LuaTable luaObject;
 
         /// <summary>
         /// 初期化関数
@@ -66,13 +91,6 @@ namespace MachShooting
         private LuaFunction disposeFunc;
         #endregion
         #region プロパティ
-        /// <summary>
-        /// 名前
-        /// </summary>
-        public string Name
-        {
-            get { return this.name; }
-        }
         #endregion
         #region イントランス作成
         /// <summary>
@@ -84,8 +102,8 @@ namespace MachShooting
         /// <param name="maxHP">最大HP</param>
         /// <param name="my">自機</param>
         /// <param name="image">画像</param>
-        public Enemy(EnemyHeader h,My my)
-            : base(new Vec(Game.WINDOW_R, Game.WINDOW_R / 2), 0, new Image(DX.LoadGraph(h.image),h.r, new Vec(0, 1).Rad), new Vec(0, 1).Rad)
+        public Enemy(EnemyHeader h, My my)
+            : base(new Vec(Game.WINDOW_R, Game.WINDOW_R / 2), 0, new Image(DX.LoadGraph(h.image), h.r, new Vec(0, 1).Rad), new Vec(0, 1).Rad)
         {
             this.name = h.name;
             this.hp = h.hp;
@@ -95,14 +113,15 @@ namespace MachShooting
             this.Draw = false;
 
             this.lua = new Lua();
+            lua.LoadCLRPackage();
             this.lua.DoFile("script/" + h.script + ".lua");
 
-            this.initFunc = lua.GetFunction("init");
-            this.updateFunc = lua.GetFunction("update");
-            this.drawFunc = lua.GetFunction("draw");
-            this.disposeFunc = lua.GetFunction("dispose");
+            this.initFunc = lua.GetFunction(h.className);
+            this.luaObject=(LuaTable) this.initFunc.Call(new object[] {this})[0];
 
-            this.initFunc.Call(new object[] { h, this.Image.image });
+            this.updateFunc = (LuaFunction)this.luaObject["update"];
+            this.drawFunc = (LuaFunction)this.luaObject["draw"];
+            this.disposeFunc = (LuaFunction)this.luaObject["dispose"];
         }
         #endregion
         #region メソッド
@@ -115,7 +134,7 @@ namespace MachShooting
             Next();
             if (this.hp != 0)//生きているなら
             {
-                List<AttackObject> list = (List<AttackObject>)this.updateFunc.Call(new object[] { this.my.Dot })[0];
+                List<AttackObject> list = (List<AttackObject>)this.updateFunc.Call(new object[] { })[0];
 
                 Input();
                 return list;
@@ -170,5 +189,16 @@ namespace MachShooting
             DX.DrawBox(x + 1, y, x + w + 1, y + h, DXColor.Instance.green, DX.TRUE);
         }
         #endregion
+
+        public void Dispose()
+        {
+            DX.DeleteGraph(this.Image.image);
+            this.lua.Dispose();
+        }
+
+        ~Enemy()
+        {
+            this.Dispose();
+        }
     }
 }

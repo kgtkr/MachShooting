@@ -11,7 +11,7 @@ namespace MachShooting
     /// <summary>
     /// ゲーム画面
     /// </summary>
-    public class Game : Screen
+    public class Game : Screen,IDisposable
     {
         #region 定数
         /// <summary>
@@ -190,8 +190,8 @@ namespace MachShooting
                 DX.DrawBox(SPACE2, SPACE2, Program.WIDTH - SPACE2, Program.HEIGHT - SPACE2, DXColor.Instance.black, DX.TRUE);
 
                 //敵名
-                int w = DX.GetDrawStringWidthToHandle(this.boss.Name, Program.GetStringByte(this.boss.Name), Font.Instance.font64);
-                DX.DrawStringToHandle(WIDTH / 2 - w / 2 + SPACE2, SPACE2 + 15, this.boss.Name, DXColor.Instance.white, Font.Instance.font64);
+                int w = DX.GetDrawStringWidthToHandle(this.boss.name, Program.GetStringByte(this.boss.name), Font.Instance.font64);
+                DX.DrawStringToHandle(WIDTH / 2 - w / 2 + SPACE2, SPACE2 + 15, this.boss.name, DXColor.Instance.white, Font.Instance.font64);
                 //自機名
                 DX.DrawStringToHandle(X + SPACE2, SPACE2 + 64 + 10, this.my.Name, DXColor.Instance.white, Font.Instance.font32);
                 //クリア
@@ -314,5 +314,14 @@ namespace MachShooting
             }
         }
         #endregion
+        public void Dispose()
+        {
+            DX.DeleteGraph(this.screen);
+        }
+
+        ~Game()
+        {
+            this.Dispose();
+        }
     }
 }
