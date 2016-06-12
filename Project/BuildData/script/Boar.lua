@@ -35,7 +35,7 @@ Boar=function(api)
     end
 
     this.dispose=function()
-
+        DX.DeleteGraph(chargeImage);
     end
 
 

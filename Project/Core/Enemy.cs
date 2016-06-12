@@ -144,7 +144,7 @@ namespace MachShooting
                 this.updateFunc.Call();
 
                 Input();
-                return null;
+                return this.api.getAattackObject();
             }
             else//死んでいるなら
             {
@@ -224,6 +224,18 @@ namespace MachShooting
         /// 攻撃オブジェクト
         /// </summary>
         private List<AttackObject> attackObject;
+
+        /// <summary>
+        /// 攻撃オブジェクトを取得します
+        /// 攻撃オブジェクトは削除されます
+        /// </summary>
+        /// <returns></returns>
+        internal List<AttackObject> getAattackObject()
+        {
+            var ao = this.attackObject;
+            this.attackObject = null;
+            return ao;
+        }
 
         public EnemyAPI(Enemy enemy)
         {
