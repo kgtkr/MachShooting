@@ -397,5 +397,29 @@ namespace MachShooting
             get { return this.enemy.R; }
             set { this.enemy.R = value; }
         }
+
+        /// <summary>
+        /// ヒットエフェクト画像
+        /// </summary>
+        public int HitEffect
+        {
+            get { return DXImage.Instance.hit; }
+        }
+
+        /// <summary>
+        /// チャージエフェクト
+        /// </summary>
+        public int ChargeEffect
+        {
+            get { return DXImage.Instance.charge; }
+        }
+
+        /// <summary>
+        /// スペシャルエフェクト
+        /// </summary>
+        public int SpecialEffect
+        {
+            get { return DXImage.Instance.special; }
+        }
     }
 }
