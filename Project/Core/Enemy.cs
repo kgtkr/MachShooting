@@ -119,7 +119,8 @@ namespace MachShooting
 
             this.api = new EnemyAPI(this);
             this.lua = new Lua();
-            lua.LoadCLRPackage();
+            this.lua.LoadCLRPackage();
+            this.lua.DoString("import (\"DxLibDotNet\",\"DxLibDLL\");");
             this.lua.DoFile("script/" + h.script + ".lua");
 
             this.initFunc = lua.GetFunction(h.className);
@@ -140,10 +141,10 @@ namespace MachShooting
             Next();
             if (this.hp != 0)//生きているなら
             {
-                List<AttackObject> list = (List<AttackObject>)this.updateFunc.Call(new object[] { })[0];
+                this.updateFunc.Call();
 
                 Input();
-                return list;
+                return null;
             }
             else//死んでいるなら
             {
@@ -357,6 +358,32 @@ namespace MachShooting
         public double ToObjectRad(double rad)
         {
             return this.enemy.ToObjectRad(rad);
+        }
+
+        /// <summary>
+        /// 自信を描画します
+        /// </summary>
+        public void Draw()
+        {
+            this.enemy.DrawGraph(this.enemy.Image);
+        }
+
+        /// <summary>
+        /// 攻撃力
+        /// </summary>
+        public int Power
+        {
+            get { return this.enemy.Power; }
+            set { this.enemy.Power = value; }
+        }
+
+        /// <summary>
+        /// 半径
+        /// </summary>
+        public double R
+        {
+            get { return this.enemy.R; }
+            set { this.enemy.R = value; }
         }
     }
 }
