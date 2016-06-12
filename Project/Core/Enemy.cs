@@ -66,6 +66,11 @@ namespace MachShooting
         private Lua lua;
 
         /// <summary>
+        /// API
+        /// </summary>
+        private EnemyAPI api;
+
+        /// <summary>
         /// luaオブジェクト
         /// </summary>
         private LuaTable luaObject;
@@ -112,12 +117,13 @@ namespace MachShooting
             this.hit = true;
             this.Draw = false;
 
+            this.api = new EnemyAPI(this);
             this.lua = new Lua();
             lua.LoadCLRPackage();
             this.lua.DoFile("script/" + h.script + ".lua");
 
             this.initFunc = lua.GetFunction(h.className);
-            this.luaObject=(LuaTable) this.initFunc.Call(new object[] {this})[0];
+            this.luaObject=(LuaTable) this.initFunc.Call(new object[] {this.api})[0];
 
             this.updateFunc = (LuaFunction)this.luaObject["update"];
             this.drawFunc = (LuaFunction)this.luaObject["draw"];
@@ -199,6 +205,158 @@ namespace MachShooting
         ~Enemy()
         {
             this.Dispose();
+        }
+    }
+
+
+    /// <summary>
+    /// 敵のAPIです
+    /// </summary>
+    public class EnemyAPI
+    {
+        /// <summary>
+        /// 対象の敵
+        /// </summary>
+        private Enemy enemy;
+
+        /// <summary>
+        /// 攻撃オブジェクト
+        /// </summary>
+        private List<AttackObject> attackObject;
+
+        public EnemyAPI(Enemy enemy)
+        {
+            this.enemy = enemy;
+        }
+
+        /// <summary>
+        /// 弾を発射します
+        /// </summary>
+        /// <param name="x">x座標</param>
+        /// <param name="y">y座標</param>
+        /// <param name="power">攻撃力</param>
+        /// <param name="vx">Xベクトル</param>
+        /// <param name="vy">Yベクトル</param>
+        /// <param name="size">サイズフラグ。0:小、1:中、2:大</param>
+        /// <param name="r">赤</param>
+        /// <param name="g">緑</param>
+        /// <param name="b">青</param>
+        public void ShotBullet(double x,double y,
+            int power,
+            double vx,double vy,
+            int size,
+            int r,int g,int b
+            )
+        {
+            if (this.attackObject == null)
+            {
+                this.attackObject = new List<AttackObject>();
+            }
+
+            Image image;
+            if (size == 0)
+            {
+                image = DXImage.Instance.bulletSmall;
+            }else if (size== 1)
+            {
+                image = DXImage.Instance.bulletMedium;
+            }
+            else
+            {
+                image = DXImage.Instance.bulletBig;
+            }
+
+            this.attackObject.Add(new Bullet(new Vec(x,y),power,new Vec(vx,vy),image,System.Drawing.Color.FromArgb(0,r,g,b)));
+        }
+        
+        /// <summary>
+        /// X座標
+        /// </summary>
+        public double X
+        {
+            get
+            {
+                return this.enemy.X;
+            }
+
+            set
+            {
+                this.enemy.X = value;
+            }
+        }
+
+        /// <summary>
+        /// Y座標
+        /// </summary>
+        public double Y
+        {
+            get
+            {
+                return this.enemy.Y;
+            }
+
+            set
+            {
+                this.enemy.Y = value;
+            }
+        }
+
+        /// <summary>
+        /// 自機のX座標
+        /// </summary>
+        public double MyX
+        {
+            get
+            {
+                return this.enemy.my.X;
+            }
+        }
+
+        /// <summary>
+        /// 自機のY座標
+        /// </summary>
+        public double MyY
+        {
+            get
+            {
+                return this.enemy.my.Y;
+            }
+        }
+
+        /// <summary>
+        /// 敵の角度
+        /// </summary>
+        public double Rad
+        {
+            get
+            {
+                return this.enemy.Rad;
+            }
+
+            set
+            {
+                this.enemy.Rad=value;
+            }
+        }
+
+        /// <summary>
+        /// このオブジェクトに対するラジアンを、マップに対するラジアンに変換します
+        /// </summary>
+        /// <param name="rad"></param>
+        /// <returns></returns>
+        public double ToMapRad(double rad)
+        {
+            return this.enemy.ToMapRad(rad);
+        }
+
+        /// <summary>
+        /// マップに対するラジアンをこのオブジェクトに対するラジアンに変換します
+        /// </summary>
+        /// <param name="rad"></param>
+        /// <returns></returns>
+        public double ToObjectRad(double rad)
+        {
+            return this.enemy.ToObjectRad(rad);
         }
     }
 }
