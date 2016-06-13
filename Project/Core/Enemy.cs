@@ -121,7 +121,7 @@ namespace MachShooting
             this.lua = new Lua();
             this.lua.LoadCLRPackage();
             this.lua.DoString("import (\"DxLibDotNet\",\"DxLibDLL\");");
-            this.lua.DoFile("script/" + h.script + ".lua");
+            this.lua.DoFile(h.script);
 
             this.initFunc = lua.GetFunction(h.className);
             this.luaObject=(LuaTable) this.initFunc.Call(new object[] {this.api})[0];

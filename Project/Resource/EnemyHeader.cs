@@ -18,7 +18,7 @@ namespace MachShooting
             {
                 if (EnemyHeaderTree.instance == null)
                 {
-                    EnemyHeaderTree.instance = new EnemyHeaderTree("enemy/","root");
+                    EnemyHeaderTree.instance = new EnemyHeaderTree("script/enemy/", "root");
                 }
 
                 return EnemyHeaderTree.instance;
@@ -49,13 +49,13 @@ namespace MachShooting
             private set;
         }
 
-        private EnemyHeaderTree(string dir,string name)
+        private EnemyHeaderTree(string dir, string name)
         {
             var header = new List<EnemyHeader>();
             var tree = new List<EnemyHeaderTree>();
 
             var files = Directory.GetFiles(dir);
-            foreach(string file in files)
+            foreach (string file in files)
             {
                 header.Add(new EnemyHeader(file));
             }
@@ -63,7 +63,7 @@ namespace MachShooting
             var dirs = Directory.GetDirectories(dir);
             foreach (string dir2 in dirs)
             {
-                tree.Add(new EnemyHeaderTree(dir2,Path.GetFileName(Path.GetDirectoryName(dir))));
+                tree.Add(new EnemyHeaderTree(dir2, Path.GetFileName(Path.GetDirectoryName(dir))));
             }
 
             this.Header = header.AsReadOnly();
@@ -101,15 +101,38 @@ namespace MachShooting
             get;
             private set;
         }
-        public string className{
+        public string className
+        {
             get;
             private set;
         }
 
         public EnemyHeader(string path)
         {
-            var h=Config.ReadINI(path);
-            this.script = h["SCRIPT"];
+            string data = "";
+
+            using (StreamReader sr = new StreamReader(
+            path, Encoding.GetEncoding("UTF-8")))
+            {
+                while (sr.Peek() >= 0)
+                {
+                    // ファイルを 1 行ずつ読み込む
+                    string stBuffer = sr.ReadLine();
+
+                    if (stBuffer != "--[[")
+                    {
+                        data += stBuffer + "\n";
+                    }
+
+                    if (stBuffer == "]]")
+                    {
+                        break;
+                    }
+                }
+            }
+
+            var h = Config.ParseINI(data);
+            this.script = path;
             this.name = h["NAME"];
             this.hp = int.Parse(h["HP"]);
             this.image = h["IMAGE"];

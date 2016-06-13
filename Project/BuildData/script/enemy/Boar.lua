@@ -1,3 +1,11 @@
+--[[
+NAME=ボア
+HP=1500
+IMAGE=Data/Image/Enemy/boar.png
+R=15
+CLASS=Boar
+]]
+
 package.path =  "script/lib/?.lua";
 require("cmd");
 

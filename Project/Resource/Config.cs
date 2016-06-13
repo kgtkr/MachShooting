@@ -92,23 +92,34 @@ namespace MachShooting
 
         public static Dictionary<string,string> ReadINI(string path)
         {
-            Dictionary<string, string> ini = new Dictionary<string, string>();
+            Dictionary<string, string> ini;
 
             using (StreamReader sr = new StreamReader(
             path, Encoding.GetEncoding("UTF-8")))
             {
-                while (sr.Peek() >= 0)
+                ini = Config.ParseINI(sr.ReadToEnd());
+            }
+
+            return ini;
+        }
+
+        public static Dictionary<string, string> ParseINI(string data)
+        {
+            Dictionary<string, string> ini = new Dictionary<string, string>();
+
+            StringReader sr = new StringReader(data);
+
+            while (sr.Peek() >= 0)
+            {
+                // ファイルを 1 行ずつ読み込む
+                string stBuffer = sr.ReadLine();
+
+
+                Regex reg = new Regex("^(?<k>[^=#]+)=(?<v>[^=#]+)$", RegexOptions.IgnoreCase);
+                Match m = reg.Match(stBuffer);
+                if (m.Success == true)
                 {
-                    // ファイルを 1 行ずつ読み込む
-                    string stBuffer = sr.ReadLine();
-
-
-                    Regex reg = new Regex("^(?<k>[^=#]+)=(?<v>[^=#]+)$", RegexOptions.IgnoreCase);
-                    Match m = reg.Match(stBuffer);
-                    if (m.Success == true)
-                    {
-                        ini.Add(m.Groups["k"].Value.Trim(), m.Groups["v"].Value.Trim());
-                    }
+                    ini.Add(m.Groups["k"].Value.Trim(), m.Groups["v"].Value.Trim());
                 }
             }
 
