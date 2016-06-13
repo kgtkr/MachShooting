@@ -254,11 +254,14 @@ namespace MachShooting
         /// <param name="r">赤</param>
         /// <param name="g">緑</param>
         /// <param name="b">青</param>
+        /// <param name="call">弾がヒットした時のコールバック
+        /// 
         public void ShotBullet(double x,double y,
             int power,
             double vx,double vy,
             int size,
-            int r,int g,int b
+            int r,int g,int b,
+            LuaFunction call
             )
         {
             if (this.attackObject == null)
@@ -279,7 +282,15 @@ namespace MachShooting
                 image = DXImage.Instance.bulletBig;
             }
 
-            this.attackObject.Add(new Bullet(new Vec(x,y),power,new Vec(vx,vy),image,System.Drawing.Color.FromArgb(0,r,g,b)));
+            Action<int> hitCall = null;
+            if (call != null)
+            {
+                hitCall = damage => {
+                    call.Call(damage);
+                };
+            }
+
+            this.attackObject.Add(new Bullet(new Vec(x,y),power,new Vec(vx,vy),image,System.Drawing.Color.FromArgb(0,r,g,b),hitCall));
         }
         
         /// <summary>
