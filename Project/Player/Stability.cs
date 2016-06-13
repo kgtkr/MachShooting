@@ -11,7 +11,7 @@ namespace MachShooting
     /// <summary>
     /// 通常型
     /// </summary>
-    public class Stability : My
+    public class Stability : Player
     {
         #region 定数
         #endregion
@@ -60,13 +60,13 @@ namespace MachShooting
                 attack = new List<AttackObject>();
                 this.conventionalAttack = 0;
 
-                attack.Add(NewBullet(this.BulletDotC, this.Strengthen == 0 ? 12 : 14, new Vec(0, -10), DXImage.Instance.bulletSmall, System.Drawing.Color.Red));
+                attack.Add(NewBullet(this.BulletDotC, this.Strengthen == 0 ? 12 : 14, new Vec(0, -10), DXImage.Instance.BulletSmall, System.Drawing.Color.Red));
             }
             else
             {
                 if (this.conventionalAttack >= 10)
                 {
-                    this.Action = MyAction.NONE;
+                    this.Action = PlayerAction.NONE;
                 }
             }
             this.conventionalAttack++;
@@ -86,14 +86,14 @@ namespace MachShooting
                 attack = new List<AttackObject>();
                 this.specialAttack = 0;
 
-                attack.Add(NewBullet(this.BulletDotC, this.Strengthen == 0 ? 27 : 32, new Vec(0, -10), DXImage.Instance.bulletMedium, System.Drawing.Color.Red));
+                attack.Add(NewBullet(this.BulletDotC, this.Strengthen == 0 ? 27 : 32, new Vec(0, -10), DXImage.Instance.BulletMedium, System.Drawing.Color.Red));
             }
             else
             {
                 this.Speed = 1;
                 if (this.specialAttack >= 20)
                 {
-                    this.Action = MyAction.NONE;
+                    this.Action = PlayerAction.NONE;
                 }
             }
             this.specialAttack++;
@@ -121,8 +121,8 @@ namespace MachShooting
                 else if (this.deathblow == 60)//撃つ
                 {
                     attack = new List<AttackObject>();
-                    attack.Add(NewBullet(this.BulletDotC, this.Strengthen == 0 ? 145 : 174, new Vec(0, -10), DXImage.Instance.bulletBig, System.Drawing.Color.Red));
-                    this.Action = MyAction.NONE;
+                    attack.Add(NewBullet(this.BulletDotC, this.Strengthen == 0 ? 145 : 174, new Vec(0, -10), DXImage.Instance.BulletBig, System.Drawing.Color.Red));
+                    this.Action = PlayerAction.NONE;
                 }
             }
             this.deathblow++;
@@ -163,12 +163,12 @@ namespace MachShooting
                 if (this.counterAttack % 2 == 0)
                 {
                     attack = new List<AttackObject>();
-                    attack.Add(NewBullet(this.BulletDotC, this.Strengthen == 0 ? 4 : 5, new Vec(0, -10), DXImage.Instance.bulletSmall, System.Drawing.Color.Red));
+                    attack.Add(NewBullet(this.BulletDotC, this.Strengthen == 0 ? 4 : 5, new Vec(0, -10), DXImage.Instance.BulletSmall, System.Drawing.Color.Red));
                 }
 
                 if (this.counterAttack >= 30)
                 {
-                    this.Action = MyAction.NONE;
+                    this.Action = PlayerAction.NONE;
                 }
             }
             this.counterAttack++;

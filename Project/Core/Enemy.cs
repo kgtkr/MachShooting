@@ -18,7 +18,7 @@ namespace MachShooting
         /// <summary>
         /// 名前
         /// </summary>
-        public string name
+        public string Name
         {
             get;
             private set;
@@ -27,7 +27,7 @@ namespace MachShooting
         /// <summary>
         /// 最大HP
         /// </summary>
-        public int maxHp
+        public int MaxHp
         {
             get;
             private set;
@@ -36,7 +36,7 @@ namespace MachShooting
         /// <summary>
         /// HP
         /// </summary>
-        public int hp
+        public int HP
         {
             get;
             private set;
@@ -45,7 +45,7 @@ namespace MachShooting
         /// <summary>
         /// 自機
         /// </summary>
-        public My my
+        public Player Player
         {
             get;
             private set;
@@ -54,7 +54,7 @@ namespace MachShooting
         /// <summary>
         /// やられ判定があるか
         /// </summary>
-        public bool hit
+        public bool Hit
         {
             get;
             private set;
@@ -105,16 +105,16 @@ namespace MachShooting
         /// <param name="circle">円</param>
         /// <param name="power">本体の攻撃力</param>
         /// <param name="maxHP">最大HP</param>
-        /// <param name="my">自機</param>
+        /// <param name="player">自機</param>
         /// <param name="image">画像</param>
-        public Enemy(EnemyHeader h, My my)
+        public Enemy(EnemyHeader h, Player player)
             : base(new Vec(Game.WINDOW_R, Game.WINDOW_R / 2), 0, new Image(DX.LoadGraph(h.image), h.r, new Vec(0, 1).Rad), new Vec(0, 1).Rad)
         {
-            this.name = h.name;
-            this.hp = h.hp;
-            this.maxHp = h.hp;
-            this.my = my;
-            this.hit = true;
+            this.Name = h.name;
+            this.HP = h.hp;
+            this.MaxHp = h.hp;
+            this.Player = player;
+            this.Hit = true;
             this.Draw = false;
 
             this.api = new EnemyAPI(this);
@@ -139,7 +139,7 @@ namespace MachShooting
         public List<AttackObject> Process()
         {
             Next();
-            if (this.hp != 0)//生きているなら
+            if (this.HP != 0)//生きているなら
             {
                 this.updateFunc.Call();
 
@@ -164,12 +164,12 @@ namespace MachShooting
         /// <returns>受けたダメージ</returns>
         public override int Suffer(int power)
         {
-            if (this.hp != 0 && this.hit)//生きているかつやられ判定がある
+            if (this.HP != 0 && this.Hit)//生きているかつやられ判定がある
             {
-                this.hp -= power;
-                if (this.hp <= 0)
+                this.HP -= power;
+                if (this.HP <= 0)
                 {
-                    this.hp = 0;
+                    this.HP = 0;
                     this.Need = false;
                 }
                 return power;
@@ -190,10 +190,10 @@ namespace MachShooting
             const int maxW = Program.WIDTH - 20 - x;
             const int h = 5;
 
-            int w = (int)((double)this.hp / (double)this.maxHp * maxW);
+            int w = (int)((double)this.HP / (double)this.MaxHp * maxW);
 
-            DX.DrawBox(x, y, x + maxW, y + h, DXColor.Instance.white, DX.TRUE);
-            DX.DrawBox(x + 1, y, x + w + 1, y + h, DXColor.Instance.green, DX.TRUE);
+            DX.DrawBox(x, y, x + maxW, y + h, DXColor.Instance.White, DX.TRUE);
+            DX.DrawBox(x + 1, y, x + w + 1, y + h, DXColor.Instance.Green, DX.TRUE);
         }
         #endregion
 
@@ -272,14 +272,14 @@ namespace MachShooting
             Image image;
             if (size == 0)
             {
-                image = DXImage.Instance.bulletSmall;
+                image = DXImage.Instance.BulletSmall;
             }else if (size== 1)
             {
-                image = DXImage.Instance.bulletMedium;
+                image = DXImage.Instance.BulletMedium;
             }
             else
             {
-                image = DXImage.Instance.bulletBig;
+                image = DXImage.Instance.BulletBig;
             }
 
             Action<int> hitCall = null;
@@ -328,22 +328,22 @@ namespace MachShooting
         /// <summary>
         /// 自機のX座標
         /// </summary>
-        public double MyX
+        public double PlayerX
         {
             get
             {
-                return this.enemy.my.X;
+                return this.enemy.Player.X;
             }
         }
 
         /// <summary>
         /// 自機のY座標
         /// </summary>
-        public double MyY
+        public double PlayerY
         {
             get
             {
-                return this.enemy.my.Y;
+                return this.enemy.Player.Y;
             }
         }
 

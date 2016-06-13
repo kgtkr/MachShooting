@@ -63,7 +63,7 @@ namespace MachShooting
         {
             if (this.life && damage != 0)
             {
-                SE.Instance.Play(DXAudio.Instance.shotHit);
+                SE.Instance.Play(DXAudio.Instance.ShotHit);
                 this.Power = 0;
                 this.life = false;
                 if (this.call != null)
@@ -110,7 +110,7 @@ namespace MachShooting
             }
             else
             {
-                DX.SetDrawBright(255, 0, 0); DX.SetDrawBlendMode(DX.DX_BLENDMODE_ALPHA, 255 - this.effect * (255 / 30)); int size = this.effect * (int)this.R; DX.DrawExtendGraph((int)(this.X - size), (int)(this.Y - size), (int)(this.X + size), (int)(this.Y + size), DXImage.Instance.hit, DX.TRUE); DX.SetDrawBlendMode(DX.DX_BLENDMODE_NOBLEND, 0); DX.SetDrawBright(255, 255, 255);
+                DX.SetDrawBright(255, 0, 0); DX.SetDrawBlendMode(DX.DX_BLENDMODE_ALPHA, 255 - this.effect * (255 / 30)); int size = this.effect * (int)this.R; DX.DrawExtendGraph((int)(this.X - size), (int)(this.Y - size), (int)(this.X + size), (int)(this.Y + size), DXImage.Instance.Hit, DX.TRUE); DX.SetDrawBlendMode(DX.DX_BLENDMODE_NOBLEND, 0); DX.SetDrawBright(255, 255, 255);
             }
         }
         #endregion

@@ -29,7 +29,7 @@ namespace MachShooting
         public const string TITLE_MESSAGE = "MachShooting";
 
         //メッセージのフォント
-        public readonly int TITLE_MESSAGE_FONT = Font.Instance.font64;
+        public readonly int TITLE_MESSAGE_FONT = Font.Instance.Font64;
 
 
         /*エンターキーを押して下さい関係*/
@@ -52,14 +52,14 @@ namespace MachShooting
         public const string ENTER_MESSAGE = "Zキーを押して下さい...";
 
         //メッセージのフォント
-        public readonly int ENTER_MESSAGE_FONT = Font.Instance.font32;
+        public readonly int ENTER_MESSAGE_FONT = Font.Instance.Font32;
 
         public override void Draw()
         {
             if (this.Need)//必要なら
             {
-                DX.DrawStringToHandle(this.titleNowX, TITLE_Y, TITLE_MESSAGE, DXColor.Instance.white, this.TITLE_MESSAGE_FONT);
-                if (this.enterDisplay) DX.DrawStringToHandle(this.ENTER_X, ENTER_Y, ENTER_MESSAGE, DXColor.Instance.white, this.ENTER_MESSAGE_FONT);//表示するなら
+                DX.DrawStringToHandle(this.titleNowX, TITLE_Y, TITLE_MESSAGE, DXColor.Instance.White, this.TITLE_MESSAGE_FONT);
+                if (this.enterDisplay) DX.DrawStringToHandle(this.ENTER_X, ENTER_Y, ENTER_MESSAGE, DXColor.Instance.White, this.ENTER_MESSAGE_FONT);//表示するなら
             }
         }
 
@@ -80,7 +80,7 @@ namespace MachShooting
                 this.enterFrame--;//残り時間を減らす
 
                 //キーが押されたか？
-                if (key2[Config.Instance.key[KeyComfig.MENU_OK]] == DX.TRUE)//Zが押されたなら
+                if (key2[Config.Instance.Key[KeyComfig.MENU_OK]] == DX.TRUE)//Zが押されたなら
                 {
                     SE.Instance.Play(DXAudio.Instance.OK);
                     this.Need = false;

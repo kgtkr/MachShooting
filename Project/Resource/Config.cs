@@ -19,7 +19,7 @@ namespace MachShooting
         /// <summary>
         /// キーコンフィグ
         /// </summary>
-        public IReadOnlyDictionary<KeyComfig, int> key
+        public IReadOnlyDictionary<KeyComfig, int> Key
         {
             get;
             private set;
@@ -28,7 +28,7 @@ namespace MachShooting
         /// <summary>
         /// フレームスキップ
         /// </summary>
-        public int frameSkip
+        public int FrameSkip
         {
             get;
             private set;
@@ -37,7 +37,7 @@ namespace MachShooting
         /// <summary>
         /// 低負荷モード
         /// </summary>
-        public bool low
+        public bool Low
         {
             get;
             private set;
@@ -46,7 +46,7 @@ namespace MachShooting
         /// <summary>
         /// フルスクリーン
         /// </summary>
-        public bool full
+        public bool Full
         {
             get;
             private set;
@@ -79,14 +79,14 @@ namespace MachShooting
                     int v = (int)Enum.Parse(typeof(Key), ini[key]);
                     keyMap.Add(k, v);
                 }
-                this.key = new ReadOnlyDictionary<KeyComfig,int>(keyMap);
+                this.Key = new ReadOnlyDictionary<KeyComfig,int>(keyMap);
             }
 
             {
                 var ini = Config.ReadINI("config.ini");
-                low = ini["LOW_MODE"] == "true";
-                frameSkip = int.Parse(ini["FRAME_SKIP"]);
-                full = ini["FULL_SCREEN"] == "true";
+                Low = ini["LOW_MODE"] == "true";
+                FrameSkip = int.Parse(ini["FRAME_SKIP"]);
+                Full = ini["FULL_SCREEN"] == "true";
             }
         }
 

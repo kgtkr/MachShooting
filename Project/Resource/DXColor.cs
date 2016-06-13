@@ -28,7 +28,7 @@ namespace MachShooting
         /// <summary>
         /// 赤
         /// </summary>
-        public uint red
+        public uint Red
         {
             get;
             private set;
@@ -37,7 +37,7 @@ namespace MachShooting
         /// <summary>
         /// 緑
         /// </summary>
-        public uint green
+        public uint Green
         {
             get;
             private set;
@@ -46,7 +46,7 @@ namespace MachShooting
         /// <summary>
         /// 青
         /// </summary>
-        public uint blue
+        public uint Blue
         {
             get;
             private set;
@@ -55,7 +55,7 @@ namespace MachShooting
         /// <summary>
         /// 白
         /// </summary>
-        public uint white
+        public uint White
         {
             get;
             private set;
@@ -64,7 +64,7 @@ namespace MachShooting
         /// <summary>
         /// 黒
         /// </summary>
-        public uint black
+        public uint Black
         {
             get;
             private set;
@@ -73,7 +73,7 @@ namespace MachShooting
         /// <summary>
         /// 黄
         /// </summary>
-        public uint yellow
+        public uint Yellow
         {
             get;
             private set;
@@ -82,7 +82,7 @@ namespace MachShooting
         /// <summary>
         /// シアン
         /// </summary>
-        public uint cyan
+        public uint Cyan
         {
             get;
             private set;
@@ -91,7 +91,7 @@ namespace MachShooting
         /// <summary>
         /// マゼンタ
         /// </summary>
-        public uint magenta
+        public uint Magenta
         {
             get;
             private set;
@@ -100,14 +100,14 @@ namespace MachShooting
 
         private DXColor()
         {
-            this.red = DX.GetColor(255, 0, 0);
-            this.green = DX.GetColor(0, 255, 0);
-            this.blue = DX.GetColor(0, 0, 255);
-            this.white = DX.GetColor(255, 255, 255);
-            this.black = DX.GetColor(0, 0, 0);
-            this.yellow = DX.GetColor(255, 255, 0);
-            this.cyan = DX.GetColor(0, 255, 255);
-            this.magenta = DX.GetColor(255, 0, 255);
+            this.Red = DX.GetColor(255, 0, 0);
+            this.Green = DX.GetColor(0, 255, 0);
+            this.Blue = DX.GetColor(0, 0, 255);
+            this.White = DX.GetColor(255, 255, 255);
+            this.Black = DX.GetColor(0, 0, 0);
+            this.Yellow = DX.GetColor(255, 255, 0);
+            this.Cyan = DX.GetColor(0, 255, 255);
+            this.Magenta = DX.GetColor(255, 0, 255);
         }
     }
 

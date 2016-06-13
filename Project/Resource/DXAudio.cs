@@ -34,37 +34,37 @@ namespace MachShooting
         }
 
         #region SE
-        public int avoidance
+        public int Avoidance
         {
             get;
             private set;
         }
 
-        public int bom
+        public int Bom
         {
             get;
             private set;
         }
 
-        public int cancel
+        public int Cancel
         {
             get;
             private set;
         }
 
-        public int deathblow
+        public int Deathblow
         {
             get;
             private set;
         }
 
-        public int hp1
+        public int HP1
         {
             get;
             private set;
         }
 
-        public int hp2
+        public int HP2
         {
             get;
             private set;
@@ -76,19 +76,19 @@ namespace MachShooting
             private set;
         }
 
-        public int shot
+        public int Shot
         {
             get;
             private set;
         }
 
-        public int shotHit
+        public int ShotHit
         {
             get;
             private set;
         }
 
-        public int strengthen
+        public int Strengthen
         {
             get;
             private set;
@@ -97,16 +97,16 @@ namespace MachShooting
 
         private DXAudio()
         {
-            this.avoidance = DX.LoadSoundMem("Data/Sound/SE/avoidance.mp3");
-            this.bom = DX.LoadSoundMem("Data/Sound/SE/bom.mp3");
-            this.cancel = DX.LoadSoundMem("Data/Sound/SE/cancel.mp3");
-            this.deathblow = DX.LoadSoundMem("Data/Sound/SE/deathblow.mp3");
-            this.hp1 = DX.LoadSoundMem("Data/Sound/SE/hp1.mp3");
-            this.hp2 = DX.LoadSoundMem("Data/Sound/SE/hp2.mp3");
+            this.Avoidance = DX.LoadSoundMem("Data/Sound/SE/avoidance.mp3");
+            this.Bom = DX.LoadSoundMem("Data/Sound/SE/bom.mp3");
+            this.Cancel = DX.LoadSoundMem("Data/Sound/SE/cancel.mp3");
+            this.Deathblow = DX.LoadSoundMem("Data/Sound/SE/deathblow.mp3");
+            this.HP1 = DX.LoadSoundMem("Data/Sound/SE/hp1.mp3");
+            this.HP2 = DX.LoadSoundMem("Data/Sound/SE/hp2.mp3");
             this.OK = DX.LoadSoundMem("Data/Sound/SE/OK.mp3");
-            this.shot = DX.LoadSoundMem("Data/Sound/SE/shot.mp3");
-            this.shotHit = DX.LoadSoundMem("Data/Sound/SE/shotHit.mp3");
-            this.strengthen = DX.LoadSoundMem("Data/Sound/SE/strengthen.mp3");
+            this.Shot = DX.LoadSoundMem("Data/Sound/SE/shot.mp3");
+            this.ShotHit = DX.LoadSoundMem("Data/Sound/SE/shotHit.mp3");
+            this.Strengthen = DX.LoadSoundMem("Data/Sound/SE/strengthen.mp3");
         }
     }
 

@@ -7,12 +7,12 @@ Boar=function(api)
 
     this.update=function()
         if not sync.isNeed() then
-            table.insert(sync.list,cmd.Charge(api,api.Image.charge,300,api.R*3,255,0,0));
+            table.insert(sync.list,cmd.Charge(api,api.Image.Charge,300,api.R*3,255,0,0));
             table.insert(sync.list,cmd.Action(function()api.Power=20; end));
             table.insert(sync.list,cmd.ULM(
                 api,
                 function()
-                    local vx,vy=api.MyX-api.X,api.MyY-api.Y;
+                    local vx,vy=api.PlayerX-api.X,api.PlayerY-api.Y;
                     local vLen=math.sqrt(vx^2+vy^2);
                     if vLen~=0 then
                         vx=vx/vLen*10;

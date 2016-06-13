@@ -14,7 +14,7 @@ namespace MachShooting
     {
         public static void Draw()
         {
-            if (!Config.Instance.low)
+            if (!Config.Instance.Low)
             {
                 //Zバッファで描画可能領域
                 DX.SetUseZBufferFlag(DX.TRUE);
@@ -26,7 +26,7 @@ namespace MachShooting
                 //画像サイズ
                 int imgW;
                 int imgH;
-                DX.GetGraphSize(DXImage.Instance.back, out imgW, out imgH);
+                DX.GetGraphSize(DXImage.Instance.Back, out imgW, out imgH);
 
                 //描画回数
                 int x = (Game.WINDOW_R * 2) / imgW + 1;
@@ -38,7 +38,7 @@ namespace MachShooting
                 {
                     for (int j = 0; j < x; j++)
                     {
-                        DX.DrawGraph(j * imgW, i * imgH, DXImage.Instance.back, DX.FALSE);
+                        DX.DrawGraph(j * imgW, i * imgH, DXImage.Instance.Back, DX.FALSE);
                     }
                 }
 
@@ -48,7 +48,7 @@ namespace MachShooting
             }
             else//低負荷
             {
-                DX.DrawCircle(Game.WINDOW_R, Game.WINDOW_R, Game.WINDOW_R, DXColor.Instance.white,DX.FALSE);
+                DX.DrawCircle(Game.WINDOW_R, Game.WINDOW_R, Game.WINDOW_R, DXColor.Instance.White,DX.FALSE);
             }
         }
     }

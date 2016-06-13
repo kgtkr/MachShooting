@@ -39,7 +39,7 @@ namespace MachShooting
         {
             this.color = color;
             //角度計算
-            SE.Instance.Play(DXAudio.Instance.shot);
+            SE.Instance.Play(DXAudio.Instance.Shot);
             this.vec = vec;
             this.Rad = vec.Rad;
         }

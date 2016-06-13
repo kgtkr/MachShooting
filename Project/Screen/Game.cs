@@ -29,7 +29,7 @@ namespace MachShooting
         /// <summary>
         /// 自機
         /// </summary>
-        private readonly My my;
+        private readonly Player player;
 
         /// <summary>
         /// ボス
@@ -54,7 +54,7 @@ namespace MachShooting
         /// <summary>
         /// 自機の攻撃オブジェクト
         /// </summary>
-        private readonly List<AttackObject> myAttack;
+        private readonly List<AttackObject> playerAttack;
 
         /// <summary>
         /// 敵の攻撃オブジェクト
@@ -77,26 +77,26 @@ namespace MachShooting
             switch (equipment)
             {
                 case Equipment.STABILITY:
-                    this.my = new Stability();
+                    this.player = new Stability();
                     break;
                 case Equipment.SUPER_CHARGE:
-                    this.my = new SuperCharge();
+                    this.player = new SuperCharge();
                     break;
                 case Equipment.CHARGE:
-                    this.my = new Charge();
+                    this.player = new Charge();
                     break;
                 case Equipment.OVERALL:
-                    this.my = new Overall();
+                    this.player = new Overall();
                     break;
                 case Equipment.DOUBLE:
-                    this.my = new Double();
+                    this.player = new Double();
                     break;
             }
 
-            this.boss = new Enemy(enemy, my);
+            this.boss = new Enemy(enemy, player);
 
             this.battle = 0;
-            this.myAttack = new List<AttackObject>();
+            this.playerAttack = new List<AttackObject>();
             this.enemyAttack = new List<AttackObject>();
             this.screen = DX.MakeScreen(Game.WINDOW_R * 2, Game.WINDOW_R * 2);
         }
@@ -107,32 +107,32 @@ namespace MachShooting
         /// </summary>
         public override void Draw()
         {
-            DX.DrawBox(0, 0, Program.WIDTH, Program.HEIGHT, DXColor.Instance.black, DX.TRUE);
+            DX.DrawBox(0, 0, Program.WIDTH, Program.HEIGHT, DXColor.Instance.Black, DX.TRUE);
             DX.SetDrawScreen(this.screen);
-            DX.DrawBox(0, 0, Game.WINDOW_R * 2, Game.WINDOW_R * 2, DXColor.Instance.black, DX.TRUE);
+            DX.DrawBox(0, 0, Game.WINDOW_R * 2, Game.WINDOW_R * 2, DXColor.Instance.Black, DX.TRUE);
 
             Back.Draw();
 
             this.boss.DrawObject();
 
-            this.my.DrawObject();
+            this.player.DrawObject();
 
             foreach (AttackObject a in this.enemyAttack)
             {
                 a.DrawObject();
             }
-            foreach (AttackObject a in this.myAttack)
+            foreach (AttackObject a in this.playerAttack)
             {
                 a.DrawObject();
             }
 
             DX.SetDrawScreen(DX.DX_SCREEN_BACK);
-            DX.DrawRotaGraph2(Program.WIDTH / 2, Program.HEIGHT / 2 + Program.HEIGHT / 4, (int)this.my.X, (int)this.my.Y, 1, Math.PI * 2 - (this.my.Rad - this.my.Image.rad), this.screen, DX.FALSE);
+            DX.DrawRotaGraph2(Program.WIDTH / 2, Program.HEIGHT / 2 + Program.HEIGHT / 4, (int)this.player.X, (int)this.player.Y, 1, Math.PI * 2 - (this.player.Rad - this.player.Image.rad), this.screen, DX.FALSE);
 
 
             DX.SetDrawBlendMode(DX.DX_BLENDMODE_ALPHA, 150);
             this.boss.DrawHP();
-            this.my.DrawCockpit(this.timeF);
+            this.player.DrawCockpit(this.timeF);
             DX.SetDrawBlendMode(DX.DX_BLENDMODE_NOBLEND, 0);
 
             if (battle == 1)
@@ -149,19 +149,19 @@ namespace MachShooting
                 const int X = 15;
 
                 //枠
-                DX.DrawBox(SPACE1, SPACE1, Program.WIDTH - SPACE1, Program.HEIGHT - SPACE1, DXColor.Instance.blue, DX.TRUE);
-                DX.DrawBox(SPACE2, SPACE2, Program.WIDTH - SPACE2, Program.HEIGHT - SPACE2, DXColor.Instance.black, DX.TRUE);
+                DX.DrawBox(SPACE1, SPACE1, Program.WIDTH - SPACE1, Program.HEIGHT - SPACE1, DXColor.Instance.Blue, DX.TRUE);
+                DX.DrawBox(SPACE2, SPACE2, Program.WIDTH - SPACE2, Program.HEIGHT - SPACE2, DXColor.Instance.Black, DX.TRUE);
 
                 {
-                    uint color = this.stopIndex == 0 ? DXColor.Instance.red : DXColor.Instance.white;
-                    int w = DX.GetDrawStringWidthToHandle("再開", Program.GetStringByte("再開"), Font.Instance.font64);
-                    DX.DrawStringToHandle(WIDTH / 2 - w / 2 + SPACE2, SPACE2 + 30, "再開", color, Font.Instance.font64);
+                    uint color = this.stopIndex == 0 ? DXColor.Instance.Red : DXColor.Instance.White;
+                    int w = DX.GetDrawStringWidthToHandle("再開", Program.GetStringByte("再開"), Font.Instance.Font64);
+                    DX.DrawStringToHandle(WIDTH / 2 - w / 2 + SPACE2, SPACE2 + 30, "再開", color, Font.Instance.Font64);
                 }
 
                 {
-                    uint color = this.stopIndex == 1 ? DXColor.Instance.red : DXColor.Instance.white;
-                    int w = DX.GetDrawStringWidthToHandle("メニューへ", Program.GetStringByte("メニューへ"), Font.Instance.font64);
-                    DX.DrawStringToHandle(WIDTH / 2 - w / 2 + SPACE2, SPACE2 + 15*3+64, "メニューへ", color, Font.Instance.font64);
+                    uint color = this.stopIndex == 1 ? DXColor.Instance.Red : DXColor.Instance.White;
+                    int w = DX.GetDrawStringWidthToHandle("メニューへ", Program.GetStringByte("メニューへ"), Font.Instance.Font64);
+                    DX.DrawStringToHandle(WIDTH / 2 - w / 2 + SPACE2, SPACE2 + 15*3+64, "メニューへ", color, Font.Instance.Font64);
                 }
             }
             else if (this.battle == 2)
@@ -178,14 +178,14 @@ namespace MachShooting
                 const int X = 15;
 
                 //枠
-                DX.DrawBox(SPACE1, SPACE1, Program.WIDTH - SPACE1, Program.HEIGHT - SPACE1, DXColor.Instance.blue, DX.TRUE);
-                DX.DrawBox(SPACE2, SPACE2, Program.WIDTH - SPACE2, Program.HEIGHT - SPACE2, DXColor.Instance.black, DX.TRUE);
+                DX.DrawBox(SPACE1, SPACE1, Program.WIDTH - SPACE1, Program.HEIGHT - SPACE1, DXColor.Instance.Blue, DX.TRUE);
+                DX.DrawBox(SPACE2, SPACE2, Program.WIDTH - SPACE2, Program.HEIGHT - SPACE2, DXColor.Instance.Black, DX.TRUE);
 
                 //敵名
-                int w = DX.GetDrawStringWidthToHandle(this.boss.name, Program.GetStringByte(this.boss.name), Font.Instance.font64);
-                DX.DrawStringToHandle(WIDTH / 2 - w / 2 + SPACE2, SPACE2 + 15, this.boss.name, DXColor.Instance.white, Font.Instance.font64);
+                int w = DX.GetDrawStringWidthToHandle(this.boss.Name, Program.GetStringByte(this.boss.Name), Font.Instance.Font64);
+                DX.DrawStringToHandle(WIDTH / 2 - w / 2 + SPACE2, SPACE2 + 15, this.boss.Name, DXColor.Instance.White, Font.Instance.Font64);
                 //自機名
-                DX.DrawStringToHandle(X + SPACE2, SPACE2 + 64 + 10, this.my.Name, DXColor.Instance.white, Font.Instance.font32);
+                DX.DrawStringToHandle(X + SPACE2, SPACE2 + 64 + 10, this.player.Name, DXColor.Instance.White, Font.Instance.Font32);
                 //クリア
                 if (!this.boss.Need)
                 {
@@ -193,17 +193,17 @@ namespace MachShooting
                     int m = this.timeF / 6 / 10 / 60;
                     int s = (this.timeF - m * 6 * 10 * 60) / 6 / 10;
                     int s2 = (this.timeF - m * 6 * 10 * 60 - s * 6 * 10) / 6;
-                    DX.DrawStringToHandle(X + SPACE2, SPACE2 + 64 + 10 + 32 + 5, "クリアタイム:" + m + "." + s + "." + s2, DXColor.Instance.white, Font.Instance.font32);
+                    DX.DrawStringToHandle(X + SPACE2, SPACE2 + 64 + 10 + 32 + 5, "クリアタイム:" + m + "." + s + "." + s2, DXColor.Instance.White, Font.Instance.Font32);
                 }
                 //自機が死んだ
-                else if (!this.my.Need)
+                else if (!this.player.Need)
                 {
-                    DX.DrawStringToHandle(X + SPACE2, SPACE2 + 64 + 10 + 32 + 5, "自機が破壊された…", DXColor.Instance.white, Font.Instance.font32);
+                    DX.DrawStringToHandle(X + SPACE2, SPACE2 + 64 + 10 + 32 + 5, "自機が破壊された…", DXColor.Instance.White, Font.Instance.Font32);
                 }
                 //タイムアップ
                 else
                 {
-                    DX.DrawStringToHandle(X + SPACE2, SPACE2 + 64 + 10 + 32 + 5, "時間切れです…", DXColor.Instance.white, Font.Instance.font32);
+                    DX.DrawStringToHandle(X + SPACE2, SPACE2 + 64 + 10 + 32 + 5, "時間切れです…", DXColor.Instance.White, Font.Instance.Font32);
                 }
             }
         }
@@ -219,17 +219,17 @@ namespace MachShooting
             {
                 this.timeF++;
 
-                this.myAttack.AddList(this.my.Process(key, key2,this.boss));
+                this.playerAttack.AddList(this.player.Process(key, key2,this.boss));
 
                 /*ボス*/
                 this.enemyAttack.AddList(this.boss.Process());
-                if (GameObject.Hit(this.my, this.boss))//当たっている
+                if (GameObject.Hit(this.player, this.boss))//当たっている
                 {
-                    this.boss.Attack(my.Suffer(this.boss.Power));
+                    this.boss.Attack(player.Suffer(this.boss.Power));
                 }
-                foreach (AttackObject a in this.myAttack.ToArray())
+                foreach (AttackObject a in this.playerAttack.ToArray())
                 {
-                    this.myAttack.AddList(a.Process());
+                    this.playerAttack.AddList(a.Process());
                     if (GameObject.Hit(this.boss, a))//当たっている
                     {
                         if (this.boss.Need)
@@ -240,15 +240,15 @@ namespace MachShooting
 
                     if (!a.Need)
                     {
-                        this.myAttack.Remove(a);
+                        this.playerAttack.Remove(a);
                     }
                 }
                 foreach (AttackObject a in this.enemyAttack.ToArray())
                 {
                     this.enemyAttack.AddList(a.Process());
-                    if (GameObject.Hit(this.my, a))
+                    if (GameObject.Hit(this.player, a))
                     {
-                        a.Attack(this.my.Suffer(a.Power));
+                        a.Attack(this.player.Suffer(a.Power));
                     }
                     if (!a.Need)
                     {
@@ -256,14 +256,14 @@ namespace MachShooting
                     }
                 }
 
-                if(key2[Config.Instance.key[KeyComfig.GAME_STOP]] == DX.TRUE)
+                if(key2[Config.Instance.Key[KeyComfig.GAME_STOP]] == DX.TRUE)
                 {
                     this.battle = 1;
                 }
 
                 if (!this.boss.Need) this.battle = 2;
                 if (this.timeF == Game.TIME_LIMIT_F) this.battle = 2;
-                if (!my.Need)//myが死んだ
+                if (!player.Need)//自機が死んだ
                 {
                     this.battle = 2;
                     this.Need = true;
@@ -271,14 +271,14 @@ namespace MachShooting
             }
             else if (battle == 1)//一時停止
             {
-                if(key2[Config.Instance.key[KeyComfig.MENU_UP]]==DX.TRUE^
-                    key2[Config.Instance.key[KeyComfig.MENU_DOWN]] == DX.TRUE)
+                if(key2[Config.Instance.Key[KeyComfig.MENU_UP]]==DX.TRUE^
+                    key2[Config.Instance.Key[KeyComfig.MENU_DOWN]] == DX.TRUE)
                 {
                     this.stopIndex++;
                     this.stopIndex %= 2;
                 }
 
-                if (key2[Config.Instance.key[KeyComfig.MENU_OK]] == DX.TRUE)
+                if (key2[Config.Instance.Key[KeyComfig.MENU_OK]] == DX.TRUE)
                 {
                     if (this.stopIndex == 0)
                     {
@@ -289,7 +289,7 @@ namespace MachShooting
                         this.Need = false;
                     }
                 }
-                else if (key2[Config.Instance.key[KeyComfig.MENU_BACK]] == DX.TRUE)
+                else if (key2[Config.Instance.Key[KeyComfig.MENU_BACK]] == DX.TRUE)
                 {
                     this.stopIndex = 0;
                     this.battle = 0;
@@ -297,7 +297,7 @@ namespace MachShooting
             }
             else//リザルト
             {
-                if (key2[Config.Instance.key[KeyComfig.MENU_OK]] == DX.TRUE)
+                if (key2[Config.Instance.Key[KeyComfig.MENU_OK]] == DX.TRUE)
                 {
                     this.Need = false;
                 }

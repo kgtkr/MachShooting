@@ -76,7 +76,7 @@ namespace MachShooting
             /*前処理*/
             DX.SetOutApplicationLogValidFlag(DX.FALSE);//ログを出力しない
             DX.SetMainWindowText("MachShooting");//タイトル設定
-            DX.ChangeWindowMode(Config.Instance.full ? DX.FALSE : DX.TRUE);//ウィンドウモード
+            DX.ChangeWindowMode(Config.Instance.Full ? DX.FALSE : DX.TRUE);//ウィンドウモード
 
             /*DXライブラリの読み込み*/
             if (DX.DxLib_Init() == -1)
@@ -101,9 +101,9 @@ namespace MachShooting
                 int startTime = DX.GetNowCount();//フレームの始まった時間を取得
                 Fps.Instance.Update();
                 string fpsString = "FPS:" + Fps.Instance.FPS.ToString("#0.0");//FPS取得
-                uint fpsColor = Fps.Instance.FPS > 55 ? DXColor.Instance.white : DXColor.Instance.red;//FPSが55以下なら赤で描画
+                uint fpsColor = Fps.Instance.FPS > 55 ? DXColor.Instance.White : DXColor.Instance.Red;//FPSが55以下なら赤で描画
 
-                if (count % Config.Instance.frameSkip == 0)
+                if (count % Config.Instance.FrameSkip == 0)
                 {
                     if (DX.ClearDrawScreen() != 0)//画面消去。×が押されたら終了
                     {
@@ -126,10 +126,10 @@ namespace MachShooting
                 lastKey = key;
 
                 Update(key, key2);
-                if (count % Config.Instance.frameSkip == 0) DX.DrawStringToHandle(0, 0, fpsString, fpsColor, Font.Instance.font16);
+                if (count % Config.Instance.FrameSkip == 0) DX.DrawStringToHandle(0, 0, fpsString, fpsColor, Font.Instance.Font16);
 
 
-                if (count % Config.Instance.frameSkip == 0) DX.ScreenFlip();//裏画面を表画面に表示
+                if (count % Config.Instance.FrameSkip == 0) DX.ScreenFlip();//裏画面を表画面に表示
                 if (DX.ProcessMessage() != 0)
                 {
                     DX.DxLib_End();
@@ -149,7 +149,7 @@ namespace MachShooting
             if (Program.title != null)//タイトル画面なら
             {
                 Program.title.Process(key, key2);
-                if (count % Config.Instance.frameSkip == 0) Program.title.Draw();
+                if (count % Config.Instance.FrameSkip == 0) Program.title.Draw();
                 if (!Program.title.Need)
                 {
                     Program.title = null;
@@ -159,7 +159,7 @@ namespace MachShooting
             else if (Program.equipmentMenu != null)//装備選択画面なら
             {
                 Program.equipmentMenu.Process(key, key2);
-                if (count % Config.Instance.frameSkip == 0) Program.equipmentMenu.Draw();
+                if (count % Config.Instance.FrameSkip == 0) Program.equipmentMenu.Draw();
                 if (!Program.equipmentMenu.Need)
                 {
                     Program.equipment = Program.equipmentMenu.Equipment;
@@ -170,7 +170,7 @@ namespace MachShooting
             else if (Program.missionMenu != null)//敵選択画面なら
             {
                 Program.missionMenu.Process(key, key2);
-                if (count % Config.Instance.frameSkip == 0) Program.missionMenu.Draw();
+                if (count % Config.Instance.FrameSkip == 0) Program.missionMenu.Draw();
                 if (!Program.missionMenu.Need)
                 {
                     if (Program.missionMenu.Decision)
@@ -189,7 +189,7 @@ namespace MachShooting
             else//ゲーム画面なら
             {
                 Program.game.Process(key, key2);
-                if (count % Config.Instance.frameSkip == 0) Program.game.Draw();
+                if (count % Config.Instance.FrameSkip == 0) Program.game.Draw();
                 if (!Program.game.Need)
                 {
                     DX.SetBackgroundColor(0, 0, 0);

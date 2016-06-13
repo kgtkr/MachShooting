@@ -28,7 +28,7 @@ namespace MachShooting
         /// <summary>
         /// 8px
         /// </summary>
-        public int font8
+        public int Font8
         {
             get;
             private set;
@@ -37,7 +37,7 @@ namespace MachShooting
         /// <summary>
         /// 16px
         /// </summary>
-        public int font16
+        public int Font16
         {
             get;
             private set;
@@ -46,7 +46,7 @@ namespace MachShooting
         /// <summary>
         /// 32px
         /// </summary>
-        public int font32
+        public int Font32
         {
             get;
             private set;
@@ -55,7 +55,7 @@ namespace MachShooting
         /// <summary>
         /// 64px
         /// </summary>
-        public int font64
+        public int Font64
         {
             get;
             private set;
@@ -64,10 +64,10 @@ namespace MachShooting
 
         private Font()
         {
-            this.font8 = DX.LoadFontDataToHandle("Data/Font/8.dft");
-            this.font16 = DX.LoadFontDataToHandle("Data/Font/16.dft");
-            this.font32 = DX.LoadFontDataToHandle("Data/Font/32.dft");
-            this.font64 = DX.LoadFontDataToHandle("Data/Font/64.dft");
+            this.Font8 = DX.LoadFontDataToHandle("Data/Font/8.dft");
+            this.Font16 = DX.LoadFontDataToHandle("Data/Font/16.dft");
+            this.Font32 = DX.LoadFontDataToHandle("Data/Font/32.dft");
+            this.Font64 = DX.LoadFontDataToHandle("Data/Font/64.dft");
         }
     }
 }

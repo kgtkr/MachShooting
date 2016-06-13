@@ -9,9 +9,9 @@ using MachShooting.Graphic;
 namespace MachShooting
 {
     /// <summary>
-    /// 双連射型
+    /// 拡散型
     /// </summary>
-    public class Double : My
+    public class Overall : Player
     {
         #region 定数
         #endregion
@@ -22,19 +22,19 @@ namespace MachShooting
         private int conventionalAttack;
 
         /// <summary>
+        /// カウンター攻撃
+        /// </summary>
+        private int counterAttack;
+
+        /// <summary>
         /// 特殊攻撃
         /// </summary>
         private int specialAttack;
 
         /// <summary>
-        /// 攻撃系必殺技
+        /// 必殺技
         /// </summary>
         private int deathblow;
-
-        /// <summary>
-        /// カウンター攻撃
-        /// </summary>
-        private int counterAttack;
         #endregion
         #region プロパティ
         #endregion
@@ -42,8 +42,9 @@ namespace MachShooting
         /// <summary>
         /// 新しいイントランスを作成します
         /// </summary>
-        public Double() : base("双連射型", Gauge.MEDIUM, Gauge.SUPER_SMALL)
+        public Overall() : base("拡散型",Gauge.SUPER_LARGE, Gauge.MEDIUM)
         {
+
         }
         #endregion
         #region メソッド
@@ -59,17 +60,34 @@ namespace MachShooting
             List<AttackObject> attack = null;
             if (start)
             {
-                attack = new List<AttackObject>();
                 this.conventionalAttack = 0;
+                attack = new List<AttackObject>();
+                for (int i = 0; i < 11; i++)
+                {
+                    int d = this.Strengthen == 0 ? 2 : 3;
+                    Image img = DXImage.Instance.BulletSmall;
 
-                attack.Add(NewBullet(this.BulletDotR, this.Strengthen == 0 ? 2 : 3, new Vec(0, -10), DXImage.Instance.bulletSmall, System.Drawing.Color.Red));
-                attack.Add(NewBullet(this.BulletDotL, this.Strengthen == 0 ? 2 : 3, new Vec(0, -10), DXImage.Instance.bulletSmall, System.Drawing.Color.Red));
+                    switch (i)
+                    {
+                        case 5:
+                            d *= 6;
+                            img= DXImage.Instance.BulletBig;
+                            break;
+                        case 4:
+                        case 6:
+                            d *= 2;
+                            img = DXImage.Instance.BulletMedium;
+                            break;
+                    }
+
+                    attack.Add(NewBullet(this.BulletDotC, d,Vec.NewRadLength((225.0 + i * 9).ToRad(), 10), img, System.Drawing.Color.Red));
+                }
             }
             else
             {
-                if (this.conventionalAttack >= 4)
+                if (this.conventionalAttack >= 30)
                 {
-                    this.Action = MyAction.NONE;
+                    this.Action = PlayerAction.NONE;
                 }
             }
             this.conventionalAttack++;
@@ -87,18 +105,33 @@ namespace MachShooting
             if (start)
             {
                 this.counterAttack = 0;
+                attack = new List<AttackObject>();
+                for (int i = 0; i < 11; i++)
+                {
+                    int d = this.Strengthen == 0 ? 2 : 3;
+                    Image img = DXImage.Instance.BulletSmall;
+
+                    switch (i)
+                    {
+                        case 5:
+                            d *= 6;
+                            img = DXImage.Instance.BulletBig;
+                            break;
+                        case 4:
+                        case 6:
+                            d *= 2;
+                            img = DXImage.Instance.BulletMedium;
+                            break;
+                    }
+
+                    attack.Add(NewBullet(this.BulletDotC, d,Vec.NewRadLength((225.0 + i * 9).ToRad(),10), img, System.Drawing.Color.Red));
+                }
             }
             else
             {
-                if (this.counterAttack % 4 == 0)
-                {
-                    attack = new List<AttackObject>();
-                    attack.Add(NewBullet(this.BulletDotR, this.Strengthen == 0 ? 4 : 5, new Vec(0, -10), DXImage.Instance.bulletSmall, System.Drawing.Color.Red));
-                    attack.Add(NewBullet(this.BulletDotL, this.Strengthen == 0 ? 4 : 5, new Vec(0, -10), DXImage.Instance.bulletSmall, System.Drawing.Color.Red));
-                }
                 if (this.counterAttack >= 30)
                 {
-                    this.Action = MyAction.NONE;
+                    this.Action = PlayerAction.NONE;
                 }
             }
             this.counterAttack++;
@@ -119,19 +152,20 @@ namespace MachShooting
             }
             else
             {
-                this.Speed = 1;
-                if (this.deathblow % 2 == 0)
+                if (this.deathblow % 3 == 0)
                 {
                     attack = new List<AttackObject>();
-                    attack.Add(NewBullet(this.BulletDotR, this.Strengthen == 0 ? 2 : 3, new Vec(0, -10), DXImage.Instance.bulletSmall, System.Drawing.Color.Red));
-                    attack.Add(NewBullet(this.BulletDotL, this.Strengthen == 0 ? 2 : 3, new Vec(0, -10), DXImage.Instance.bulletSmall, System.Drawing.Color.Red));
-                }
-                if (this.deathblow >= 120)
-                {
-                    this.Action = MyAction.NONE;
+                    for (int i = 0; i < 36; i++)
+                    {
+                        attack.Add(NewBullet(this.BulletDotC, this.Strengthen == 0 ? 1 : 2,Vec.NewRadLength((i * 10.0 + this.deathblow % 360).ToRad(),15), DXImage.Instance.BulletSmall, System.Drawing.Color.Red));
+                    }
                 }
             }
             this.deathblow++;
+            if (this.deathblow == 300)
+            {
+                this.Action = PlayerAction.NONE;
+            }
             return attack;
         }
 
@@ -148,49 +182,40 @@ namespace MachShooting
                 this.specialAttack = 0;
 
                 attack = new List<AttackObject>();
-                attack.Add(NewBullet(this.BulletDotR, this.Strengthen == 0 ? 3 : 4, new Vec(0, -10), DXImage.Instance.bulletSmall, System.Drawing.Color.Red));
-                attack.Add(NewBullet(this.BulletDotL, this.Strengthen == 0 ? 3 : 4, new Vec(0, -10), DXImage.Instance.bulletSmall, System.Drawing.Color.Red));
+                for (int i = 0; i < 27; i++)
+                {
+                    attack.Add(NewBullet(this.BulletDotC, this.Strengthen == 0 ? 2 : 3, Vec.NewRadLength((i*15.0).ToRad(),10), DXImage.Instance.BulletSmall, System.Drawing.Color.Red));
+                }
             }
             else
             {
-                this.Speed = 1;
-                if (this.specialAttack >= 4)
+                if (this.specialAttack >= 30)
                 {
-                    this.Action = MyAction.NONE;
+                    this.Action = PlayerAction.NONE;
                 }
             }
             this.specialAttack++;
             return attack;
         }
 
+        /// <summary>
+        /// 自己強化
+        /// </summary>
+        /// <param name="key"></param>
+        /// <param name="start"></param>
         protected override void Strengthen_(byte[] key, bool start)
         {
             if (start)
             {
-                this.Strengthen = 450;
+                this.Strengthen = 900;
             }
             else
             {
-                if (this.Strengthen % 20 == 0 && this.Hp != 0)
-                {
-                    this.Hp--;
-                    if (this.Hp == 0)
-                    {
-                        this.Hp = 1;
-                        this.Strengthen = 0;
-                        return;
-                    }
-                }
                 this.Strengthen--;
             }
         }
         #endregion
         #region 未実装メソッド
         #endregion
-
-
-
-
-
     }
 }

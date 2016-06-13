@@ -30,7 +30,7 @@ namespace MachShooting
         /// <summary>
         /// 背景画像
         /// </summary>
-        public int back
+        public int Back
         {
             get;
             private set;
@@ -39,7 +39,7 @@ namespace MachShooting
         /// <summary>
         /// 自機
         /// </summary>
-        public Image my
+        public Image Player
         {
             get;
             private set;
@@ -48,7 +48,7 @@ namespace MachShooting
         /// <summary>
         /// 時計
         /// </summary>
-        public int clock
+        public int Clock
         {
             get;
             private set;
@@ -57,7 +57,7 @@ namespace MachShooting
         /// <summary>
         /// 超巨大弾
         /// </summary>
-        public Image bomb
+        public Image Bomb
         {
             get;
             private set;
@@ -66,7 +66,7 @@ namespace MachShooting
         /// <summary>
         /// 小弾
         /// </summary>
-        public Image bulletSmall
+        public Image BulletSmall
         {
             get;
             private set;
@@ -75,7 +75,7 @@ namespace MachShooting
         /// <summary>
         /// 中弾
         /// </summary>
-        public Image bulletMedium
+        public Image BulletMedium
         {
             get;
             private set;
@@ -84,7 +84,7 @@ namespace MachShooting
         /// <summary>
         /// 大弾
         /// </summary>
-        public Image bulletBig
+        public Image BulletBig
         {
             get;
             private set;
@@ -94,7 +94,7 @@ namespace MachShooting
         /// <summary>
         /// ヒット
         /// </summary>
-        public int hit
+        public int Hit
         {
             get;
             private set;
@@ -103,7 +103,7 @@ namespace MachShooting
         /// <summary>
         /// チャージ
         /// </summary>
-        public int charge
+        public int Charge
         {
             get;
             private set;
@@ -112,7 +112,7 @@ namespace MachShooting
         /// <summary>
         /// 特殊効果
         /// </summary>
-        public int special
+        public int Special
         {
             get;
             private set;
@@ -123,23 +123,23 @@ namespace MachShooting
         private DXImage()
         {
             /*=画像=*/
-            this.back = DX.LoadGraph("Data/Image/back.png");
+            this.Back = DX.LoadGraph("Data/Image/back.png");
 
-            this.my = new Image(DX.LoadGraph("Data/Image/My/1.png"), 15, new Vec(0, -1).Rad);
+            this.Player = new Image(DX.LoadGraph("Data/Image/Player/center.png"), 15, new Vec(0, -1).Rad);
 
-            this.clock = DX.LoadGraph("Data/Image/Clock.png");
+            this.Clock = DX.LoadGraph("Data/Image/Clock.png");
 
-            this.bomb = new Image(DX.LoadGraph("Data/Image/Bullet/bomb.png"), 140, Math.PI);
+            this.Bomb = new Image(DX.LoadGraph("Data/Image/Bullet/bomb.png"), 140, Math.PI);
 
-            this.bulletSmall=new Image(DX.LoadGraph("Data/Image/Bullet/small.png"), 4, new Vec(0, -1).Rad);
-            this.bulletMedium=new Image(DX.LoadGraph("Data/Image/Bullet/medium.png"), 8, new Vec(0, -1).Rad);
-            this.bulletBig=new Image(DX.LoadGraph("Data/Image/Bullet/big.png"), 14, new Vec(0, -1).Rad);
+            this.BulletSmall=new Image(DX.LoadGraph("Data/Image/Bullet/small.png"), 4, new Vec(0, -1).Rad);
+            this.BulletMedium=new Image(DX.LoadGraph("Data/Image/Bullet/medium.png"), 8, new Vec(0, -1).Rad);
+            this.BulletBig=new Image(DX.LoadGraph("Data/Image/Bullet/big.png"), 14, new Vec(0, -1).Rad);
 
 
             //エフェクト
-            this.hit = DX.LoadGraph("Data/Image/Effect/Hit.png");
-            this.special = DX.LoadGraph("Data/Image/Effect/Special.png");
-            this.charge = DX.LoadGraph("Data/Image/Effect/Charge.png");
+            this.Hit = DX.LoadGraph("Data/Image/Effect/Hit.png");
+            this.Special = DX.LoadGraph("Data/Image/Effect/Special.png");
+            this.Charge = DX.LoadGraph("Data/Image/Effect/Charge.png");
         }
     }
 }

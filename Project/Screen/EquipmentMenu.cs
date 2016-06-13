@@ -40,11 +40,11 @@ namespace MachShooting
                     const int Y = 30;
 
                     //変数
-                    int font = Font.Instance.font32;
+                    int font = Font.Instance.Font32;
                     int x = Program.WIDTH / 2 - DX.GetDrawStringWidthToHandle(MESSAGE, Program.GetStringByte(MESSAGE), font) / 2;
 
                     //描画
-                    DX.DrawStringToHandle(x, Y, MESSAGE, DXColor.Instance.white, font);
+                    DX.DrawStringToHandle(x, Y, MESSAGE, DXColor.Instance.White, font);
                 }
                 //武器一覧
                 {
@@ -54,13 +54,13 @@ namespace MachShooting
                     const int NUMBER = 5;//武器の種類
 
                     //変数
-                    int font = Font.Instance.font16;
+                    int font = Font.Instance.Font16;
                     int y = Y;
 
                     //描画
                     for (int i = 0; i < NUMBER; i++)
                     {
-                        uint color = i == this.index ? DXColor.Instance.red : DXColor.Instance.white;
+                        uint color = i == this.index ? DXColor.Instance.Red : DXColor.Instance.White;
                         string name = ((Equipment)i).GetName();
                         int x = Program.WIDTH / 2 - DX.GetDrawStringWidthToHandle(name, Program.GetStringByte(name), font) / 2;
                         DX.DrawStringToHandle(x, y, name, color, font);
@@ -75,14 +75,14 @@ namespace MachShooting
             if (this.Need)
             {
                 //押されているかつ要素の最後でないなら
-                if (key2[Config.Instance.key[KeyComfig.MENU_DOWN]] == DX.TRUE)//下
+                if (key2[Config.Instance.Key[KeyComfig.MENU_DOWN]] == DX.TRUE)//下
                 {
                     if (this.index + 1 != 5)
                     {
                         this.index++;
                     }
                 }
-                else if (key2[Config.Instance.key[KeyComfig.MENU_UP]] == DX.TRUE)//上
+                else if (key2[Config.Instance.Key[KeyComfig.MENU_UP]] == DX.TRUE)//上
                 {
                     if (this.index != 0)
                     {
@@ -91,7 +91,7 @@ namespace MachShooting
                 }
 
                 //決定
-                if (key2[Config.Instance.key[KeyComfig.MENU_OK]] == DX.TRUE)//決定
+                if (key2[Config.Instance.Key[KeyComfig.MENU_OK]] == DX.TRUE)//決定
                 {
                     this.Need = false;
                     this.Decision = true;

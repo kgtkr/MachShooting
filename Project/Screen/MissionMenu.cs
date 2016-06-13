@@ -60,11 +60,11 @@ namespace MachShooting
                         const int Y = 30;
 
                         //変数
-                        int font = Font.Instance.font32;
+                        int font = Font.Instance.Font32;
                         int x = Program.WIDTH / 2 - DX.GetDrawStringWidthToHandle(MESSAGE, Program.GetStringByte(MESSAGE), font) / 2;
 
                         //描画
-                        DX.DrawStringToHandle(x, Y, MESSAGE, DXColor.Instance.white, font);
+                        DX.DrawStringToHandle(x, Y, MESSAGE, DXColor.Instance.White, font);
                     }
                     //敵一覧
                     {
@@ -73,13 +73,13 @@ namespace MachShooting
                         const int SPACE = 20;
 
                         //変数
-                        int font = Font.Instance.font16;
+                        int font = Font.Instance.Font16;
                         int y = Y;
 
                         //描画
                         for (int i = 0; i < this.tree.Header.Count; i++)
                         {
-                            uint color = i == this.index ? DXColor.Instance.red : DXColor.Instance.white;
+                            uint color = i == this.index ? DXColor.Instance.Red : DXColor.Instance.White;
                             string name = this.tree.Header[i].name;
                             int x = Program.WIDTH / 2 - DX.GetDrawStringWidthToHandle(name, Program.GetStringByte(name), font) / 2;
                             DX.DrawStringToHandle(x, y, name, color, font);
@@ -88,7 +88,7 @@ namespace MachShooting
 
                         for (int i = 0; i < this.tree.Tree.Count; i++)
                         {
-                            uint color = i == this.index - this.tree.Header.Count ? DXColor.Instance.red : DXColor.Instance.white;
+                            uint color = i == this.index - this.tree.Header.Count ? DXColor.Instance.Red : DXColor.Instance.White;
                             string name = "+" + this.tree.Tree[i].Name;
                             int x = Program.WIDTH / 2 - DX.GetDrawStringWidthToHandle(name, Program.GetStringByte(name), font) / 2;
                             DX.DrawStringToHandle(x, y, name, color, font);
@@ -115,14 +115,14 @@ namespace MachShooting
 
                     /*押されているかつ、最初か最後でないなら*/
 
-                    if (key2[Config.Instance.key[KeyComfig.MENU_DOWN]] == DX.TRUE)
+                    if (key2[Config.Instance.Key[KeyComfig.MENU_DOWN]] == DX.TRUE)
                     {
                         if (this.index + 1 != mn)
                         {
                             this.index++;
                         }
                     }
-                    else if (key2[Config.Instance.key[KeyComfig.MENU_UP]] == DX.TRUE)
+                    else if (key2[Config.Instance.Key[KeyComfig.MENU_UP]] == DX.TRUE)
                     {
                         if (this.index != 0)
                         {
@@ -130,12 +130,12 @@ namespace MachShooting
                         }
                     }
 
-                    if (key2[Config.Instance.key[KeyComfig.MENU_OK]] == DX.TRUE)//Zが押されたなら
+                    if (key2[Config.Instance.Key[KeyComfig.MENU_OK]] == DX.TRUE)//Zが押されたなら
                     {
                         this.ok1 = true;
                     }
 
-                    if (this.ok1 && key[Config.Instance.key[KeyComfig.MENU_OK]] == DX.FALSE && this.tree.Header.Count + this.tree.Tree.Count != 0)
+                    if (this.ok1 && key[Config.Instance.Key[KeyComfig.MENU_OK]] == DX.FALSE && this.tree.Header.Count + this.tree.Tree.Count != 0)
                     {
                         //ミッションなら
                         if (this.index < this.tree.Header.Count)
@@ -154,11 +154,11 @@ namespace MachShooting
                         this.ok1 = false;
                     }
 
-                    else if (key2[Config.Instance.key[KeyComfig.MENU_BACK]] == DX.TRUE)//戻る
+                    else if (key2[Config.Instance.Key[KeyComfig.MENU_BACK]] == DX.TRUE)//戻る
                     {
                         this.Need = false;
                         this.Decision = false;
-                        SE.Instance.Play(DXAudio.Instance.cancel);
+                        SE.Instance.Play(DXAudio.Instance.Cancel);
                     }
                 }
                 else
