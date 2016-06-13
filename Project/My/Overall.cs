@@ -80,7 +80,7 @@ namespace MachShooting
                             break;
                     }
 
-                    attack.Add(NewBullet(this.BulletDotC, d,Vec.NewRadLength((225.0 + i * 9).ToRad(), 10), img, System.Drawing.Color.Red, this.AttackObjectMeta));
+                    attack.Add(NewBullet(this.BulletDotC, d,Vec.NewRadLength((225.0 + i * 9).ToRad(), 10), img, System.Drawing.Color.Red));
                 }
             }
             else
@@ -124,7 +124,7 @@ namespace MachShooting
                             break;
                     }
 
-                    attack.Add(NewBullet(this.BulletDotC, d,Vec.NewRadLength((225.0 + i * 9).ToRad(),10), img, System.Drawing.Color.Red, this.AttackObjectMeta));
+                    attack.Add(NewBullet(this.BulletDotC, d,Vec.NewRadLength((225.0 + i * 9).ToRad(),10), img, System.Drawing.Color.Red));
                 }
             }
             else
@@ -157,7 +157,7 @@ namespace MachShooting
                     attack = new List<AttackObject>();
                     for (int i = 0; i < 36; i++)
                     {
-                        attack.Add(NewBullet(this.BulletDotC, this.Strengthen == 0 ? 1 : 2,Vec.NewRadLength((i * 10.0 + this.deathblow % 360).ToRad(),15), DXImage.Instance.bulletSmall, System.Drawing.Color.Red, this.AttackObjectMeta));
+                        attack.Add(NewBullet(this.BulletDotC, this.Strengthen == 0 ? 1 : 2,Vec.NewRadLength((i * 10.0 + this.deathblow % 360).ToRad(),15), DXImage.Instance.bulletSmall, System.Drawing.Color.Red));
                     }
                 }
             }
@@ -184,7 +184,7 @@ namespace MachShooting
                 attack = new List<AttackObject>();
                 for (int i = 0; i < 27; i++)
                 {
-                    attack.Add(NewBullet(this.BulletDotC, this.Strengthen == 0 ? 2 : 3, Vec.NewRadLength((i*15.0).ToRad(),10), DXImage.Instance.bulletSmall, System.Drawing.Color.Red, this.AttackObjectMeta));
+                    attack.Add(NewBullet(this.BulletDotC, this.Strengthen == 0 ? 2 : 3, Vec.NewRadLength((i*15.0).ToRad(),10), DXImage.Instance.bulletSmall, System.Drawing.Color.Red));
                 }
             }
             else

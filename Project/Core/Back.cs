@@ -10,9 +10,9 @@ namespace MachShooting
     /// <summary>
     /// 背景を表すクラス
     /// </summary>
-    public class Back
+    public static class Back
     {
-        public void Draw()
+        public static void Draw()
         {
             if (!Config.Instance.low)
             {
@@ -50,10 +50,6 @@ namespace MachShooting
             {
                 DX.DrawCircle(Game.WINDOW_R, Game.WINDOW_R, Game.WINDOW_R, DXColor.Instance.white,DX.FALSE);
             }
-        }
-
-        public void Process()
-        {
         }
     }
 }

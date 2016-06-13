@@ -20,14 +20,9 @@ namespace MachShooting
         private bool life;
 
         /// <summary>
-        /// ダメージ
+        /// 当たったときのコールバック
         /// </summary>
-        private int damage;
-
-        /// <summary>
-        /// メタデータ
-        /// </summary>
-        private int[] meta;
+        private Action<int> call;
 
         /// <summary>
         /// エフェクトが始まって何Fか？
@@ -43,22 +38,6 @@ namespace MachShooting
             get { return this.life; }
             protected set { this.life = value; }
         }
-
-        /// <summary>
-        /// 敵に与えたダメージ
-        /// </summary>
-        public int Damage
-        {
-            get { return this.damage; }
-        }
-
-        /// <summary>
-        /// メタ情報
-        /// </summary>
-        public int[] Meta
-        {
-            get { return this.meta; }
-        }
         #endregion
         #region コンストラクタ
         /// <summary>
@@ -67,11 +46,11 @@ namespace MachShooting
         /// <param name="circle">円</param>
         /// <param name="power">攻撃力。0なら判定を持たない</param>
         /// <param name="image">画像</param>
-        /// <param name="meta">メタ情報</param>
-        public AttackObject(Vec dot, int power, Image image, double rad, int[] meta) : base(dot, power, image, rad)
+        /// <param name="call">ヒット時のコールバック</param>
+        protected AttackObject(Vec dot, int power, Image image, double rad, Action<int> call) : base(dot, power, image, rad)
         {
             this.life = true;
-            this.meta = meta;
+            this.call = call;
             this.Draw = false;
         }
         #endregion
@@ -85,9 +64,12 @@ namespace MachShooting
             if (this.life && damage != 0)
             {
                 SE.Instance.Play(DXAudio.Instance.shotHit);
-                this.damage = Power;
                 this.Power = 0;
                 this.life = false;
+                if (this.call != null)
+                {
+                    call(damage);
+                }
             }
         }
 

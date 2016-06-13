@@ -32,11 +32,6 @@ namespace MachShooting
         private readonly My my;
 
         /// <summary>
-        /// 背景
-        /// </summary>
-        private readonly Back back;
-
-        /// <summary>
         /// ボス
         /// </summary>
         private readonly Enemy boss;
@@ -98,9 +93,6 @@ namespace MachShooting
                     break;
             }
 
-
-            this.back = new Back();
-
             this.boss = new Enemy(enemy, my);
 
             this.battle = 0;
@@ -119,7 +111,7 @@ namespace MachShooting
             DX.SetDrawScreen(this.screen);
             DX.DrawBox(0, 0, Game.WINDOW_R * 2, Game.WINDOW_R * 2, DXColor.Instance.black, DX.TRUE);
 
-            this.back.Draw();
+            Back.Draw();
 
             this.boss.DrawObject();
 
@@ -227,7 +219,6 @@ namespace MachShooting
             {
                 this.timeF++;
 
-                this.back.Process();
                 this.myAttack.AddList(this.my.Process(key, key2,this.boss));
 
                 /*ボス*/
@@ -249,7 +240,6 @@ namespace MachShooting
 
                     if (!a.Need)
                     {
-                        this.my.DisuseAttackObject(a);
                         this.myAttack.Remove(a);
                     }
                 }

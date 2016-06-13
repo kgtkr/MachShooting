@@ -161,18 +161,6 @@ namespace MachShooting
             set { this.speed = value; }
         }
 
-        /// <summary>
-        /// AttackObjectのメタ情報
-        /// </summary>
-        protected int[] AttackObjectMeta
-        {
-            get
-            {
-                return new int[] { this.action==MyAction.DEATHBLOW?DX.TRUE:DX.FALSE,
-                                    this.strengthen!=0?DX.TRUE:DX.FALSE};
-            }
-        }
-
         protected Vec BulletDotC
         {
             get
@@ -221,15 +209,6 @@ namespace MachShooting
         }
         #endregion
         #region メソッド
-        /// <summary>
-        /// 攻撃オブジェクトが不要になったときに呼び出されます
-        /// </summary>
-        /// <param name="a">当たった攻撃オブジェクト</param>
-        public void DisuseAttackObject(AttackObject a)
-        {
-            if (a.Meta[0] == DX.FALSE) this.deathblowGauge += a.Damage;
-            if (a.Meta[1] == DX.FALSE) this.strengthenGauge += a.Damage;
-        }
 
         /// <summary>
         /// 処理を行います
@@ -249,10 +228,6 @@ namespace MachShooting
 
             //当たり判定
             this.hit = true;
-
-            //必殺技ゲージが最大以上なら最大にする
-            if (this.deathblowGauge > (int)this.maxDeathblowGauge) this.deathblowGauge = (int)this.maxDeathblowGauge;
-            if (this.strengthenGauge > (int)this.maxStrengthenGauge) this.strengthenGauge = (int)this.maxStrengthenGauge;
 
             //ラジアン
             if (key[Config.Instance.key[KeyComfig.GAME_CAMERA_ROTATION_LEFT]] == DX.TRUE)
@@ -724,12 +699,24 @@ namespace MachShooting
         /// <param name="speed"></param>
         /// <param name="rad"></param>
         /// <param name="image"></param>
-        /// <param name="meta"></param>
         /// <returns></returns>
-        protected Bullet NewBullet(Vec dot, int power, Vec vec, Image image,Color color, int[] meta)
+        protected Bullet NewBullet(Vec dot, int power, Vec vec, Image image,Color color)
         {
             vec.Rad = this.ToMapRad(vec.Rad);
-            return new Bullet(dot, power, vec, image,color, meta);
+            bool isDeathblow = this.action == MyAction.DEATHBLOW;
+            bool isStrengthen = this.strengthen != 0;
+            return new Bullet(dot, power, vec, image,color,
+            damage=> {
+                if (!isDeathblow)
+                {
+                    this.deathblowGauge += damage;
+                    this.strengthenGauge += damage;
+
+                    //必殺技ゲージが最大以上なら最大にする
+                    if (this.deathblowGauge > (int)this.maxDeathblowGauge) this.deathblowGauge = (int)this.maxDeathblowGauge;
+                    if (this.strengthenGauge > (int)this.maxStrengthenGauge) this.strengthenGauge = (int)this.maxStrengthenGauge;
+                }
+            });
         }
         #endregion
         #region 実装メソッド

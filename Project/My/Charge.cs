@@ -86,7 +86,7 @@ namespace MachShooting
                 attack = new List<AttackObject>();
                 this.conventionalAttack = 0;
 
-                attack.Add(NewBullet(this.BulletDotC, 16, new Vec(0, -10), DXImage.Instance.bulletMedium, System.Drawing.Color.Red, this.AttackObjectMeta));
+                attack.Add(NewBullet(this.BulletDotC, 16, new Vec(0, -10), DXImage.Instance.bulletMedium, System.Drawing.Color.Red));
             }
             else
             {
@@ -118,19 +118,19 @@ namespace MachShooting
                     attack = new List<AttackObject>();
                     if (this.specialAttack < (this.Strengthen == 0 ? 60 : 30))//30～59|15～29
                     {
-                        attack.Add(NewBullet(this.BulletDotC, 30, new Vec(0, -10), DXImage.Instance.bulletSmall, System.Drawing.Color.Red, this.AttackObjectMeta));
+                        attack.Add(NewBullet(this.BulletDotC, 30, new Vec(0, -10), DXImage.Instance.bulletSmall, System.Drawing.Color.Red));
                     }
                     else if (this.specialAttack < (this.Strengthen == 0 ? 120 : 60))//60～119|30～59
                     {
-                        attack.Add(NewBullet(this.BulletDotC, 66, new Vec(0, -10), DXImage.Instance.bulletSmall, System.Drawing.Color.Red, this.AttackObjectMeta));
+                        attack.Add(NewBullet(this.BulletDotC, 66, new Vec(0, -10), DXImage.Instance.bulletSmall, System.Drawing.Color.Red));
                     }
                     else if (this.specialAttack < (this.Strengthen == 0 ? 180 : 89))//120～179|60～90
                     {
-                        attack.Add(NewBullet(this.BulletDotC, 144, new Vec(0, -10), DXImage.Instance.bulletMedium, System.Drawing.Color.Red, this.AttackObjectMeta));
+                        attack.Add(NewBullet(this.BulletDotC, 144, new Vec(0, -10), DXImage.Instance.bulletMedium, System.Drawing.Color.Red));
                     }
                     else//180～|90～
                     {
-                        attack.Add(NewBullet(this.BulletDotC, 234, new Vec(0, -10), DXImage.Instance.bulletBig, System.Drawing.Color.Red, this.AttackObjectMeta));
+                        attack.Add(NewBullet(this.BulletDotC, 234, new Vec(0, -10), DXImage.Instance.bulletBig, System.Drawing.Color.Red));
                     }
                     this.Action = MyAction.NONE;
                 }
@@ -156,7 +156,7 @@ namespace MachShooting
                 if (this.deathblow == (this.Strengthen == 0 ? 180 : 90))//撃つ
                 {
                     attack = new List<AttackObject>();
-                    attack.Add(NewBullet(this.BulletDotC, 468, new Vec(0, -10), DXImage.Instance.bomb, System.Drawing.Color.White, this.AttackObjectMeta));
+                    attack.Add(NewBullet(this.BulletDotC, 468, new Vec(0, -10), DXImage.Instance.bomb, System.Drawing.Color.White));
                     this.Action = MyAction.NONE;
                 }
             }
@@ -193,7 +193,7 @@ namespace MachShooting
             {
                 attack = new List<AttackObject>();
                 this.counterAttack = 0;
-                attack.Add(NewBullet(this.BulletDotC, 60, new Vec(0, -10), DXImage.Instance.bulletBig, System.Drawing.Color.Red, this.AttackObjectMeta));
+                attack.Add(NewBullet(this.BulletDotC, 60, new Vec(0, -10), DXImage.Instance.bulletBig, System.Drawing.Color.Red));
             }
             else
             {

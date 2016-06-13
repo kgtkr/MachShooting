@@ -36,6 +36,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <CodeAnalysisRuleSet>ExtendedDesignGuidelineRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -74,8 +75,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Core\Back.cs" />
-    <Compile Include="AttackObject\Bom.cs" />
     <Compile Include="AttackObject\Bullet.cs" />
+    <Compile Include="GlobalSuppressions.cs" />
     <Compile Include="Resource\DXAudio.cs" />
     <Compile Include="Resource\EnemyHeader.cs" />
     <Compile Include="Core\Graphic\Capsule.cs" />

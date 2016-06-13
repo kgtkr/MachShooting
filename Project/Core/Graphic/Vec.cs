@@ -111,6 +111,11 @@ namespace MachShooting.Graphic
             }
             return this == vec;
         }
+
+        public override int GetHashCode()
+        {
+            return this.x.GetHashCode() + this.y.GetHashCode();
+        }
         #region その他new
         /// <summary>
         /// ラジアンと長さから新しいイントランスを取得します
