@@ -398,28 +398,9 @@ namespace MachShooting
             set { this.enemy.R = value; }
         }
 
-        /// <summary>
-        /// ヒットエフェクト画像
-        /// </summary>
-        public int HitEffect
+        public DXImage Image
         {
-            get { return DXImage.Instance.hit; }
-        }
-
-        /// <summary>
-        /// チャージエフェクト
-        /// </summary>
-        public int ChargeEffect
-        {
-            get { return DXImage.Instance.charge; }
-        }
-
-        /// <summary>
-        /// スペシャルエフェクト
-        /// </summary>
-        public int SpecialEffect
-        {
-            get { return DXImage.Instance.special; }
+            get { return DXImage.Instance; }
         }
 
         /// <summary>
@@ -429,6 +410,14 @@ namespace MachShooting
         public void PlaySE(int handle)
         {
             SE.Instance.Play(handle);
+        }
+
+        /// <summary>
+        /// オーディオハンドル
+        /// </summary>
+        public DXAudio Audio
+        {
+            get { return DXAudio.Instance; }
         }
     }
 }

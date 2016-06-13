@@ -10,26 +10,26 @@ namespace MachShooting
     /// <summary>
     /// 効果音管理クラス
     /// </summary>
-    public class DXSE
+    public class DXAudio
     {
         /// <summary>
         /// このクラスのインスタンスです
         /// </summary>
-        private static DXSE instance;
+        private static DXAudio instance;
 
         /// <summary>
         /// このクラスのインスタンス
         /// </summary>
-        public static DXSE Instance
+        public static DXAudio Instance
         {
             get
             {
-                if (DXSE.instance == null)
+                if (DXAudio.instance == null)
                 {
-                    DXSE.instance = new DXSE();
+                    DXAudio.instance = new DXAudio();
                 }
 
-                return DXSE.instance;
+                return DXAudio.instance;
             }
         }
 
@@ -95,7 +95,7 @@ namespace MachShooting
         }
         #endregion
 
-        private DXSE()
+        private DXAudio()
         {
             this.avoidance = DX.LoadSoundMem("Data/Sound/SE/avoidance.mp3");
             this.bom = DX.LoadSoundMem("Data/Sound/SE/bom.mp3");

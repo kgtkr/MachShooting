@@ -4,11 +4,10 @@ require("cmd");
 Boar=function(api)
     local this={};
     local sync=cmd.Sync();
-    local chargeImage=DX.LoadGraph("Data/Image/Effect/Charge.png");
 
     this.update=function()
         if not sync.isNeed() then
-            table.insert(sync.list,cmd.Charge(api,chargeImage,300,api.R*3,255,0,0));
+            table.insert(sync.list,cmd.Charge(api,api.Image.charge,300,api.R*3,255,0,0));
             table.insert(sync.list,cmd.Action(function()api.Power=20; end));
             table.insert(sync.list,cmd.ULM(
                 api,
@@ -35,7 +34,6 @@ Boar=function(api)
     end
 
     this.dispose=function()
-        DX.DeleteGraph(chargeImage);
     end
 
 

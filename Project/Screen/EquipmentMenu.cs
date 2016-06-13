@@ -95,7 +95,7 @@ namespace MachShooting
                 {
                     this.Need = false;
                     this.Decision = true;
-                    SE.Instance.Play(DXSE.Instance.OK);
+                    SE.Instance.Play(DXAudio.Instance.OK);
                 }
             }
         }

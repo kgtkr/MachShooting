@@ -76,7 +76,7 @@
     <Compile Include="Core\Back.cs" />
     <Compile Include="AttackObject\Bom.cs" />
     <Compile Include="AttackObject\Bullet.cs" />
-    <Compile Include="Resource\DXSE.cs" />
+    <Compile Include="Resource\DXAudio.cs" />
     <Compile Include="Resource\EnemyHeader.cs" />
     <Compile Include="Core\Graphic\Capsule.cs" />
     <Compile Include="Core\Graphic\Circle.cs" />
