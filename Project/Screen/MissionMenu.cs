@@ -149,7 +149,7 @@ namespace MachShooting
                             this.menu = new MissionMenu(this.tree.Tree[this.index-this.tree.Header.Count]);
                         }
 
-                        SE.Instance.Play(MP3.OK);
+                        SE.Instance.Play(DXSE.Instance.OK);
 
                         this.ok1 = false;
                     }
@@ -158,7 +158,7 @@ namespace MachShooting
                     {
                         this.Need = false;
                         this.Decision = false;
-                        SE.Instance.Play(MP3.cancel);
+                        SE.Instance.Play(DXSE.Instance.cancel);
                     }
                 }
                 else

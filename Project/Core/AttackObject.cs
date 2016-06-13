@@ -84,7 +84,7 @@ namespace MachShooting
         {
             if (this.life && damage != 0)
             {
-                SE.Instance.Play(MP3.shotHit);
+                SE.Instance.Play(DXSE.Instance.shotHit);
                 this.damage = Power;
                 this.Power = 0;
                 this.life = false;

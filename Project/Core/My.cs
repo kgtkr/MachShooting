@@ -287,7 +287,7 @@ namespace MachShooting
                 {
                     if (this.strengthenGauge == (int)this.maxStrengthenGauge)
                     {
-                        SE.Instance.Play(MP3.strengthen);
+                        SE.Instance.Play(DXSE.Instance.strengthen);
                         this.strengthenGauge = 0;
                         Strengthen_(key, true);
                         this.maxStrengthenTime = this.strengthen;
@@ -321,7 +321,7 @@ namespace MachShooting
                 {
                     if (this.deathblowGauge == (int)this.maxDeathblowGauge)
                     {
-                        SE.Instance.Play(MP3.deathblow);
+                        SE.Instance.Play(DXSE.Instance.deathblow);
                         this.deathblowGauge = 0;
                         this.action = MyAction.DEATHBLOW;
                         attack.AddList(Deathblow(key, true));
@@ -497,7 +497,7 @@ namespace MachShooting
             if (start)//初めて
             {
                 this.avoidance = new AvoidanceData();
-                SE.Instance.Play(MP3.avoidance);
+                SE.Instance.Play(DXSE.Instance.avoidance);
             }
             else
             {
@@ -552,7 +552,7 @@ namespace MachShooting
             {
                 this.justDash = new JustDashData();
                 this.hp += 10;
-                SE.Instance.Play(MP3.hp1);
+                SE.Instance.Play(DXSE.Instance.hp1);
             }
             else
             {
@@ -572,7 +572,7 @@ namespace MachShooting
                     this.hp += 20;
                     if (this.hp > My.MAX_HP) this.hp = My.MAX_HP;
                     this.action = MyAction.NONE;
-                    SE.Instance.Play(MP3.hp2);
+                    SE.Instance.Play(DXSE.Instance.hp2);
                 }
             }
             this.justDash.count++;
@@ -656,7 +656,7 @@ namespace MachShooting
             if (start)//初めて
             {
                 this.crisis = new CrisisData();
-                SE.Instance.Play(MP3.shotHit);
+                SE.Instance.Play(DXSE.Instance.shotHit);
                 this.hit = false;
             }
             else

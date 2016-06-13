@@ -421,5 +421,14 @@ namespace MachShooting
         {
             get { return DXImage.Instance.special; }
         }
+
+        /// <summary>
+        /// 効果音を再生します
+        /// </summary>
+        /// <param name="handle"></param>
+        public void PlaySE(int handle)
+        {
+            SE.Instance.Play(handle);
+        }
     }
 }

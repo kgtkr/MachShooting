@@ -38,20 +38,13 @@ namespace MachShooting
         }
 
         /// <summary>
-        /// 音楽
+        /// 再生リスト
         /// </summary>
-        private Dictionary<MP3,Music> music;
+        private HashSet<int> music;
 
         private SE()
         {
-            this.music = new Dictionary<MP3, Music>();
-
-            var fileName= Enum.GetValues(typeof(MP3));
-
-            foreach(MP3 mp3 in fileName)
-            {
-                this.music.Add(mp3, new Music(DX.LoadSoundMem("Data/Sound/SE/" + mp3 + ".mp3")));
-            }
+            this.music = new HashSet<int>();
         }
 
         /// <summary>
@@ -59,15 +52,10 @@ namespace MachShooting
         /// </summary>
         public void Update()
         {
-            foreach(MP3 mp3 in this.music.Keys.ToArray())
+            foreach (int handle in this.music.ToArray())
             {
-                Music music = this.music[mp3];
-                if (this.music[mp3].play)
-                {
-                    PlaySE(music.handle);
-                    music.play = false;
-                }
-                this.music[mp3] = music;
+                PlaySE(handle);
+                this.music.Remove(handle);
             }
         }
 
@@ -75,11 +63,9 @@ namespace MachShooting
         /// 再生予約します
         /// </summary>
         /// <param name="mp3">再生予約する音楽</param>
-        public void Play(MP3 mp3)
+        public void Play(int handle)
         {
-            Music music = this.music[mp3];
-            music.play = true;
-            this.music[mp3] = music;
+            this.music.Add(handle);
         }
 
         /// <summary>
@@ -98,46 +84,5 @@ namespace MachShooting
             DX.PlaySoundMem(h, DX.DX_PLAYTYPE_BACK);
 
         }
-    }
-    /// <summary>
-    /// 音楽情報クラス
-    /// </summary>
-    public struct Music
-    {
-        /// <summary>
-        /// ハンドル
-        /// </summary>
-        public int handle;
-
-        /// <summary>
-        /// 再生するかの予約
-        /// </summary>
-        public bool play;
-
-        /// <summary>
-        /// 
-        /// </summary>
-        /// <param name="h">ハンドル</param>
-        public Music(int h)
-        {
-            this.handle = h;
-            this.play = false;
-        }
-    }
-    /// <summary>
-    /// MP3一覧
-    /// </summary>
-    public enum MP3
-    {
-       avoidance,
-        bom,
-        cancel,
-        deathblow,
-        hp1,
-        hp2,
-        OK,
-        shot,
-        shotHit,
-        strengthen
     }
 }

@@ -82,7 +82,7 @@ namespace MachShooting
                 //キーが押されたか？
                 if (key2[Config.Instance.key[KeyComfig.MENU_OK]] == DX.TRUE)//Zが押されたなら
                 {
-                    SE.Instance.Play(MP3.OK);
+                    SE.Instance.Play(DXSE.Instance.OK);
                     this.Need = false;
                     this.Decision = true;
                 }
