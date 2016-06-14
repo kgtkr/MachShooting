@@ -9,18 +9,24 @@ CLASS=Boar
 package.path =  "script/lib/?.lua";
 require("cmd");
 
-Boar=function(api)
-    local this={};
-    local sync=cmd.Sync();
+Boar={
+    new=function(api)
+        local this={
+            api=api,
+            sync=cmd.Sync.new()
+        };
 
-    this.update=function()
-        if not sync.isNeed() then
-            table.insert(sync.list,cmd.Charge(api,api.Image.Charge,300,api.R*3,255,0,0));
-            table.insert(sync.list,cmd.Action(function()api.Power=20; end));
-            table.insert(sync.list,cmd.ULM(
-                api,
+        return setmetatable(this, {__index = Boar}); 
+    end,
+
+    update=function(this)
+        if not this.sync:isNeed() then
+            table.insert(this.sync.list,cmd.Charge.new(this.api,this.api.Image.Charge,300,this.api.R*3,255,0,0));
+            table.insert(this.sync.list,cmd.Action.new(function()this.api.Power=20; end));
+            table.insert(this.sync.list,cmd.ULM.new(
+                this.api,
                 function()
-                    local vx,vy=api.PlayerX-api.X,api.PlayerY-api.Y;
+                    local vx,vy=this.api.PlayerX-this.api.X,this.api.PlayerY-this.api.Y;
                     local vLen=math.sqrt(vx^2+vy^2);
                     if vLen~=0 then
                         vx=vx/vLen*10;
@@ -31,19 +37,16 @@ Boar=function(api)
                 end,
                 cmd.retFunc(60)
             ));
-            table.insert(sync.list,cmd.Action(function()api.Power=0; end));
+            table.insert(this.sync.list,cmd.Action.new(function()this.api.Power=0; end));
         end
-        sync.update();
-    end
+        this.sync:update();
+    end,
 
-    this.draw=function()
-        sync.draw();
-        api:Draw();
-    end
+    draw=function(this)
+        this.sync:draw();
+        this.api:Draw();
+    end,
 
-    this.dispose=function()
-    end
-
-
-    return this;
-end
+    dispose=function(this)
+    end,
+};

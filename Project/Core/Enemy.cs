@@ -123,8 +123,8 @@ namespace MachShooting
             this.lua.DoString("import (\"DxLibDotNet\",\"DxLibDLL\");");
             this.lua.DoFile(h.script);
 
-            this.initFunc = lua.GetFunction(h.className);
-            this.luaObject=(LuaTable) this.initFunc.Call(new object[] {this.api})[0];
+            this.initFunc = (LuaFunction)((LuaTable)lua[h.className])["new"];
+            this.luaObject=(LuaTable) this.initFunc.Call(this.api)[0];
 
             this.updateFunc = (LuaFunction)this.luaObject["update"];
             this.drawFunc = (LuaFunction)this.luaObject["draw"];
@@ -141,7 +141,7 @@ namespace MachShooting
             Next();
             if (this.HP != 0)//生きているなら
             {
-                this.updateFunc.Call();
+                this.updateFunc.Call(this.luaObject);
 
                 Input();
                 return this.api.getAattackObject();
@@ -154,7 +154,7 @@ namespace MachShooting
 
         protected override void DrawGameObjectBefore()
         {
-            this.drawFunc.Call();
+            this.drawFunc.Call(this.luaObject);
         }
 
         /// <summary>
