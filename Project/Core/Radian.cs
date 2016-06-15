@@ -45,12 +45,12 @@ namespace MachShooting
         /// <summary>
         /// 左上
         /// </summary>
-        public const double LEFT_UP = -Math.PI *0.75;
+        public const double LEFT_UP = -Math.PI * 0.75;
 
         /// <summary>
         /// 左下
         /// </summary>
-        public const double LEFT_DOWN = Math.PI*0.75;
+        public const double LEFT_DOWN = Math.PI * 0.75;
         #endregion
         #region 角度・ラジアン変換
         /// <summary>
@@ -80,7 +80,7 @@ namespace MachShooting
         /// <param name="go">オブジェクト</param>
         /// <param name="objectRad">オブジェクトに対するラジアン</param>
         /// <returns>マップに対するラジアン</returns>
-        public static double ToMapRad(this GameObject go,double objectRad)
+        public static double ToMapRad(this GameObject go, double objectRad)
         {
             return objectRad + go.Rad - go.Image.rad;
         }

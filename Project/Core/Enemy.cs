@@ -261,7 +261,7 @@ namespace MachShooting
             double vx,double vy,
             int size,
             int r,int g,int b,
-            LuaFunction call
+            LuaFunction call=null
             )
         {
             if (this.attackObject == null)
@@ -409,6 +409,9 @@ namespace MachShooting
             set { this.enemy.R = value; }
         }
 
+        /// <summary>
+        /// 画像一覧
+        /// </summary>
         public DXImage Image
         {
             get { return DXImage.Instance; }
@@ -429,6 +432,19 @@ namespace MachShooting
         public DXAudio Audio
         {
             get { return DXAudio.Instance; }
+        }
+
+        /// <summary>
+        /// ルート2
+        /// </summary>
+        public double Root2
+        {
+            get { return Program.ROOT2; }
+        }
+        
+        public DXColor Color
+        {
+            get { return DXColor.Instance; }
         }
     }
 }

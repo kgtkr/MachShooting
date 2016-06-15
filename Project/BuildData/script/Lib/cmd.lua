@@ -1,4 +1,4 @@
-module("cmd", package.seeall)
+module("cmd", package.seeall);
 
 --単純に値を返すだけの匿名関数を作る
 retFunc=function(val)
@@ -233,6 +233,23 @@ ULM={
     end
 };
 
+ULMPlayer={
+    new=function(api,speed,fFunc)
+        return ULM.new(api,
+        function()
+            local vx,vy=api.PlayerX-api.X,api.PlayerY-api.Y;
+            local vLen=math.sqrt(vx^2+vy^2);
+            if vLen~=0 then
+                vx=vx/vLen*speed;
+                vy=vy/vLen*speed;
+            end
+
+            return vx,vy;
+        end,
+        fFunc);
+    end
+};
+
 Wait={
     new=function(wait)
         local this={
@@ -281,7 +298,7 @@ Zigzag={
     end,
 
     isNeed=function(this)
-        return this.count < this.number;
+        return this.count <= this.number;
     end,
 
     draw=function(this)
@@ -296,28 +313,35 @@ Zigzag={
             --ベクトル計算
             local v1X_,v1Y_,v2X_,v2Y_=this.w,this.h,-this.w,this.h;
 
-            this.api.Rad=math.atan2(this.targetX-this.api.X,this.targetY-this.api.Y);
+            this.api.Rad=math.atan2(this.targetY-this.api.Y,this.targetX-this.api.X);
 
-            local mapRad1=this.api.ToMapRad(math.atan2(v1X_,v1Y_));
-            local mapRad2=this.api.ToMapRad(math.atan2(v2X_,v2Y_));
+            local mapRad1=this.api:ToMapRad(math.atan2(v1Y_,v1X_));
+            local mapRad2=this.api:ToMapRad(math.atan2(v2Y_,v2X_));
             local len=math.sqrt(this.w^2+this.h^2);
 
-            v1X=math.cos(mapRad1)*len;
-            v1Y=math.sin(mapRad1)*len;
-            v2X=math.cos(mapRad2)*len;
-            v2Y=math.sin(mapRad2)*len;
+            this.v1X=math.cos(mapRad1)*len;
+            this.v1Y=math.sin(mapRad1)*len;
+            this.v2X=math.cos(mapRad2)*len;
+            this.v2Y=math.sin(mapRad2)*len;
         end
+
         if this:isNeed() then
-            local vx,vy = this.count % 2 == 0 and this.v1X,this.v1Y or this.v2X,this.v2Y;
+            local vx,vy = (function()
+                if this.count % 2 == 0 then return this.v1X,this.v1Y;
+                else return this.v2X,this.v2Y;
+                end
+            end)();
+            
             this.api.X=this.api.X+vx;
             this.api.Y=this.api.Y+vy;
 
             this.count_1=this.count_1+1;
             --今回の移動が終わったなら(最初と最後は半分しか移動しない)
-            if this.count_1>=(this.count==0 or this.count==this.number and this.f_1/2 or this.f_1) then
+            if this.count_1>=((this.count==0 or this.count==this.number) and this.f_1/2 or this.f_1) then
                 this.count_1=0;
                 this.count=this.count+1;
             end
         end
     end
 };
+

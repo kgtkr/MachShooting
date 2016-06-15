@@ -1,7 +1,7 @@
 --[[
 NAME=ボア
 HP=1500
-IMAGE=Data/Image/Enemy/boar.png
+IMAGE=resource/boar.png
 R=15
 CLASS=Boar
 ]]
@@ -23,20 +23,7 @@ Boar={
         if not this.sync:isNeed() then
             table.insert(this.sync.list,cmd.Charge.new(this.api,this.api.Image.Charge,300,this.api.R*3,255,0,0));
             table.insert(this.sync.list,cmd.Action.new(function()this.api.Power=20; end));
-            table.insert(this.sync.list,cmd.ULM.new(
-                this.api,
-                function()
-                    local vx,vy=this.api.PlayerX-this.api.X,this.api.PlayerY-this.api.Y;
-                    local vLen=math.sqrt(vx^2+vy^2);
-                    if vLen~=0 then
-                        vx=vx/vLen*10;
-                        vy=vy/vLen*10;
-                    end
-
-                    return vx,vy;
-                end,
-                cmd.retFunc(60)
-            ));
+            table.insert(this.sync.list,cmd.ULMPlayer.new(this.api,10,cmd.retFunc(60)));
             table.insert(this.sync.list,cmd.Action.new(function()this.api.Power=0; end));
         end
         this.sync:update();
