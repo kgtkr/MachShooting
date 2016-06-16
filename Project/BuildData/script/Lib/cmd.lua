@@ -123,7 +123,7 @@ Circle={
             f=f,
             r=r,
             dot=dot,
-            count=count,
+            count=0,
             rad=defaultRad,
             x=0,
             y=y
@@ -146,10 +146,10 @@ Circle={
             end
 
             this.rad=this.rad+this.radSpeed();
-            this.rVal=this.r();
+            local rVal=this.r(this.count);
 
-            this.api.X = this.api.X+math.cos(this.rad)*this.rVal;
-            this.api.Y = this.api.Y+math.sin(this.rad)*this.rVal;
+            this.api.X = this.x+math.cos(this.rad)*rVal;
+            this.api.Y = this.y+math.sin(this.rad)*rVal;
 
             this.count=this.count+1;
         end
