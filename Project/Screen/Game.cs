@@ -68,7 +68,7 @@ namespace MachShooting
         #endregion
         #region コンストラクタ
         /// <summary>
-        /// 新しいイントランスを作成します
+        /// 新しいインスタンスを作成します
         /// </summary>
         /// <param name="enemy">敵</param>
         /// <param name="equipment">装備</param>

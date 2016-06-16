@@ -91,7 +91,7 @@ namespace MachShooting.Graphic
         #endregion
         #region コンストラクタ
         /// <summary>
-        /// X方向の移動量、Y方向の移動量から新しいイントランスを作成します
+        /// X方向の移動量、Y方向の移動量から新しいインスタンスを作成します
         /// </summary>
         /// <param name="x"></param>
         /// <param name="y"></param>
@@ -118,7 +118,7 @@ namespace MachShooting.Graphic
         }
         #region その他new
         /// <summary>
-        /// ラジアンと長さから新しいイントランスを取得します
+        /// ラジアンと長さから新しいインスタンスを取得します
         /// </summary>
         /// <param name="rad"></param>
         /// <param name="length"></param>

@@ -40,7 +40,7 @@ namespace MachShooting
         #endregion
         #region コンストラクタ
         /// <summary>
-        /// 新しいイントランスを作成します
+        /// 新しいインスタンスを作成します
         /// </summary>
         public Double() : base("双連射型", Gauge.MEDIUM, Gauge.SUPER_SMALL)
         {

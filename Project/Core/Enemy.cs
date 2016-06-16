@@ -97,9 +97,9 @@ namespace MachShooting
         #endregion
         #region プロパティ
         #endregion
-        #region イントランス作成
+        #region インスタンス作成
         /// <summary>
-        /// 新しいイントランスを作成します
+        /// 新しいインスタンスを作成します
         /// </summary>
         /// <param name="name">名前</param>
         /// <param name="circle">円</param>

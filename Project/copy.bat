@@ -1,0 +1,1 @@
+xcopy BuildData bin\Debug /Y /R /S /E

@@ -40,7 +40,7 @@ namespace MachShooting
         #endregion
         #region コンストラクタ
         /// <summary>
-        /// 新しいイントランスを作成します
+        /// 新しいインスタンスを作成します
         /// </summary>
         public Charge()
             : base("溜め型", Gauge.LARGE, Gauge.MEDIUM)

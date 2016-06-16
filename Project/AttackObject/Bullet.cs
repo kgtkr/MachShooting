@@ -26,7 +26,7 @@ namespace MachShooting
         #endregion
         #region コンストラクタ
         /// <summary>
-        /// イントランスを作成します
+        /// インスタンスを作成します
         /// </summary>
         /// <param name="circle">円</param>
         /// <param name="power">攻撃力</param>

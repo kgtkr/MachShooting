@@ -193,7 +193,7 @@ namespace MachShooting
         #endregion
         #region コンストラクタ
         /// <summary>
-        /// イントランスを作成します
+        /// インスタンスを作成します
         /// </summary>
         /// <param name="name">名前</param>
         /// <param name="maxDeathblowGauge">最大必殺技ゲージ(攻撃)</param>

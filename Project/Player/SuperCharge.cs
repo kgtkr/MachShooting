@@ -50,7 +50,7 @@ namespace MachShooting
         #endregion
         #region コンストラクタ
         /// <summary>
-        /// 新しいイントランスを作成します
+        /// 新しいインスタンスを作成します
         /// </summary>
         public SuperCharge()
             : base("超溜め型", Gauge.SUPER_LARGE, Gauge.MEDIUM)
