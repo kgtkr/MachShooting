@@ -6,10 +6,6 @@ R=15
 CLASS=Gato
 ]]
 
-package.path =  "script/lib/?.lua";
-require("cmd");
-require("mathEX");
-
 Gato={
     new=function(api)
         local this={

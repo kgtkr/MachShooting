@@ -6,10 +6,6 @@ R=15
 CLASS=Snake
 ]]
 
-package.path =  "script/lib/?.lua";
-require("cmd");
-require("mathEX");
-
 Snake={
     new=function(api)
         local this={

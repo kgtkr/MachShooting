@@ -6,9 +6,6 @@ R=15
 CLASS=Lapin
 ]]
 
-package.path =  "script/lib/?.lua";
-require("cmd");
-
 Lapin={
     new=function(api)
         local this={

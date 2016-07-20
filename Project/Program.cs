@@ -7,6 +7,7 @@ using DxLibDLL;
 using System.IO;
 using System.Diagnostics;
 using MachShooting.Graphic;
+using NLua;
 
 namespace MachShooting
 {
@@ -223,6 +224,11 @@ namespace MachShooting
             {
                 list1.AddRange(list2);
             }
+        }
+
+        public static int StringWidth(string str,int font)
+        {
+            return DX.GetDrawStringWidthToHandle(str, Program.GetStringByte(str), font);
         }
     }
 }

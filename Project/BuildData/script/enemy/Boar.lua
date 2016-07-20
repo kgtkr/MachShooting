@@ -6,9 +6,6 @@ R=15
 CLASS=Boar
 ]]
 
-package.path =  "script/lib/?.lua";
-require("cmd");
-
 Boar={
     new=function(api)
         local this={

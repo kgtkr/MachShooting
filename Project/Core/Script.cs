@@ -1,13 +1,58 @@
-﻿using System;
+﻿using NLua;
+using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using System.Collections.ObjectModel;
-using System.IO;
 
 namespace MachShooting
 {
+    public class Script
+    {
+        private static Script instance;
+
+        public static Script Instance
+        {
+            get
+            {
+                if (Script.instance == null)
+                {
+                    Script.instance = new Script();
+                }
+
+                return Script.instance;
+            }
+        }
+
+        public Lua lua {
+            get;
+            private set;
+        }
+
+        private Script()
+        {
+            this.lua = new Lua();
+            this.lua.LoadCLRPackage();
+            this.lua.DoString("import (\"DxLibDotNet\",\"DxLibDLL\");");
+            //ライブラリ読み込み
+            Action<string> loadLib = null;
+            loadLib = dir =>
+            {
+                foreach (string f in Directory.GetFiles(dir))
+                {
+                    this.lua.DoFile(f);
+                }
+
+                foreach (string d in Directory.GetDirectories(dir))
+                {
+                    loadLib(d);
+                }
+            };
+            loadLib("script/lib");
+        }
+    }
+
     public class EnemyHeaderTree
     {
         private static EnemyHeaderTree instance;
@@ -109,28 +154,30 @@ namespace MachShooting
 
         public EnemyHeader(string path)
         {
-            string data = "";
-
+            string src=null;
             using (StreamReader sr = new StreamReader(
             path, Encoding.GetEncoding("UTF-8")))
             {
-                while (sr.Peek() >= 0)
-                {
-                    // ファイルを 1 行ずつ読み込む
-                    string stBuffer = sr.ReadLine();
-
-                    if (stBuffer != "--[[")
-                    {
-                        data += stBuffer + "\n";
-                    }
-
-                    if (stBuffer == "]]")
-                    {
-                        break;
-                    }
-                }
+                src = sr.ReadToEnd();
             }
 
+            string data = "";
+            var srcR = new StringReader(src);
+            while (srcR.Peek() >= 0)
+            {
+                // ファイルを 1 行ずつ読み込む
+                string stBuffer = srcR.ReadLine();
+
+                if (stBuffer != "--[[")
+                {
+                    data += stBuffer + "\n";
+                }
+
+                if (stBuffer == "]]")
+                {
+                    break;
+                }
+            }
             var h = Config.ParseINI(data);
             this.script = path;
             this.name = h["NAME"];
@@ -138,6 +185,9 @@ namespace MachShooting
             this.image = h["IMAGE"];
             this.r = double.Parse(h["R"]);
             this.className = h["CLASS"];
+
+            //Script.Instance.lua.DoString(src);
+            Script.Instance.lua.DoFile(path);
         }
     }
 }

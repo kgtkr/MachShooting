@@ -118,10 +118,7 @@ namespace MachShooting
             this.Draw = false;
 
             this.api = new EnemyAPI(this);
-            this.lua = new Lua();
-            this.lua.LoadCLRPackage();
-            this.lua.DoString("import (\"DxLibDotNet\",\"DxLibDLL\");");
-            this.lua.DoFile(h.script);
+            this.lua = Script.Instance.lua;
 
             this.initFunc = (LuaFunction)((LuaTable)lua[h.className])["new"];
             this.luaObject=(LuaTable) this.initFunc.Call(this.api)[0];

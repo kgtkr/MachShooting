@@ -6,10 +6,6 @@ R=50
 CLASS=Leone
 ]]
 
-package.path =  "script/lib/?.lua";
-require("cmd");
-require("MathEX");
-
 Leone={
     new=function(api)
         local this={

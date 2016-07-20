@@ -6,10 +6,6 @@ R=29
 CLASS=Nigalya
 ]]
 
-package.path =  "script/lib/?.lua";
-require("cmd");
-require("mathEX");
-
 Nigalya={
     new=function(api)
         local this={

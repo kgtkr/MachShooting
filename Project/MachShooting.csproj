@@ -76,8 +76,8 @@
   <ItemGroup>
     <Compile Include="Core\Back.cs" />
     <Compile Include="AttackObject\Bullet.cs" />
+    <Compile Include="Core\Script.cs" />
     <Compile Include="Resource\DXAudio.cs" />
-    <Compile Include="Resource\EnemyHeader.cs" />
     <Compile Include="Core\Graphic\Capsule.cs" />
     <Compile Include="Core\Graphic\Circle.cs" />
     <Compile Include="Core\Graphic\Line.cs" />
