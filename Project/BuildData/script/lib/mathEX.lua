@@ -1,28 +1,29 @@
-mathEX={
-    radLenVec=function(rad,len)
-        local x = math.cos(rad) * len;
-        local y = math.sin(rad) * len;
+--数学関連拡張
+module("mathEX", package.seeall);
 
-        return x,y;
-    end,
+radLenVec=function(rad,len)
+    local x = math.cos(rad) * len;
+    local y = math.sin(rad) * len;
 
-    --1(x,y)→2(x,y)へのベクトル
-    objVec=function(x1,y1,x2,y2,len)
-        local vx,vy=x2-x1,y2-y1;
-        local vLen=math.sqrt(vx^2+vy^2);
-        if vLen~=0 then
-            vx=vx/vLen*len;
-            vy=vy/vLen*len;
-        end
+    return x,y;
+end
 
-        return vx,vy;
-    end,
+--1(x,y)→2(x,y)へのベクトル
+objVec=function(x1,y1,x2,y2,len)
+    local vx,vy=x2-x1,y2-y1;
+    local vLen=math.sqrt(vx^2+vy^2);
+    if vLen~=0 then
+        vx=vx/vLen*len;
+        vy=vy/vLen*len;
+    end
 
-    toRad=function(angle)
-        return angle * math.pi / 180;
-    end,
+    return vx,vy;
+end
 
-    toAngle=function(rad)
-        return rad * 180 / math.pi;
-    end,
-};
+toRad=function(angle)
+    return angle * math.pi / 180;
+end
+
+toAngle=function(rad)
+    return rad * 180 / math.pi;
+end
