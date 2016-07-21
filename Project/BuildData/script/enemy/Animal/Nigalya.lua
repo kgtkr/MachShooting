@@ -1,7 +1,7 @@
 --[[
 NAME=ネガリャー
 HP=2000
-IMAGE=resource/nigalya.png
+IMAGE=res/enemy/Animal/Nigalya/main.png
 R=29
 CLASS=Nigalya
 ]]

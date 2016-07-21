@@ -1,10 +1,11 @@
-﻿using NLua;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using NLua;
+
 
 namespace MachShooting
 {
@@ -96,6 +97,8 @@ namespace MachShooting
 
         private EnemyHeaderTree(string dir, string name)
         {
+            this.Name = Path.GetFileName(dir);
+
             var header = new List<EnemyHeader>();
             var tree = new List<EnemyHeaderTree>();
 

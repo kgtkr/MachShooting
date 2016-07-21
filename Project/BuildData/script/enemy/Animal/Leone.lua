@@ -1,7 +1,7 @@
 --[[
 NAME=レオーネ
 HP=3000
-IMAGE=resource/leone.png
+IMAGE=res/enemy/Animal/Leone/main.png
 R=50
 CLASS=Leone
 ]]

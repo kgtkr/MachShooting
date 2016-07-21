@@ -1,7 +1,7 @@
 --[[
 NAME=ガトー
 HP=1500
-IMAGE=resource/gato.png
+IMAGE=res/enemy/Animal/Gato/main.png
 R=15
 CLASS=Gato
 ]]

@@ -1,7 +1,7 @@
 --[[
 NAME=スネーク
 HP=1500
-IMAGE=resource/snake.png
+IMAGE=res/enemy/Animal/Snake/main.png
 R=15
 CLASS=Snake
 ]]

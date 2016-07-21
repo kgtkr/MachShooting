@@ -1,7 +1,7 @@
 --[[
 NAME=ボア
 HP=1500
-IMAGE=resource/boar.png
+IMAGE=res/enemy/Animal/Boar/main.png
 R=15
 CLASS=Boar
 ]]

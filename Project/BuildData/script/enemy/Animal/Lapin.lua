@@ -1,7 +1,7 @@
 --[[
 NAME=ラパン
 HP=1500
-IMAGE=resource/lapin.png
+IMAGE=res/enemy/Animal/Lapin/main.png
 R=15
 CLASS=Lapin
 ]]
