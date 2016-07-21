@@ -11,6 +11,21 @@ namespace MachShooting
 {
     public class Script
     {
+        private static HeaderTree<EnemyHeader> enemyH;
+
+        public static HeaderTree<EnemyHeader> EnemyH
+        {
+            get
+            {
+                if (Script.enemyH == null)
+                {
+                    Script.enemyH = new HeaderTree<EnemyHeader>("script/enemy/", "root", path => new EnemyHeader(path));
+                }
+
+                return Script.enemyH;
+            }
+        }
+
         private static Script instance;
 
         public static Script Instance
@@ -54,27 +69,12 @@ namespace MachShooting
         }
     }
 
-    public class EnemyHeaderTree
+    public class HeaderTree<TData>
     {
-        private static EnemyHeaderTree instance;
-
-        public static EnemyHeaderTree Instance
-        {
-            get
-            {
-                if (EnemyHeaderTree.instance == null)
-                {
-                    EnemyHeaderTree.instance = new EnemyHeaderTree("script/enemy/", "root");
-                }
-
-                return EnemyHeaderTree.instance;
-            }
-        }
-
         /// <summary>
         /// ヘッダー
         /// </summary>
-        public IReadOnlyList<EnemyHeader> Header
+        public IReadOnlyList<TData> Header
         {
             get;
             private set;
@@ -83,7 +83,7 @@ namespace MachShooting
         /// <summary>
         /// ツリー
         /// </summary>
-        public IReadOnlyList<EnemyHeaderTree> Tree
+        public IReadOnlyList<HeaderTree<TData>> Tree
         {
             get;
             private set;
@@ -95,23 +95,23 @@ namespace MachShooting
             private set;
         }
 
-        private EnemyHeaderTree(string dir, string name)
+        public HeaderTree(string dir, string name,Func<string,TData> func)
         {
             this.Name = Path.GetFileName(dir);
 
-            var header = new List<EnemyHeader>();
-            var tree = new List<EnemyHeaderTree>();
+            var header = new List<TData>();
+            var tree = new List<HeaderTree<TData>>();
 
             var files = Directory.GetFiles(dir);
             foreach (string file in files)
             {
-                header.Add(new EnemyHeader(file));
+                header.Add(func(file));
             }
 
             var dirs = Directory.GetDirectories(dir);
             foreach (string dir2 in dirs)
             {
-                tree.Add(new EnemyHeaderTree(dir2, Path.GetFileName(Path.GetDirectoryName(dir))));
+                tree.Add(new HeaderTree<TData>(dir2, Path.GetFileName(Path.GetDirectoryName(dir)),func));
             }
 
             this.Header = header.AsReadOnly();
@@ -124,11 +124,6 @@ namespace MachShooting
     /// </summary>
     public class EnemyHeader
     {
-        public string script
-        {
-            get;
-            private set;
-        }
         public string name
         {
             get;
@@ -182,14 +177,12 @@ namespace MachShooting
                 }
             }
             var h = Config.ParseINI(data);
-            this.script = path;
             this.name = h["NAME"];
             this.hp = int.Parse(h["HP"]);
             this.image = h["IMAGE"];
             this.r = double.Parse(h["R"]);
             this.className = h["CLASS"];
 
-            //Script.Instance.lua.DoString(src);
             Script.Instance.lua.DoFile(path);
         }
     }

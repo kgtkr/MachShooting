@@ -18,7 +18,7 @@ namespace MachShooting
         /// <summary>
         /// 一覧
         /// </summary>
-        private EnemyHeaderTree tree;
+        private HeaderTree<EnemyHeader> tree;
 
         /// <summary>
         /// 現在のインデックス
@@ -186,7 +186,7 @@ namespace MachShooting
         /// <summary>
         /// 新しいメニューを作成します
         /// </summary>
-        public MissionMenu(EnemyHeaderTree tree)
+        public MissionMenu(HeaderTree<EnemyHeader> tree)
         {
             this.tree = tree;
         }

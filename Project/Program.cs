@@ -165,7 +165,7 @@ namespace MachShooting
                 {
                     Program.equipment = Program.equipmentMenu.Equipment;
                     Program.equipmentMenu = null;
-                    Program.missionMenu = new MissionMenu(EnemyHeaderTree.Instance);
+                    Program.missionMenu = new MissionMenu(Script.EnemyH);
                 }
             }
             else if (Program.missionMenu != null)//敵選択画面なら
