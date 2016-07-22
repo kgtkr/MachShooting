@@ -26,6 +26,21 @@ namespace MachShooting
             }
         }
 
+        private static HeaderTree<PlayerHeader> playerH;
+
+        public static HeaderTree<PlayerHeader> PlayerH
+        {
+            get
+            {
+                if (Script.playerH == null)
+                {
+                    Script.playerH = new HeaderTree<PlayerHeader>("script/enemy/", "root", path => new PlayerHeader(path));
+                }
+
+                return Script.playerH;
+            }
+        }
+
         private static Script instance;
 
         public static Script Instance
@@ -66,6 +81,39 @@ namespace MachShooting
                 }
             };
             loadLib("script/lib");
+        }
+
+        public static Dictionary<string,string> ParseHeaderAndLoadScript(string path)
+        {
+            string src = null;
+            using (StreamReader sr = new StreamReader(
+            path, Encoding.GetEncoding("UTF-8")))
+            {
+                src = sr.ReadToEnd();
+            }
+
+            string data = "";
+            var srcR = new StringReader(src);
+            while (srcR.Peek() >= 0)
+            {
+                // ファイルを 1 行ずつ読み込む
+                string stBuffer = srcR.ReadLine();
+
+                if (stBuffer != "--[[")
+                {
+                    data += stBuffer + "\n";
+                }
+
+                if (stBuffer == "]]")
+                {
+                    break;
+                }
+            }
+            var h = Config.ParseINI(data);
+
+            Script.Instance.lua.DoFile(path);
+
+            return h;
         }
     }
 
@@ -152,38 +200,54 @@ namespace MachShooting
 
         public EnemyHeader(string path)
         {
-            string src=null;
-            using (StreamReader sr = new StreamReader(
-            path, Encoding.GetEncoding("UTF-8")))
-            {
-                src = sr.ReadToEnd();
-            }
-
-            string data = "";
-            var srcR = new StringReader(src);
-            while (srcR.Peek() >= 0)
-            {
-                // ファイルを 1 行ずつ読み込む
-                string stBuffer = srcR.ReadLine();
-
-                if (stBuffer != "--[[")
-                {
-                    data += stBuffer + "\n";
-                }
-
-                if (stBuffer == "]]")
-                {
-                    break;
-                }
-            }
-            var h = Config.ParseINI(data);
+            var h = Script.ParseHeaderAndLoadScript(path);
             this.name = h["NAME"];
             this.hp = int.Parse(h["HP"]);
             this.image = h["IMAGE"];
             this.r = double.Parse(h["R"]);
             this.className = h["CLASS"];
+        }
+    }
 
-            Script.Instance.lua.DoFile(path);
+    /// <summary>
+    /// 自機のヘッダー構造体
+    /// </summary>
+    public class PlayerHeader
+    {
+        public string name
+        {
+            get;
+            private set;
+        }
+        /// <summary>
+        /// 必殺技ゲージ
+        /// </summary>
+        public int dg
+        {
+            get;
+            private set;
+        }
+        /// <summary>
+        /// 自己強化ゲージ
+        /// </summary>
+        public int sg
+        {
+            get;
+            private set;
+        }
+        public string className
+        {
+            get;
+            private set;
+        }
+
+        public PlayerHeader(string path)
+        {
+            var h = Script.ParseHeaderAndLoadScript(path);
+            this.name = h["NAME"];
+            this.dg = int.Parse(h["DG"]);
+            this.sg = int.Parse(h["SG"]);
+            this.className = h["CLASS"];
         }
     }
 }
