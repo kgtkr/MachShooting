@@ -6,13 +6,14 @@ using System.Threading.Tasks;
 using DxLibDLL;
 using MachShooting.Graphic;
 using System.Drawing;
+using NLua;
 
 namespace MachShooting
 {
     /// <summary>
     /// 自機の底クラス
     /// </summary>
-    public abstract class Player : GameObject
+    public abstract class Player : GameObject,IDisposable
     {
         #region 定数
         /// <summary>
@@ -55,12 +56,12 @@ namespace MachShooting
         /// <summary>
         /// 最大攻撃必殺技ゲージ
         /// </summary>
-        private readonly Gauge maxDeathblowGauge;
+        private readonly int maxDG;
 
         /// <summary>
         /// 最大自己強化必殺技ゲージ
         /// </summary>
-        private readonly Gauge maxStrengthenGauge;
+        private readonly int maxSG;
 
         //変数
         /// <summary>
@@ -114,6 +115,63 @@ namespace MachShooting
         /// まだ返していないアタックオブジェクト
         /// </summary>
         private List<AttackObject> attack;
+
+        #region Lua
+        /// <summary>
+        /// luaオブジェクト
+        /// </summary>
+        private Lua lua;
+
+        /// <summary>
+        /// API
+        /// </summary>
+        private PlayerAPI api;
+
+        /// <summary>
+        /// luaオブジェクト
+        /// </summary>
+        private LuaTable luaObject;
+
+        /// <summary>
+        /// 初期化関数
+        /// </summary>
+        private LuaFunction initFunc;
+
+        /// <summary>
+        /// 描画関数
+        /// </summary>
+        private LuaFunction drawFunc;
+
+        /// <summary>
+        /// 終了関数
+        /// </summary>
+        private LuaFunction disposeFunc;
+
+        /// <summary>
+        /// 通常
+        /// </summary>
+        private LuaFunction normalFunc;
+
+        /// <summary>
+        /// 特殊
+        /// </summary>
+        private LuaFunction specialFunc;
+
+        /// <summary>
+        /// 必殺
+        /// </summary>
+        private LuaFunction killerFunc;
+
+        /// <summary>
+        /// 自己強化
+        /// </summary>
+        private LuaFunction dopingFunc;
+
+        /// <summary>
+        /// カウンター
+        /// </summary>
+        private LuaFunction counterFunc;
+        #endregion
         #endregion
         #region プロパティ
         /// <summary>
@@ -192,18 +250,28 @@ namespace MachShooting
         }
         #endregion
         #region コンストラクタ
-        /// <summary>
-        /// インスタンスを作成します
-        /// </summary>
-        /// <param name="name">名前</param>
-        /// <param name="maxDeathblowGauge">最大必殺技ゲージ(攻撃)</param>
-        /// <param name="maxStrengthenGauge">最大必殺技ゲージ(自己強化)</param>
-        public Player(string name, Gauge maxDeathblowGauge, Gauge maxStrengthenGauge)
+        public Player(PlayerHeader h)
             : base(new Vec(Game.WINDOW_R, Game.WINDOW_R), 0, DXImage.Instance.Player, new Vec(0, -1).Rad)
         {
-            this.name = name;
-            this.maxDeathblowGauge = maxDeathblowGauge;
-            this.maxStrengthenGauge = maxStrengthenGauge;
+            this.name = h.name;
+            this.maxDG = h.dg;
+            this.maxSG = h.sg;
+
+            this.lua = Script.Instance.lua;
+            this.api = new PlayerAPI(this);
+
+            this.initFunc = (LuaFunction)((LuaTable)lua[h.className])["new"];
+            this.luaObject = (LuaTable)this.initFunc.Call(this.api)[0];
+
+            this.drawFunc = (LuaFunction)this.luaObject["draw"];
+            this.disposeFunc = (LuaFunction)this.luaObject["dispose"];
+
+            this.normalFunc = (LuaFunction)this.luaObject["normal"];
+            this.specialFunc = (LuaFunction)this.luaObject["special"];
+            this.killerFunc = (LuaFunction)this.luaObject["killer"];
+            this.dopingFunc = (LuaFunction)this.luaObject["doping"];
+            this.counterFunc = (LuaFunction)this.luaObject["counter"];
+
             this.life = true;
             this.attack = new List<AttackObject>();
         }
@@ -260,7 +328,7 @@ namespace MachShooting
             {
                 if (key[Config.Instance.Key[KeyComfig.GAME_STRENGTHEN]] == DX.TRUE)
                 {
-                    if (this.strengthenGauge == (int)this.maxStrengthenGauge)
+                    if (this.strengthenGauge == (int)this.maxSG)
                     {
                         SE.Instance.Play(DXAudio.Instance.Strengthen);
                         this.strengthenGauge = 0;
@@ -294,7 +362,7 @@ namespace MachShooting
                 }
                 else if (key[Config.Instance.Key[KeyComfig.GAME_DEATHBLOW]] == DX.TRUE)
                 {
-                    if (this.deathblowGauge == (int)this.maxDeathblowGauge)
+                    if (this.deathblowGauge == (int)this.maxDG)
                     {
                         SE.Instance.Play(DXAudio.Instance.Deathblow);
                         this.deathblowGauge = 0;
@@ -575,8 +643,8 @@ namespace MachShooting
 
                 //各ゲージの長さ
                 int hp = (int)((double)this.hp / (double)Player.MAX_HP * MAX_GAUGE);
-                int deathblow = (int)((double)this.deathblowGauge / (double)this.maxDeathblowGauge * MAX_GAUGE);
-                int strengthen = (int)((double)this.strengthenGauge / (double)this.maxStrengthenGauge * MAX_GAUGE);
+                int deathblow = (int)((double)this.deathblowGauge / (double)this.maxDG * MAX_GAUGE);
+                int strengthen = (int)((double)this.strengthenGauge / (double)this.maxSG * MAX_GAUGE);
                 int strengthen2 = this.maxStrengthenTime == 0 ? 0 : (int)((double)this.strengthen / (double)this.maxStrengthenTime * MAX_GAUGE);
 
                 for (int i = 0; i < 3; i++)
@@ -595,13 +663,13 @@ namespace MachShooting
                             w = hp;
                             break;
                         case 1:
-                            color = (this.deathblowGauge == (int)this.maxDeathblowGauge && this.Count % 30 < 15) ? DXColor.Instance.White : DXColor.Instance.Red;
+                            color = (this.deathblowGauge == (int)this.maxDG && this.Count % 30 < 15) ? DXColor.Instance.White : DXColor.Instance.Red;
                             w = deathblow;
                             break;
                         case 2:
                             if (this.strengthen == 0)
                             {
-                                color = (this.strengthenGauge == (int)this.maxStrengthenGauge && this.Count % 30 < 15) ? DXColor.Instance.White : DXColor.Instance.Yellow;
+                                color = (this.strengthenGauge == (int)this.maxSG && this.Count % 30 < 15) ? DXColor.Instance.White : DXColor.Instance.Yellow;
                                 w = strengthen;
                             }
                             else
@@ -713,8 +781,8 @@ namespace MachShooting
                     this.strengthenGauge += damage;
 
                     //必殺技ゲージが最大以上なら最大にする
-                    if (this.deathblowGauge > (int)this.maxDeathblowGauge) this.deathblowGauge = (int)this.maxDeathblowGauge;
-                    if (this.strengthenGauge > (int)this.maxStrengthenGauge) this.strengthenGauge = (int)this.maxStrengthenGauge;
+                    if (this.deathblowGauge > (int)this.maxDG) this.deathblowGauge = (int)this.maxDG;
+                    if (this.strengthenGauge > (int)this.maxSG) this.strengthenGauge = (int)this.maxSG;
                 }
             });
         }
@@ -751,6 +819,15 @@ namespace MachShooting
         /// <returns>アタックオブジェクトリスト。ないならnull</returns>
         protected abstract List<AttackObject> CounterAttack(byte[] key, bool start);
         #endregion
+        public void Dispose()
+        {
+            this.disposeFunc.Call();
+        }
+
+        ~Player()
+        {
+            this.Dispose();
+        }
     }
     #region その他
     #region 列挙
@@ -936,4 +1013,12 @@ namespace MachShooting
     #endregion
     #endregion
     #endregion
+
+    public class PlayerAPI
+    {
+        public PlayerAPI(Player player)
+        {
+
+        }
+    }
 }

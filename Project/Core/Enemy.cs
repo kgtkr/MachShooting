@@ -197,7 +197,7 @@ namespace MachShooting
         public void Dispose()
         {
             DX.DeleteGraph(this.Image.image);
-            this.lua.Dispose();
+            this.disposeFunc.Call();
         }
 
         ~Enemy()
