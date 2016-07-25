@@ -13,7 +13,7 @@ namespace MachShooting
     /// <summary>
     /// 自機の底クラス
     /// </summary>
-    public abstract class Player : GameObject,IDisposable
+    public class Player : GameObject, IDisposable
     {
         #region 定数
         /// <summary>
@@ -139,6 +139,7 @@ namespace MachShooting
 
         /// <summary>
         /// 描画関数
+        /// なくてもいい
         /// </summary>
         private LuaFunction drawFunc;
 
@@ -288,8 +289,6 @@ namespace MachShooting
         {
             Next();
             this.Draw = this.hit;
-            List<AttackObject> attack = new List<AttackObject>();
-            attack.AddList(this.attack);
             this.attack.Clear();
             //スピードを元に戻す
             this.speed = Player.SPEED;
@@ -348,12 +347,12 @@ namespace MachShooting
                 if (key[Config.Instance.Key[KeyComfig.GAME_ATTACK]] == DX.TRUE)
                 {
                     this.action = PlayerAction.ATTACK;
-                    attack.AddList(ConventionalAttack(key, true));
+                    ConventionalAttack(key, true);
                 }
                 else if (key[Config.Instance.Key[KeyComfig.GAME_SPECIAL]] == DX.TRUE)
                 {
                     this.action = PlayerAction.SPECIAL;
-                    attack.AddList(SpecialAttack(key, true));
+                    SpecialAttack(key, true);
                 }
                 else if (key[Config.Instance.Key[KeyComfig.GAME_AVOIDANCE]] == DX.TRUE)
                 {
@@ -367,7 +366,7 @@ namespace MachShooting
                         SE.Instance.Play(DXAudio.Instance.Deathblow);
                         this.deathblowGauge = 0;
                         this.action = PlayerAction.DEATHBLOW;
-                        attack.AddList(Deathblow(key, true));
+                        Deathblow(key, true);
                     }
                 }
             }
@@ -376,22 +375,22 @@ namespace MachShooting
             switch (this.action)
             {
                 case PlayerAction.ATTACK:
-                    attack.AddList(ConventionalAttack(key, false));
+                    ConventionalAttack(key, false);
                     break;
                 case PlayerAction.AVOIDANCE:
                     Avoidance(key, false);
                     break;
                 case PlayerAction.COUNTER:
-                    attack.AddList(CounterAttack(key, false));
+                    CounterAttack(key, false);
                     break;
                 case PlayerAction.DASH:
-                    attack.AddList(Dash(key, false));
+                    Dash(key, false);
                     break;
                 case PlayerAction.DEATHBLOW:
-                    attack.AddList(Deathblow(key, false));
+                    Deathblow(key, false);
                     break;
                 case PlayerAction.SPECIAL:
-                    attack.AddList(SpecialAttack(key, false));
+                    SpecialAttack(key, false);
                     break;
                 case PlayerAction.CRISIS:
                     Crisis(key, false);
@@ -401,10 +400,10 @@ namespace MachShooting
             //移動処理
             Move(key);
 
-            attack.AddList(Process_Player(key, key2));
+            Process_Player(key, key2);
 
             Input();
-            return attack;
+            return this.attack;
         }
 
         /// <summary>
@@ -413,9 +412,8 @@ namespace MachShooting
         /// <param name="key">キー1</param>
         /// <param name="key2">キー2</param>
         /// <returns>アタックオブジェクトリスト。ないならnull</returns>
-        protected virtual List<AttackObject> Process_Player(byte[] key, byte[] key2)
+        protected void Process_Player(byte[] key, byte[] key2)
         {
-            return null;
         }
 
         /// <summary>
@@ -567,7 +565,7 @@ namespace MachShooting
             if (this.action == PlayerAction.AVOIDANCE && this.avoidance.count <= AvoidanceData.JUST_TIME)//ジャスト回避中
             {
                 this.action = PlayerAction.DASH;
-                this.attack.AddList(Dash(null, true));
+                Dash(null, true);
             }
             else if (this.hit)//判定がある
             {
@@ -589,7 +587,7 @@ namespace MachShooting
         /// </summary>
         /// <param name="key"></param>
         /// <returns>アタックオブジェクトリスト。ないならnull</returns>
-        private List<AttackObject> Dash(byte[] key, bool start)
+        private void Dash(byte[] key, bool start)
         {
             if (start)
             {
@@ -602,7 +600,7 @@ namespace MachShooting
                 if (key[Config.Instance.Key[KeyComfig.GAME_ATTACK]] == DX.TRUE)//カウンター
                 {
                     this.action = PlayerAction.COUNTER;
-                    return CounterAttack(key, true);
+                    CounterAttack(key, true);
                 }
                 else if (this.justDash.count < JustDashData.TIME)//終わってない
                 {
@@ -619,9 +617,8 @@ namespace MachShooting
                 }
             }
             this.justDash.count++;
-            return null;
         }
- 
+
         /// <summary>
         /// コックピットを描画します
         /// <param name="time">経過時間</param>
@@ -757,6 +754,8 @@ namespace MachShooting
                 DX.SetDrawBright(255, 255, 255);
             }
             DX.SetDrawBlendMode(DX.DX_BLENDMODE_NOBLEND, 0);
+
+            this.drawFunc?.Call(this.luaObject);
         }
 
         /// <summary>
@@ -768,13 +767,14 @@ namespace MachShooting
         /// <param name="rad"></param>
         /// <param name="image"></param>
         /// <returns></returns>
-        protected Bullet NewBullet(Vec dot, int power, Vec vec, Image image,Color color)
+        protected Bullet NewBullet(Vec dot, int power, Vec vec, Image image, Color color)
         {
             vec.Rad = this.ToMapRad(vec.Rad);
             bool isDeathblow = this.action == PlayerAction.DEATHBLOW;
             bool isStrengthen = this.strengthen != 0;
-            return new Bullet(dot, power, vec, image,color,
-            damage=> {
+            return new Bullet(dot, power, vec, image, color,
+            damage =>
+            {
                 if (!isDeathblow)
                 {
                     this.deathblowGauge += damage;
@@ -794,34 +794,49 @@ namespace MachShooting
         /// 通常攻撃
         /// </summary>
         /// <returns>アタックオブジェクトリスト。ないならnull</returns>
-        protected abstract List<AttackObject> ConventionalAttack(byte[] key, bool start);
+        private void ConventionalAttack(byte[] key, bool start)
+        {
+            this.normalFunc.Call(this.luaObject,key, start);
+        }
 
         /// <summary>
         /// 特殊攻撃
         /// </summary>
         /// <returns>アタックオブジェクトリスト。ないならnull</returns>
-        protected abstract List<AttackObject> SpecialAttack(byte[] key, bool start);
+        private void SpecialAttack(byte[] key, bool start)
+        {
+            this.specialFunc.Call(this.luaObject, key, start);
+        }
 
         /// <summary>
         /// 必殺技(攻撃)
         /// </summary>
         /// <returns>アタックオブジェクトリスト。ないならnull</returns>
-        protected abstract List<AttackObject> Deathblow(byte[] key, bool start);
+        private void Deathblow(byte[] key, bool start)
+        {
+            this.killerFunc.Call(this.luaObject, key, start);
+        }
 
         /// <summary>
         /// 必殺技(自己強化)
         /// </summary>
-        protected abstract void Strengthen_(byte[] key, bool start);
+        private void Strengthen_(byte[] key, bool start)
+        {
+            this.dopingFunc.Call(this.luaObject, key, start);
+        }
 
         /// <summary>
         /// カウンター攻撃
         /// </summary>
         /// <returns>アタックオブジェクトリスト。ないならnull</returns>
-        protected abstract List<AttackObject> CounterAttack(byte[] key, bool start);
+        private void CounterAttack(byte[] key, bool start)
+        {
+            this.counterFunc.Call(this.luaObject, key, start);
+        }
         #endregion
         public void Dispose()
         {
-            this.disposeFunc.Call();
+            this.disposeFunc.Call(this.luaObject);
         }
 
         ~Player()
@@ -1014,11 +1029,5 @@ namespace MachShooting
     #endregion
     #endregion
 
-    public class PlayerAPI
-    {
-        public PlayerAPI(Player player)
-        {
-
-        }
-    }
+    
 }

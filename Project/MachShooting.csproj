@@ -74,6 +74,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Core\API.cs" />
     <Compile Include="Core\Back.cs" />
     <Compile Include="AttackObject\Bullet.cs" />
     <Compile Include="Core\Script.cs" />
