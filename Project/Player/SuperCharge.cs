@@ -65,7 +65,7 @@ namespace MachShooting
         /// <param name="key2"></param>
         protected override List<AttackObject> Process_Player(byte[] key, byte[] key2)
         {
-            if (!(this.Action == PlayerAction.ATTACK || this.Action == PlayerAction.SPECIAL))
+            if (!(this.Action == PlayerAction.NORMAL || this.Action == PlayerAction.SPECIAL))
             {
                 this.lv = 0;
             }
@@ -76,7 +76,7 @@ namespace MachShooting
         protected override void DrawGameObjectAfter()
         {
             base.DrawGameObjectAfter();
-            if (this.Action == PlayerAction.ATTACK)
+            if (this.Action == PlayerAction.NORMAL)
             {
                 if (this.conventionalAttack < (this.Strengthen == 0 ? 60 : 30))//30～59|15～29
                 {

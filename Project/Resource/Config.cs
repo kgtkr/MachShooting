@@ -76,7 +76,7 @@ namespace MachShooting
                 foreach (string key in ini.Keys)
                 {
                     KeyComfig k = (KeyComfig)Enum.Parse(typeof(KeyComfig), key);
-                    int v = (int)Enum.Parse(typeof(Key), ini[key]);
+                    int v = (int)Enum.Parse(typeof(KeyList), ini[key]);
                     keyMap.Add(k, v);
                 }
                 this.Key = new ReadOnlyDictionary<KeyComfig,int>(keyMap);
@@ -154,7 +154,7 @@ namespace MachShooting
         GAME_STOP
     }
 
-    public enum Key
+    public enum KeyList
     {
         BACK = 14,
         TAB = 15,

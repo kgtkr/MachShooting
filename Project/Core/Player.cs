@@ -40,7 +40,7 @@ namespace MachShooting
         /// <summary>
         /// 現在の行動
         /// </summary>
-        private PlayerAction action = PlayerAction.NONE;
+        public PlayerAction action { get; set; } = PlayerAction.NONE;
 
         /// <summary>
         /// 自己強化の残り時間
@@ -282,10 +282,8 @@ namespace MachShooting
         /// <summary>
         /// 処理を行います
         /// </summary>
-        /// <param name="key">キー1</param>
-        /// <param name="key2">キー2</param>
         /// <returns>アタックオブジェクトリスト。ないならnull</returns>
-        public List<AttackObject> Process(byte[] key, byte[] key2, Enemy enemy)
+        public List<AttackObject> Process(Enemy enemy)
         {
             Next();
             this.Draw = this.hit;
@@ -297,27 +295,27 @@ namespace MachShooting
             this.hit = true;
 
             //ラジアン
-            if (key[Config.Instance.Key[KeyComfig.GAME_CAMERA_ROTATION_LEFT]] == DX.TRUE)
+            if (Key.Instance.GetKey(KeyComfig.GAME_CAMERA_ROTATION_LEFT))
             {
                 this.Rad -= (1.0).ToRad();
             }
-            if (key[Config.Instance.Key[KeyComfig.GAME_CAMERA_ROTATION_RIGHT]] == DX.TRUE)
+            if (Key.Instance.GetKey(KeyComfig.GAME_CAMERA_ROTATION_RIGHT))
             {
                 this.Rad += (1.0).ToRad();
             }
-            if (key2[Config.Instance.Key[KeyComfig.GAME_TARGET_CAMERA]] == DX.TRUE)
+            if (Key.Instance.GetKeyDown(KeyComfig.GAME_TARGET_CAMERA))
             {
                 this.Rad = new Vec(enemy.X - this.X, enemy.Y - this.Y).Rad;
             }
-            if (key2[Config.Instance.Key[KeyComfig.GAME_CAMERA_LEFT]] == DX.TRUE)
+            if (Key.Instance.GetKeyDown(KeyComfig.GAME_CAMERA_LEFT))
             {
                 this.Rad = new Vec(-1, 0).Rad + this.Rad - this.Image.rad;
             }
-            if (key2[Config.Instance.Key[KeyComfig.GAME_CAMERA_RIGHT]] == DX.TRUE)
+            if (Key.Instance.GetKeyDown(KeyComfig.GAME_CAMERA_RIGHT))
             {
                 this.Rad = new Vec(1, 0).Rad + this.Rad - this.Image.rad;
             }
-            if (key2[Config.Instance.Key[KeyComfig.GAME_CAMERA_DOWN]] == DX.TRUE)
+            if (Key.Instance.GetKeyDown(KeyComfig.GAME_CAMERA_DOWN))
             {
                 this.Rad = new Vec(0, 1).Rad + this.Rad - this.Image.rad;
             }
@@ -325,48 +323,48 @@ namespace MachShooting
             /*自己強化を行う*/
             if (this.strengthen == 0)
             {
-                if (key[Config.Instance.Key[KeyComfig.GAME_STRENGTHEN]] == DX.TRUE)
+                if (Key.Instance.GetKey(KeyComfig.GAME_STRENGTHEN))
                 {
                     if (this.strengthenGauge == (int)this.maxSG)
                     {
                         SE.Instance.Play(DXAudio.Instance.Strengthen);
                         this.strengthenGauge = 0;
-                        Strengthen_(key, true);
+                        Strengthen_(true);
                         this.maxStrengthenTime = this.strengthen;
                     }
                 }
             }
             if (this.strengthen != 0)
             {
-                Strengthen_(key, false);
+                Strengthen_(false);
             }
 
             //何もしてないならキー取得
             if (this.action == PlayerAction.NONE)
             {
-                if (key[Config.Instance.Key[KeyComfig.GAME_ATTACK]] == DX.TRUE)
+                if (Key.Instance.GetKey(Config.Instance.Key[KeyComfig.GAME_ATTACK]))
                 {
-                    this.action = PlayerAction.ATTACK;
-                    ConventionalAttack(key, true);
+                    this.action = PlayerAction.NORMAL;
+                    ConventionalAttack(true);
                 }
-                else if (key[Config.Instance.Key[KeyComfig.GAME_SPECIAL]] == DX.TRUE)
+                else if (Key.Instance.GetKey(Config.Instance.Key[KeyComfig.GAME_SPECIAL]))
                 {
                     this.action = PlayerAction.SPECIAL;
-                    SpecialAttack(key, true);
+                    SpecialAttack(true);
                 }
-                else if (key[Config.Instance.Key[KeyComfig.GAME_AVOIDANCE]] == DX.TRUE)
+                else if (Key.Instance.GetKey(Config.Instance.Key[KeyComfig.GAME_AVOIDANCE]))
                 {
                     this.action = PlayerAction.AVOIDANCE;
-                    Avoidance(key, true);
+                    Avoidance(true);
                 }
-                else if (key[Config.Instance.Key[KeyComfig.GAME_DEATHBLOW]] == DX.TRUE)
+                else if (Key.Instance.GetKey(Config.Instance.Key[KeyComfig.GAME_DEATHBLOW]))
                 {
                     if (this.deathblowGauge == (int)this.maxDG)
                     {
                         SE.Instance.Play(DXAudio.Instance.Deathblow);
                         this.deathblowGauge = 0;
-                        this.action = PlayerAction.DEATHBLOW;
-                        Deathblow(key, true);
+                        this.action = PlayerAction.KILLER;
+                        Deathblow(true);
                     }
                 }
             }
@@ -374,33 +372,33 @@ namespace MachShooting
             //アクションごとに処理分岐
             switch (this.action)
             {
-                case PlayerAction.ATTACK:
-                    ConventionalAttack(key, false);
+                case PlayerAction.NORMAL:
+                    ConventionalAttack(false);
                     break;
                 case PlayerAction.AVOIDANCE:
-                    Avoidance(key, false);
+                    Avoidance(false);
                     break;
                 case PlayerAction.COUNTER:
-                    CounterAttack(key, false);
+                    CounterAttack(false);
                     break;
                 case PlayerAction.DASH:
-                    Dash(key, false);
+                    Dash(false);
                     break;
-                case PlayerAction.DEATHBLOW:
-                    Deathblow(key, false);
+                case PlayerAction.KILLER:
+                    Deathblow(false);
                     break;
                 case PlayerAction.SPECIAL:
-                    SpecialAttack(key, false);
+                    SpecialAttack(false);
                     break;
                 case PlayerAction.CRISIS:
-                    Crisis(key, false);
+                    Crisis(false);
                     break;
             }
 
             //移動処理
-            Move(key);
+            Move();
 
-            Process_Player(key, key2);
+            Process_Player();
 
             Input();
             return this.attack;
@@ -412,7 +410,7 @@ namespace MachShooting
         /// <param name="key">キー1</param>
         /// <param name="key2">キー2</param>
         /// <returns>アタックオブジェクトリスト。ないならnull</returns>
-        protected void Process_Player(byte[] key, byte[] key2)
+        protected void Process_Player()
         {
         }
 
@@ -420,9 +418,9 @@ namespace MachShooting
         /// 移動処理
         /// </summary>
         /// <param name="key">キー</param>
-        private void Move(byte[] key)
+        private void Move()
         {
-            Direction d = Player.getDirection(key);
+            Direction d = Player.getDirection();
             double rad = 0;
             switch (d)
             {
@@ -465,20 +463,20 @@ namespace MachShooting
         /// </summary>
         /// <param name="key"></param>
         /// <returns></returns>
-        private static Direction getDirection(byte[] key)
+        private static Direction getDirection()
         {
             //上下左右の情報取得
             int x = 2;//1:左、3:右
             int y = 2;//1:上、3:下
-            if (!(key[Config.Instance.Key[KeyComfig.GAME_LEFT]] == DX.TRUE && key[Config.Instance.Key[KeyComfig.GAME_RIGHT]] == DX.TRUE))//左右両方が一遍に押されていない
+            if (Key.Instance.GetKey(KeyComfig.GAME_LEFT) ^ Key.Instance.GetKey(KeyComfig.GAME_RIGHT))//左右両方が一遍に押されていない
             {
-                if (key[Config.Instance.Key[KeyComfig.GAME_LEFT]] == DX.TRUE) x = 1;//左
-                if (key[Config.Instance.Key[KeyComfig.GAME_RIGHT]] == DX.TRUE) x = 3;//右
+                if (Key.Instance.GetKey(KeyComfig.GAME_LEFT)) x = 1;//左
+                if (Key.Instance.GetKey(KeyComfig.GAME_RIGHT)) x = 3;//右
             }
-            if (!(key[Config.Instance.Key[KeyComfig.GAME_UP]] == DX.TRUE && key[Config.Instance.Key[KeyComfig.GAME_DOWN]] == DX.TRUE))//上下両方が一遍に押されていない
+            if (Key.Instance.GetKey(KeyComfig.GAME_UP) ^ Key.Instance.GetKey(KeyComfig.GAME_DOWN))//上下両方が一遍に押されていない
             {
-                if (key[Config.Instance.Key[KeyComfig.GAME_UP]] == DX.TRUE) y = 1;//上
-                if (key[Config.Instance.Key[KeyComfig.GAME_DOWN]] == DX.TRUE) y = 3;//下
+                if (Key.Instance.GetKey(KeyComfig.GAME_UP)) y = 1;//上
+                if (Key.Instance.GetKey(KeyComfig.GAME_DOWN)) y = 3;//下
             }
 
 
@@ -533,7 +531,7 @@ namespace MachShooting
         /// 回避を行います
         /// </summary>
         /// <param name="key">キー</param>
-        private void Avoidance(byte[] key, bool start)
+        private void Avoidance(bool start)
         {
             if (start)//初めて
             {
@@ -565,12 +563,12 @@ namespace MachShooting
             if (this.action == PlayerAction.AVOIDANCE && this.avoidance.count <= AvoidanceData.JUST_TIME)//ジャスト回避中
             {
                 this.action = PlayerAction.DASH;
-                Dash(null, true);
+                Dash(true);
             }
             else if (this.hit)//判定がある
             {
                 this.Action = PlayerAction.CRISIS;
-                Crisis(null, true);
+                Crisis(true);
                 hp -= power;
             }
             if (this.hp <= 0)//死ぬ
@@ -587,7 +585,7 @@ namespace MachShooting
         /// </summary>
         /// <param name="key"></param>
         /// <returns>アタックオブジェクトリスト。ないならnull</returns>
-        private void Dash(byte[] key, bool start)
+        private void Dash(bool start)
         {
             if (start)
             {
@@ -597,10 +595,10 @@ namespace MachShooting
             }
             else
             {
-                if (key[Config.Instance.Key[KeyComfig.GAME_ATTACK]] == DX.TRUE)//カウンター
+                if (Key.Instance.GetKey(KeyComfig.GAME_ATTACK))//カウンター
                 {
                     this.action = PlayerAction.COUNTER;
-                    CounterAttack(key, true);
+                    CounterAttack(true);
                 }
                 else if (this.justDash.count < JustDashData.TIME)//終わってない
                 {
@@ -691,7 +689,7 @@ namespace MachShooting
         /// 吹き飛ばされ処理を行います
         /// </summary>
         /// <param name="key"></param>
-        protected void Crisis(byte[] key, bool start)
+        protected void Crisis(bool start)
         {
             if (start)//初めて
             {
@@ -733,7 +731,7 @@ namespace MachShooting
                 DX.SetDrawBright(255, 255, 255);
             }
 
-            if (this.Action == PlayerAction.DEATHBLOW)
+            if (this.Action == PlayerAction.KILLER)
             {
                 DX.SetDrawBright(255, 0, 0);
                 DX.SetDrawBlendMode(DX.DX_BLENDMODE_ADD, 255);
@@ -770,7 +768,7 @@ namespace MachShooting
         protected Bullet NewBullet(Vec dot, int power, Vec vec, Image image, Color color)
         {
             vec.Rad = this.ToMapRad(vec.Rad);
-            bool isDeathblow = this.action == PlayerAction.DEATHBLOW;
+            bool isDeathblow = this.action == PlayerAction.KILLER;
             bool isStrengthen = this.strengthen != 0;
             return new Bullet(dot, power, vec, image, color,
             damage =>
@@ -794,44 +792,44 @@ namespace MachShooting
         /// 通常攻撃
         /// </summary>
         /// <returns>アタックオブジェクトリスト。ないならnull</returns>
-        private void ConventionalAttack(byte[] key, bool start)
+        private void ConventionalAttack(bool start)
         {
-            this.normalFunc.Call(this.luaObject,key, start);
+            this.normalFunc.Call(this.luaObject, start);
         }
 
         /// <summary>
         /// 特殊攻撃
         /// </summary>
         /// <returns>アタックオブジェクトリスト。ないならnull</returns>
-        private void SpecialAttack(byte[] key, bool start)
+        private void SpecialAttack(bool start)
         {
-            this.specialFunc.Call(this.luaObject, key, start);
+            this.specialFunc.Call(this.luaObject, start);
         }
 
         /// <summary>
         /// 必殺技(攻撃)
         /// </summary>
         /// <returns>アタックオブジェクトリスト。ないならnull</returns>
-        private void Deathblow(byte[] key, bool start)
+        private void Deathblow(bool start)
         {
-            this.killerFunc.Call(this.luaObject, key, start);
+            this.killerFunc.Call(this.luaObject, start);
         }
 
         /// <summary>
         /// 必殺技(自己強化)
         /// </summary>
-        private void Strengthen_(byte[] key, bool start)
+        private void Strengthen_(bool start)
         {
-            this.dopingFunc.Call(this.luaObject, key, start);
+            this.dopingFunc.Call(this.luaObject, start);
         }
 
         /// <summary>
         /// カウンター攻撃
         /// </summary>
         /// <returns>アタックオブジェクトリスト。ないならnull</returns>
-        private void CounterAttack(byte[] key, bool start)
+        private void CounterAttack(bool start)
         {
-            this.counterFunc.Call(this.luaObject, key, start);
+            this.counterFunc.Call(this.luaObject, start);
         }
         #endregion
         public void Dispose()
@@ -859,7 +857,7 @@ namespace MachShooting
         /// <summary>
         /// 通常攻撃
         /// </summary>
-        ATTACK,
+        NORMAL,
         /// <summary>
         /// 特殊攻撃
         /// </summary>
@@ -871,7 +869,7 @@ namespace MachShooting
         /// <summary>
         /// 攻撃系必殺技
         /// </summary>
-        DEATHBLOW,
+        KILLER,
         /// <summary>
         /// ジャスト回避ダッシュ
         /// </summary>
@@ -928,34 +926,6 @@ namespace MachShooting
         /// 左上
         /// </summary>
         UP_LEFT
-    }
-    #endregion
-    #region Gauge
-    /// <summary>
-    /// 必殺技のゲージ
-    /// </summary>
-    public enum Gauge
-    {
-        /// <summary>
-        /// 特大
-        /// </summary>
-        SUPER_LARGE = 2000,
-        /// <summary>
-        /// 大
-        /// </summary>
-        LARGE = 1500,
-        /// <summary>
-        /// 中
-        /// </summary>
-        MEDIUM = 1000,
-        /// <summary>
-        /// 小
-        /// </summary>
-        SMALL = 500,
-        /// <summary>
-        /// 特小
-        /// </summary>
-        SUPER_SMALL = 300
     }
     #endregion
     #endregion
@@ -1029,5 +999,5 @@ namespace MachShooting
     #endregion
     #endregion
 
-    
+
 }

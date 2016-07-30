@@ -66,6 +66,9 @@ namespace MachShooting
             this.lua = new Lua();
             this.lua.LoadCLRPackage();
             this.lua.DoString("import (\"DxLibDotNet\",\"DxLibDLL\");");
+            this.lua.DoString("import (\"MachShooting\",\"MachShooting\");");
+            this.lua.DoString("import (\"MachShooting\",\"MachShooting.Graphic\");");
+            this.lua.DoString("import (\"System.Drawing\",\"System.Drawing\");");
             //ライブラリ読み込み
             Action<string> loadLib = null;
             loadLib = dir =>
@@ -81,6 +84,7 @@ namespace MachShooting
                 }
             };
             loadLib("script/lib");
+            loadLib("Data/script");
         }
 
         public static Dictionary<string,string> ParseHeaderAndLoadScript(string path)
@@ -245,8 +249,8 @@ namespace MachShooting
         {
             var h = Script.ParseHeaderAndLoadScript(path);
             this.name = h["NAME"];
-            this.dg = int.Parse(h["DG"]);
-            this.sg = int.Parse(h["SG"]);
+            this.dg = int.Parse(h["KG"]);
+            this.sg = int.Parse(h["DG"]);
             this.className = h["CLASS"];
         }
     }

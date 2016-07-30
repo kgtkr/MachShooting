@@ -91,12 +91,6 @@ namespace MachShooting
             DX.SetDrawMode(DX.DX_DRAWMODE_BILINEAR);
 
             title = new Title();
-            //前フレームのキーを作成
-            byte[] lastKey = new byte[256];
-            for (int i = 0; i < 256; i++)
-            {
-                lastKey[i] = DX.FALSE;
-            }
             while (true)
             {
                 int startTime = DX.GetNowCount();//フレームの始まった時間を取得
@@ -115,18 +109,9 @@ namespace MachShooting
 
                 SE.Instance.Update();
 
-                //キー情報取得
-                byte[] key = new byte[256];
-                DX.GetHitKeyStateAll(out key[0]);
-                //前フレームで押されていないかつキーが押されているか調べる
-                byte[] key2 = new byte[256];
-                for (int i = 0; i < 256; i++)
-                {
-                    key2[i] = (byte)(key[i] == DX.TRUE && lastKey[i] == DX.FALSE ? DX.TRUE : DX.FALSE);
-                }
-                lastKey = key;
+                Key.Instance.Update();
 
-                Update(key, key2);
+                Update();
                 if (count % Config.Instance.FrameSkip == 0) DX.DrawStringToHandle(0, 0, fpsString, fpsColor, Font.Instance.Font16);
 
 
@@ -144,12 +129,12 @@ namespace MachShooting
         /// <summary>
         /// タイトル画面、ゲーム画面等を場合に応じて呼び出します
         /// </summary>
-        private static void Update(byte[] key, byte[] key2)
+        private static void Update()
         {
 
             if (Program.title != null)//タイトル画面なら
             {
-                Program.title.Process(key, key2);
+                Program.title.Process();
                 if (count % Config.Instance.FrameSkip == 0) Program.title.Draw();
                 if (!Program.title.Need)
                 {
@@ -159,7 +144,7 @@ namespace MachShooting
             }
             else if (Program.equipmentMenu != null)//装備選択画面なら
             {
-                Program.equipmentMenu.Process(key, key2);
+                Program.equipmentMenu.Process();
                 if (count % Config.Instance.FrameSkip == 0) Program.equipmentMenu.Draw();
                 if (!Program.equipmentMenu.Need)
                 {
@@ -189,7 +174,7 @@ namespace MachShooting
             }
             else//ゲーム画面なら
             {
-                Program.game.Process(key, key2);
+                Program.game.Process();
                 if (count % Config.Instance.FrameSkip == 0) Program.game.Draw();
                 if (!Program.game.Need)
                 {

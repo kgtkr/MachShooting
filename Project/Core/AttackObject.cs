@@ -5,6 +5,7 @@ using System.Text;
 using System.Threading.Tasks;
 using DxLibDLL;
 using MachShooting.Graphic;
+using NLua;
 
 namespace MachShooting
 {
@@ -22,7 +23,7 @@ namespace MachShooting
         /// <summary>
         /// 当たったときのコールバック
         /// </summary>
-        private Action<int> call;
+        private LuaFunction call;
 
         /// <summary>
         /// エフェクトが始まって何Fか？
@@ -47,7 +48,7 @@ namespace MachShooting
         /// <param name="power">攻撃力。0なら判定を持たない</param>
         /// <param name="image">画像</param>
         /// <param name="call">ヒット時のコールバック</param>
-        protected AttackObject(Vec dot, int power, Image image, double rad, Action<int> call) : base(dot, power, image, rad)
+        protected AttackObject(Vec dot, int power, Image image, double rad, LuaFunction call) : base(dot, power, image, rad)
         {
             this.life = true;
             this.call = call;
@@ -68,7 +69,7 @@ namespace MachShooting
                 this.life = false;
                 if (this.call != null)
                 {
-                    call(damage);
+                    call.Call(damage);
                 }
             }
         }

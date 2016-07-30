@@ -61,11 +61,6 @@ namespace MachShooting
                 return this.go.Rad;
             }
 
-            set
-            {
-                this.go.Rad = value;
-            }
-
         }
 
         /// <summary>
@@ -215,9 +210,53 @@ namespace MachShooting
 
     public class PlayerAPI:API
     {
+        private Player player;
+
         public PlayerAPI(Player player):base(player)
         {
+            this.player = player;
         }
+
+        public PlayerAction Action
+        {
+            get
+            {
+                return this.player.action;
+            }
+
+            set
+            {
+                this.player.action = value;
+            }
+        }
+        /*
+        #region ゲージの定数
+        /// <summary>
+        /// 特大
+        /// </summary>
+        public int SUPER_LARGE { get; } = 2000;
+
+        /// <summary>
+        /// 大
+        /// </summary>
+        public int LARGE { get; } = 1500;
+
+        /// <summary>
+        /// 中
+        /// </summary>
+        public int MEDIUM { get; } = 1000;
+
+        /// <summary>
+        /// 小
+        /// </summary>
+        public int SMALL { get; } = 500;
+
+        /// <summary>
+        /// 特小
+        /// </summary>
+        public int SUPER_SMALL { get; } = 300;
+        #endregion
+        */
     }
 
     /// <summary>
@@ -271,6 +310,18 @@ namespace MachShooting
         {
             get { return this.go.Power; }
             set { this.go.Power = value; }
+        }
+
+        /// <summary>
+        /// 角度
+        /// </summary>
+        public double Rad
+        {
+            set
+            {
+                this.go.Rad = value;
+            }
+
         }
     }
 }

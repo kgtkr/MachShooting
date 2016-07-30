@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using MachShooting.Graphic;
 using System.Drawing;
 using DxLibDLL;
+using NLua;
 
 namespace MachShooting
 {
@@ -34,22 +35,20 @@ namespace MachShooting
         /// <param name="rad">ラジアン</param>
         /// <param name="image">画像</param>
         /// <param name="meta">メタ情報</param>
-        public Bullet(Vec dot, int power, Vec vec, Image image, Color color,Action<int> call = null)
-            : base(dot, power, image, vec.Rad, call)
+        public Bullet(LuaTable dot, int power, LuaTable vec, Image image, LuaTable color,LuaFunction call)
+            : base(new Vec((double)dot["x"],(double)dot["y"]), power, image, 0, call)
         {
-            this.color = color;
+            this.color = Color.FromArgb((byte)color["r"], (byte)color["g"], (byte)color["b"]);
             //角度計算
             SE.Instance.Play(DXAudio.Instance.Shot);
-            this.vec = vec;
-            this.Rad = vec.Rad;
+            this.vec = new Vec((double)vec["x"],(double)vec["y"]);
+            this.Rad = this.vec.Rad;
         }
         #endregion
         #region メソッド
         /// <summary>
         /// 処理を行います
         /// </summary>
-        /// <param name="key">現在のキー情報</param>
-        /// <param name="key2">前Fで押されていないキー情報</param>
         protected override List<AttackObject> ProcessAttackObject()
         {
             //移動
