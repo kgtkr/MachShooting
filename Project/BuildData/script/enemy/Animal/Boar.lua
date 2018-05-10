@@ -7,16 +7,21 @@ CLASS=Boar
 ]]
 
 Boar={
-    new=function(api)
+    new=function(enemy)
         local this={
-            api=api,
-            sync=cmd.Sync.new()
+            enemy=enemy
         };
 
         return setmetatable(this, {__index = Boar}); 
     end,
 
     update=function(this)
+        while true do
+            util.wait(300);
+            this.enemy.Power=30;
+            move.ulmPlayer(this.enemy,10,60);
+            this.enemy.Power=0;
+        end
         if not this.sync:isNeed() then
             table.insert(this.sync.list,cmd.Charge.new(this.api,this.api.Image.Charge,300,this.api.R*3,255,0,0));
             table.insert(this.sync.list,cmd.Action.new(function()this.api.Power=20; end));
@@ -27,8 +32,8 @@ Boar={
     end,
 
     draw=function(this)
-        this.sync:draw();
-        this.api:Draw();
+        --チャージエフェクト
+        this.enemy:DrawEnemy();
     end,
 
     dispose=function(this)

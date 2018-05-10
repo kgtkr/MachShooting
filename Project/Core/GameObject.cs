@@ -1,10 +1,23 @@
-﻿using System;
+﻿/*
+メモ:GameObjectの公開メンバ
+-getter
+X
+Y
+R
+Rad
+Count
+
+-メソッド
+ToMapRad
+ToObjRad
+*/
+//16-08-04クラス整理
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using DxLibDLL;
-using MachShooting.Graphic;
 
 namespace MachShooting
 {
@@ -13,128 +26,26 @@ namespace MachShooting
     /// </summary>
     public abstract class GameObject
     {
-        #region フィールド
+        #region 図形
         /// <summary>
         /// このオブジェクトの座標と半径を表す円
         /// </summary>
-        private Circle circle;
+        internal Circle Circle { get; private set; }
 
         /// <summary>
         /// 前Fの座標
         /// </summary>
-        private Vec dotF;
-
-        /// <summary>
-        /// 攻撃力。攻撃判定がないなら0
-        /// </summary>
-        private int power;
-
-        /// <summary>
-        /// このオブジェクトは必要か
-        /// </summary>
-        private bool need;
-
-        /// <summary>
-        /// 自動的な描画を行うか？
-        /// </summary>
-        private bool draw;
-
-        /// <summary>
-        /// 画像
-        /// </summary>
-        private Image image;
-
-        /// <summary>
-        /// Nextが呼ばれた回数
-        /// </summary>
-        private int count;
-
-        /// <summary>
-        /// 方向
-        /// </summary>
-        private double rad;
-        #endregion
-        #region プロパティ
-        /// <summary>
-        /// 円
-        /// </summary>
-        public Circle Circle
-        {
-            get { return this.circle; }
-            protected set { this.circle = value; }
-        }
+        internal Vec DotBefore { get; private set; }
 
         /// <summary>
         /// 方向
         /// </summary>
         public double Rad
         {
-            get { return this.rad; }
-            set { this.rad = value; }
+            get;
+            internal set;
         }
 
-        /// <summary>
-        /// 前Fの座標
-        /// </summary>
-        public Vec DotF
-        {
-            get { return this.dotF; }
-            set { this.dotF = value; }
-        }
-
-        /// <summary>
-        /// 攻撃力。0なら当たり判定を持たない
-        /// </summary>
-        public int Power
-        {
-            get { return this.power; }
-            set { this.power = value; }
-        }
-
-        /// <summary>
-        /// 必要か？
-        /// </summary>
-        public bool Need
-        {
-            get { return this.need; }
-            protected set { this.need = value; }
-        }
-
-        /// <summary>
-        /// オブジェクトが画面内にいるか？
-        /// </summary>
-        public bool In
-        {
-            get { return new Vec(this.X - Game.WINDOW_R, this.Y - Game.WINDOW_R).LengthSquare <= (Game.WINDOW_R - this.R) * (Game.WINDOW_R - this.R); }
-        }
-
-        /// <summary>
-        /// 描画を行うか？
-        /// </summary>
-        protected bool Draw
-        {
-            get { return this.draw; }
-            set { this.draw = value; }
-        }
-
-        /// <summary>
-        /// 画像
-        /// </summary>
-        public Image Image
-        {
-            get { return this.image; }
-            protected set { this.image = value; }
-        }
-
-        /// <summary>
-        /// Nextが呼ばれた回数
-        /// </summary>
-        public int Count
-        {
-            get { return this.count; }
-        }
-
-        #region 円の実装
         /// <summary>
         /// x座標
         /// </summary>
@@ -142,11 +53,13 @@ namespace MachShooting
         {
             get
             {
-                return this.circle.X;
+                return this.Circle.X;
             }
-            set
+            internal set
             {
-                this.circle.X = value;
+                var c = this.Circle;
+                c.X = value;
+                this.Circle = c;
             }
         }
 
@@ -157,11 +70,13 @@ namespace MachShooting
         {
             get
             {
-                return this.circle.Y;
+                return this.Circle.Y;
             }
-            set
+            internal set
             {
-                this.circle.Y = value;
+                var c = this.Circle;
+                c.Y = value;
+                this.Circle = c;
             }
         }
 
@@ -172,23 +87,64 @@ namespace MachShooting
         {
             get
             {
-                return this.circle.R;
+                return this.Circle.R;
             }
-            set
+            internal set
             {
-                this.circle.R = value;
+                var c = this.Circle;
+                c.R = value;
+                this.Circle = c;
             }
         }
 
         /// <summary>
         /// 座標
         /// </summary>
-        public Vec Dot
+        internal Vec Dot
         {
-            get { return this.circle.Dot; }
-            set { this.circle.Dot = value; }
+            get { return this.Circle.Dot; }
+            set
+            {
+                var c = this.Circle;
+                c.Dot = value;
+                this.Circle = c;
+            }
         }
         #endregion
+        #region フィールド
+        /// <summary>
+        /// 攻撃力。攻撃判定がないなら0
+        /// </summary>
+        internal int Power { get; set; }
+
+        /// <summary>
+        /// このオブジェクトは必要か
+        /// </summary>
+        internal bool Need { get; set; }
+
+        /// <summary>
+        /// 自動的な描画を行うか？
+        /// </summary>
+        internal bool Draw { get; set; }
+
+        /// <summary>
+        /// 画像
+        /// </summary>
+        internal Image Image { get; set; }
+
+        /// <summary>
+        /// Nextが呼ばれた回数
+        /// </summary>
+        internal int Count { get; private set; }
+        #endregion
+        #region プロパティ
+        /// <summary>
+        /// オブジェクトが画面内にいるか？
+        /// </summary>
+        internal bool IsIn
+        {
+            get { return new Vec(this.X - Game.WINDOW_R, this.Y - Game.WINDOW_R).LengthSquare <= (Game.WINDOW_R - this.R) * (Game.WINDOW_R - this.R); }
+        }
         #endregion
         #region コンストラクタ
         /// <summary>
@@ -197,15 +153,15 @@ namespace MachShooting
         /// <param name="dot">座標</param>
         /// <param name="power">攻撃力</param>
         /// <param name="image">画像</param>
-        public GameObject(Vec dot, int power, Image image, double rad)
+        internal GameObject(Vec dot, int power, Image image, double rad)
         {
-            this.circle = new Circle(dot, image.r);
-            this.dotF = circle.Dot;
-            this.power = power;
-            this.draw = true;
-            this.need = true;
-            this.image = image;
-            this.rad = rad;
+            this.Circle = new Circle(dot, image.r);
+            this.DotBefore = Circle.Dot;
+            this.Power = power;
+            this.Draw = true;
+            this.Need = true;
+            this.Image = image;
+            this.Rad = rad;
         }
         #endregion
         #region メソッド
@@ -213,10 +169,10 @@ namespace MachShooting
         /// 処理を行います
         /// Next→処理→当たり判定の順に呼び出して下さい
         /// </summary>
-        public void Next()
+        internal void Next()
         {
-            this.dotF = this.circle.Dot;
-            this.count++;
+            this.DotBefore = this.Circle.Dot;
+            this.Count++;
         }
 
         /// <summary>
@@ -224,10 +180,10 @@ namespace MachShooting
         /// </summary>
         protected void Input()
         {
-            if (!this.In)
+            if (!this.IsIn)
             {
                 double rad = new Vec(this.X - Game.WINDOW_R, this.Y - Game.WINDOW_R).Rad;
-                this.circle.Dot = Vec.NewRadLength(rad, Game.WINDOW_R - this.R);
+                this.Dot = Vec.FromRadLength(rad, Game.WINDOW_R - this.R);
                 this.X += Game.WINDOW_R;
                 this.Y += Game.WINDOW_R;
             }
@@ -239,45 +195,35 @@ namespace MachShooting
         /// <param name="o1">オブジェクト1</param>
         /// <param name="o2">オブジェクト2></param>
         /// <returns></returns>
-        public static bool Hit(GameObject o1, GameObject o2)
+        internal static bool Hit(GameObject o1, GameObject o2)
         {
-            return GraphicProcess.Hit(new Capsule(new Line(o1.circle.Dot, o1.dotF), o1.R),
-                new Capsule(new Line(o2.circle.Dot, o2.dotF), o2.R));
-        }
-
-        /// <summary>
-        /// 攻撃された時に呼び出されるメソッド
-        /// 必要に応じてオーバーライドして下さい
-        /// </summary>
-        /// <param name="power">パワー</param>
-        /// <returns>受けたダメージ</returns>
-        public virtual int Suffer(int power)
-        {
-            return 0;
-        }
-
-        /// <summary>
-        /// 攻撃が当たった時に呼び出されるメソッド
-        /// 必要に応じてオーバーライドして下さい
-        /// </summary>
-        /// <param name="damage">与えたダメージ</param>
-        public virtual void Attack(int damage)
-        {
+            return GraphicProcess.Hit(new Capsule(new Line(o1.Circle.Dot, o1.DotBefore), o1.R),
+                new Capsule(new Line(o2.Circle.Dot, o2.DotBefore), o2.R));
         }
 
         /// <summary>
         /// 描画を行います
         /// </summary>
-        public void DrawObject()
+        internal void DrawObject()
         {
             DrawGameObjectBefore();
-            if (this.draw)
+            if (this.Draw)
             {
-                DrawGraph(this.image);
+                DrawGraph(this.Image);
             }
             DrawGameObjectAfter();
         }
 
+        /// <summary>
+        /// 画像を矩形の中心に描画します
+        /// </summary>
+        /// <param name="grHandle"></param>
+        /// <returns>失敗したら-1</returns>
+        internal int DrawGraph(Image grHandle)
+        {
+            return DX.DrawRotaGraph((int)this.X, (int)this.Y, 1, this.Rad - grHandle.rad, grHandle.image, DX.TRUE);
+        }
+        #region 空の関数
         /// <summary>
         /// 画像を描画する前に呼び出されるメソッド
         /// Doawプロパティの値に関係なく呼び出されます
@@ -299,16 +245,77 @@ namespace MachShooting
         }
 
         /// <summary>
-        /// 画像を矩形の中心に描画します
+        /// 攻撃された時に呼び出されるメソッド
+        /// 必要に応じてオーバーライドして下さい
         /// </summary>
-        /// <param name="grHandle"></param>
-        /// <returns>失敗したら-1</returns>
-        public int DrawGraph(Image grHandle)
+        /// <param name="power">パワー</param>
+        /// <returns>受けたダメージ</returns>
+        internal virtual int Suffer(int power)
         {
-            return DX.DrawRotaGraph((int)this.X, (int)this.Y, 1, this.rad - grHandle.rad, grHandle.image, DX.TRUE);
+            return 0;
+        }
+
+        /// <summary>
+        /// 攻撃が当たった時に呼び出されるメソッド
+        /// 必要に応じてオーバーライドして下さい
+        /// </summary>
+        /// <param name="damage">与えたダメージ</param>
+        internal virtual void Attack(int damage)
+        {
         }
         #endregion
-        #region 抽象メソッド
+        #region 移動
+        /// <summary>
+        /// 移動を行います
+        /// </summary>
+        /// <param name="v">ベクトル</param>
+        internal void Move(Vec v)
+        {
+            this.X += v.X;
+            this.Y += v.Y;
+        }
+
+        /// <summary>
+        /// X方向に移動します
+        /// </summary>
+        /// <param name="x">X方向の移動量</param>
+        internal void MoveX(double x)
+        {
+            this.X += x;
+        }
+
+        /// <summary>
+        /// Y方向に移動します
+        /// </summary>
+        /// <param name="y"></param>
+        internal void MoveY(double y)
+        {
+            this.Y += y;
+        }
+        #endregion
+        #region ラジアン変換
+        /// <summary>
+        /// 特定のオブジェクトに対するラジアンを、マップに対するラジアンに変換します
+        /// </summary>
+        /// <param name="go">オブジェクト</param>
+        /// <param name="objRad">オブジェクトに対するラジアン</param>
+        /// <returns>マップに対するラジアン</returns>
+        public double ToMapRad(double objRad)
+        {
+            return objRad + this.Rad - this.Image.rad;
+        }
+
+        /// <summary>
+        /// マップに対するラジアンを、特定のオブジェクトに対するラジアンに変換します
+        /// </summary>
+        /// <param name="go"></param>
+        /// <param name="mapRad"></param>
+        /// <returns></returns>
+        public double ToObjRad(double mapRad)
+        {
+            return mapRad - this.Rad + this.Image.rad;
+        }
+        #endregion
         #endregion
     }
 }

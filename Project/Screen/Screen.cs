@@ -11,7 +11,7 @@ namespace MachShooting
     /// <summary>
     /// 各画面のクラス
     /// </summary>
-    public abstract class Screen
+    internal abstract class Screen
     {
         private bool need = true;
         private bool decision = false;
@@ -19,10 +19,10 @@ namespace MachShooting
         /// <summary>
         /// 必要か？
         /// </summary>
-        public bool Need
+        internal bool Need
         {
             get { return this.need; }
-            protected set { this.need = value; }
+            set { this.need = value; }
         }
 
         /// <summary>
@@ -34,8 +34,8 @@ namespace MachShooting
             protected set { this.decision = value; }
         }
 
-        public abstract void Draw();
+        internal abstract void Draw();
 
-        public abstract void Process(byte[] key, byte[] key2);
+        internal abstract void Process();
     }
 }

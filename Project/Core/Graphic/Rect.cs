@@ -4,9 +4,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MachShooting.Graphic
+namespace MachShooting
 {
-    public struct Rect
+    internal struct Rect
     {
         #region フィールド
         /// <summary>
@@ -33,7 +33,7 @@ namespace MachShooting.Graphic
         /// <summary>
         /// X座標
         /// </summary>
-        public double X
+        internal double X
         {
             get { return this.x; }
             set { this.x = value; }
@@ -42,7 +42,7 @@ namespace MachShooting.Graphic
         /// <summary>
         /// Y座標
         /// </summary>
-        public double Y
+        internal double Y
         {
             get { return this.y; }
             set { this.y = value; }
@@ -51,7 +51,7 @@ namespace MachShooting.Graphic
         /// <summary>
         /// 幅
         /// </summary>
-        public double W
+        internal double W
         {
             get { return this.w; }
             set { this.w = value; }
@@ -60,7 +60,7 @@ namespace MachShooting.Graphic
         /// <summary>
         /// 幅
         /// </summary>
-        public double H
+        internal double H
         {
             get { return this.h; }
             set { this.h = value; }
@@ -69,7 +69,7 @@ namespace MachShooting.Graphic
         /// <summary>
         /// 左
         /// </summary>
-        public double L
+        internal double L
         {
             get { return this.x; }
             set { this.x = value; }
@@ -78,7 +78,7 @@ namespace MachShooting.Graphic
         /// <summary>
         /// 右
         /// </summary>
-        public double T
+        internal double T
         {
             get { return this.y; }
             set { this.y = value; }
@@ -87,7 +87,7 @@ namespace MachShooting.Graphic
         /// <summary>
         /// 右
         /// </summary>
-        public double R
+        internal double R
         {
             get { return this.x + this.w; }
             set { this.x = value - this.w; }
@@ -96,7 +96,7 @@ namespace MachShooting.Graphic
         /// <summary>
         /// 下
         /// </summary>
-        public double B
+        internal double B
         {
             get { return this.y + this.h; }
             set { this.y = value - this.h; }
@@ -105,7 +105,7 @@ namespace MachShooting.Graphic
         /// <summary>
         /// 中心のX座標
         /// </summary>
-        public double CX
+        internal double CX
         {
             get { return this.x + this.w / 2; }
             set { this.x = value - this.w / 2; }
@@ -114,7 +114,7 @@ namespace MachShooting.Graphic
         /// <summary>
         /// 中心のY座標
         /// </summary>
-        public double CY
+        internal double CY
         {
             get { return this.y + this.h / 2; }
             set { this.y = value - this.h / 2; }
@@ -128,7 +128,7 @@ namespace MachShooting.Graphic
         /// <param name="y"></param>
         /// <param name="w"></param>
         /// <param name="h"></param>
-        public Rect(double x, double y, double w, double h)
+        internal Rect(double x, double y, double w, double h)
         {
             this.x = x;
             this.y = y;
@@ -141,7 +141,7 @@ namespace MachShooting.Graphic
         /// </summary>
         /// <param name="dot1">左上のX座標</param>
         /// <param name="dot2">右下のX座標</param>
-        public Rect(Vec dot1, Vec dot2)
+        internal Rect(Vec dot1, Vec dot2)
         {
             double l = Math.Min(dot1.X, dot2.X);
             double r = Math.Max(dot1.X, dot2.X);
@@ -177,7 +177,7 @@ namespace MachShooting.Graphic
         /// 移動を行います
         /// </summary>
         /// <param name="vec"></param>
-        public void Move(Vec vec)
+        internal void Move(Vec vec)
         {
             this.x += vec.X;
             this.y += vec.Y;

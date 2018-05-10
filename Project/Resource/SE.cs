@@ -50,7 +50,7 @@ namespace MachShooting
         /// <summary>
         /// 効果音を流します。毎F呼び出してください
         /// </summary>
-        public void Update()
+        internal void Update()
         {
             foreach (int handle in this.music.ToArray())
             {

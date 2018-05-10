@@ -4,7 +4,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using DxLibDLL;
-using MachShooting.Graphic;
 using NLua;
 
 namespace MachShooting
@@ -23,7 +22,11 @@ namespace MachShooting
         /// <summary>
         /// 当たったときのコールバック
         /// </summary>
-        private LuaFunction call;
+        public Action<int> call
+        {
+            get;
+            set;
+        }
 
         /// <summary>
         /// エフェクトが始まって何Fか？
@@ -34,10 +37,10 @@ namespace MachShooting
         /// <summary>
         /// 生きているか
         /// </summary>
-        public bool Life
+        internal bool Life
         {
             get { return this.life; }
-            protected set { this.life = value; }
+            set { this.life = value; }
         }
         #endregion
         #region コンストラクタ
@@ -51,7 +54,10 @@ namespace MachShooting
         protected AttackObject(Vec dot, int power, Image image, double rad, LuaFunction call) : base(dot, power, image, rad)
         {
             this.life = true;
-            this.call = call;
+            if (call != null)
+            {
+                this.call = damage => call.Call(damage);
+            }
             this.Draw = false;
         }
         #endregion
@@ -60,7 +66,7 @@ namespace MachShooting
         /// 攻撃が当たったら当たり判定を消します
         /// </summary>
         /// <param name="damage">ダメージ</param>
-        public override void Attack(int damage)
+        internal override void Attack(int damage)
         {
             if (this.life && damage != 0)
             {
@@ -69,7 +75,7 @@ namespace MachShooting
                 this.life = false;
                 if (this.call != null)
                 {
-                    call.Call(damage);
+                    this.call(damage);
                 }
             }
         }
@@ -78,7 +84,7 @@ namespace MachShooting
         /// 処理を行います
         /// </summary>
         /// <returns>新たに生み出した攻撃オブジェクト。生み出していないならnull</returns>
-        public List<AttackObject> Process()
+        internal List<AttackObject> Process()
         {
             Next();
             if (this.Life)

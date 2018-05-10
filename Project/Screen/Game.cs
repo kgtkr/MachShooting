@@ -11,19 +11,19 @@ namespace MachShooting
     /// <summary>
     /// ゲーム画面
     /// </summary>
-    public class Game : Screen,IDisposable
+    internal class Game : Screen,IDisposable
     {
         #region 定数
         /// <summary>
         /// タイムリミット(F単位)
         /// 15分
         /// </summary>
-        public const int TIME_LIMIT_F = 15 * 60 * 60;
+        internal const int TIME_LIMIT_F = 15 * 60 * 60;
 
         /// <summary>
         /// 半径
         /// </summary>
-        public const int WINDOW_R = 1000;
+        internal const int WINDOW_R = 1000;
         #endregion
         #region フィールド
         /// <summary>
@@ -72,26 +72,9 @@ namespace MachShooting
         /// </summary>
         /// <param name="enemy">敵</param>
         /// <param name="equipment">装備</param>
-        public Game(EnemyHeader enemy, Equipment equipment)
+        internal Game(EnemyHeader enemy, PlayerHeader equipment)
         {
-            switch (equipment)
-            {
-                case Equipment.STABILITY:
-                    this.player = new Stability();
-                    break;
-                case Equipment.SUPER_CHARGE:
-                    this.player = new SuperCharge();
-                    break;
-                case Equipment.CHARGE:
-                    this.player = new Charge();
-                    break;
-                case Equipment.OVERALL:
-                    this.player = new Overall();
-                    break;
-                case Equipment.DOUBLE:
-                    this.player = new Double();
-                    break;
-            }
+            this.player = new Player(equipment);
 
             this.boss = new Enemy(enemy, player);
 
@@ -105,7 +88,7 @@ namespace MachShooting
         /// <summary>
         /// 描画を行います
         /// </summary>
-        public override void Draw()
+        internal override void Draw()
         {
             DX.DrawBox(0, 0, Program.WIDTH, Program.HEIGHT, DXColor.Instance.Black, DX.TRUE);
             DX.SetDrawScreen(this.screen);
@@ -213,13 +196,13 @@ namespace MachShooting
         /// </summary>
         /// <param name="key"></param>
         /// <param name="key2"></param>
-        public override void Process(byte[] key, byte[] key2)
+        internal override void Process()
         {
             if (this.battle==0)
             {
                 this.timeF++;
 
-                this.playerAttack.AddList(this.player.Process(key, key2,this.boss));
+                this.playerAttack.AddList(this.player.Process(this.boss));
 
                 /*ボス*/
                 this.enemyAttack.AddList(this.boss.Process());
@@ -256,7 +239,7 @@ namespace MachShooting
                     }
                 }
 
-                if(key2[Config.Instance.Key[KeyComfig.GAME_STOP]] == DX.TRUE)
+                if(Key.Instance.GetKeyDown(KeyComfig.GAME_STOP))
                 {
                     this.battle = 1;
                 }
@@ -271,14 +254,14 @@ namespace MachShooting
             }
             else if (battle == 1)//一時停止
             {
-                if(key2[Config.Instance.Key[KeyComfig.MENU_UP]]==DX.TRUE^
-                    key2[Config.Instance.Key[KeyComfig.MENU_DOWN]] == DX.TRUE)
+                if(Key.Instance.GetKeyDown(KeyComfig.MENU_UP) ^
+                    Key.Instance.GetKeyDown(KeyComfig.MENU_DOWN))
                 {
                     this.stopIndex++;
                     this.stopIndex %= 2;
                 }
 
-                if (key2[Config.Instance.Key[KeyComfig.MENU_OK]] == DX.TRUE)
+                if (Key.Instance.GetKeyDown(KeyComfig.MENU_OK))
                 {
                     if (this.stopIndex == 0)
                     {
@@ -289,7 +272,7 @@ namespace MachShooting
                         this.Need = false;
                     }
                 }
-                else if (key2[Config.Instance.Key[KeyComfig.MENU_BACK]] == DX.TRUE)
+                else if (Key.Instance.GetKeyDown(KeyComfig.MENU_BACK))
                 {
                     this.stopIndex = 0;
                     this.battle = 0;
@@ -297,7 +280,7 @@ namespace MachShooting
             }
             else//リザルト
             {
-                if (key2[Config.Instance.Key[KeyComfig.MENU_OK]] == DX.TRUE)
+                if (Key.Instance.GetKeyDown(KeyComfig.MENU_OK))
                 {
                     this.Need = false;
                 }

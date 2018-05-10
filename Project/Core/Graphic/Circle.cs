@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MachShooting.Graphic
+namespace MachShooting
 {
     /// <summary>
     /// 円
@@ -61,7 +61,7 @@ namespace MachShooting.Graphic
         /// <summary>
         /// この図形を囲む矩形
         /// </summary>
-        public Rect Rect
+        internal Rect Rect
         {
             get
             {

@@ -9,11 +9,11 @@ using NLua;
 
 namespace MachShooting
 {
-    public class Script
+    internal class Script
     {
         private static HeaderTree<EnemyHeader> enemyH;
 
-        public static HeaderTree<EnemyHeader> EnemyH
+        internal static HeaderTree<EnemyHeader> EnemyH
         {
             get
             {
@@ -28,7 +28,7 @@ namespace MachShooting
 
         private static HeaderTree<PlayerHeader> playerH;
 
-        public static HeaderTree<PlayerHeader> PlayerH
+        internal static HeaderTree<PlayerHeader> PlayerH
         {
             get
             {
@@ -43,7 +43,7 @@ namespace MachShooting
 
         private static Script instance;
 
-        public static Script Instance
+        internal static Script Instance
         {
             get
             {
@@ -56,7 +56,7 @@ namespace MachShooting
             }
         }
 
-        public Lua lua {
+        internal Lua lua {
             get;
             private set;
         }
@@ -67,8 +67,8 @@ namespace MachShooting
             this.lua.LoadCLRPackage();
             this.lua.DoString("import (\"DxLibDotNet\",\"DxLibDLL\");");
             this.lua.DoString("import (\"MachShooting\",\"MachShooting\");");
-            this.lua.DoString("import (\"MachShooting\",\"MachShooting.Graphic\");");
             this.lua.DoString("import (\"System.Drawing\",\"System.Drawing\");");
+            
             //ライブラリ読み込み
             Action<string> loadLib = null;
             loadLib = dir =>
@@ -87,7 +87,7 @@ namespace MachShooting
             loadLib("Data/script");
         }
 
-        public static Dictionary<string,string> ParseHeaderAndLoadScript(string path)
+        internal static Dictionary<string,string> ParseHeaderAndLoadScript(string path)
         {
             string src = null;
             using (StreamReader sr = new StreamReader(
@@ -121,12 +121,12 @@ namespace MachShooting
         }
     }
 
-    public class HeaderTree<TData>
+    internal class HeaderTree<TData>
     {
         /// <summary>
         /// ヘッダー
         /// </summary>
-        public IReadOnlyList<TData> Header
+        internal IReadOnlyList<TData> Header
         {
             get;
             private set;
@@ -135,19 +135,19 @@ namespace MachShooting
         /// <summary>
         /// ツリー
         /// </summary>
-        public IReadOnlyList<HeaderTree<TData>> Tree
+        internal IReadOnlyList<HeaderTree<TData>> Tree
         {
             get;
             private set;
         }
 
-        public string Name
+        internal string Name
         {
             get;
             private set;
         }
 
-        public HeaderTree(string dir, string name,Func<string,TData> func)
+        internal HeaderTree(string dir, string name,Func<string,TData> func)
         {
             this.Name = Path.GetFileName(dir);
 
@@ -174,35 +174,35 @@ namespace MachShooting
     /// <summary>
     /// 敵のヘッダー構造体
     /// </summary>
-    public class EnemyHeader
+    internal class EnemyHeader
     {
-        public string name
+        internal string name
         {
             get;
             private set;
         }
-        public int hp
+        internal int hp
         {
             get;
             private set;
         }
-        public string image
+        internal string image
         {
             get;
             private set;
         }
-        public double r
+        internal double r
         {
             get;
             private set;
         }
-        public string className
+        internal string className
         {
             get;
             private set;
         }
 
-        public EnemyHeader(string path)
+        internal EnemyHeader(string path)
         {
             var h = Script.ParseHeaderAndLoadScript(path);
             this.name = h["NAME"];
@@ -211,14 +211,19 @@ namespace MachShooting
             this.r = double.Parse(h["R"]);
             this.className = h["CLASS"];
         }
+
+        public override string ToString()
+        {
+            return this.name;
+        }
     }
 
     /// <summary>
     /// 自機のヘッダー構造体
     /// </summary>
-    public class PlayerHeader
+    internal class PlayerHeader
     {
-        public string name
+        internal string name
         {
             get;
             private set;
@@ -226,7 +231,7 @@ namespace MachShooting
         /// <summary>
         /// 必殺技ゲージ
         /// </summary>
-        public int dg
+        internal int dg
         {
             get;
             private set;
@@ -234,24 +239,29 @@ namespace MachShooting
         /// <summary>
         /// 自己強化ゲージ
         /// </summary>
-        public int sg
+        internal int sg
         {
             get;
             private set;
         }
-        public string className
+        internal string className
         {
             get;
             private set;
         }
 
-        public PlayerHeader(string path)
+        internal PlayerHeader(string path)
         {
             var h = Script.ParseHeaderAndLoadScript(path);
             this.name = h["NAME"];
             this.dg = int.Parse(h["KG"]);
             this.sg = int.Parse(h["DG"]);
             this.className = h["CLASS"];
+        }
+
+        public override string ToString()
+        {
+            return this.name;
         }
     }
 }

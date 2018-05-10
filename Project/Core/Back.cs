@@ -10,9 +10,9 @@ namespace MachShooting
     /// <summary>
     /// 背景を表すクラス
     /// </summary>
-    public static class Back
+    internal static class Back
     {
-        public static void Draw()
+        internal static void Draw()
         {
             if (!Config.Instance.Low)
             {

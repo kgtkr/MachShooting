@@ -7,11 +7,11 @@ using DxLibDLL;
 
 namespace MachShooting
 {
-    public class Font
+    internal class Font
     {
         private static Font instance;
 
-        public static Font Instance
+        internal static Font Instance
         {
             get
             {
@@ -28,7 +28,7 @@ namespace MachShooting
         /// <summary>
         /// 8px
         /// </summary>
-        public int Font8
+        internal int Font8
         {
             get;
             private set;
@@ -37,7 +37,7 @@ namespace MachShooting
         /// <summary>
         /// 16px
         /// </summary>
-        public int Font16
+        internal int Font16
         {
             get;
             private set;
@@ -46,7 +46,7 @@ namespace MachShooting
         /// <summary>
         /// 32px
         /// </summary>
-        public int Font32
+        internal int Font32
         {
             get;
             private set;
@@ -55,7 +55,7 @@ namespace MachShooting
         /// <summary>
         /// 64px
         /// </summary>
-        public int Font64
+        internal int Font64
         {
             get;
             private set;

@@ -1,4 +1,25 @@
-﻿using System;
+﻿/*
+メモ:公開されているクラス
+DX
+Key
+KeyComfig
+DXColor
+DXImage(弾・エフェクトのみ)
+SE
+Image
+Radian
+Vec
+Circle
+Util
+Bullet(生成のみ)
+PlayerAction
+
+以下のクラスは複雑なため各クラスのコメントに詳細あり
+GameObject
+Player
+Enemy
+*/
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -6,12 +27,11 @@ using System.Threading.Tasks;
 using DxLibDLL;
 using System.IO;
 using System.Diagnostics;
-using MachShooting.Graphic;
 using NLua;
 
 namespace MachShooting
 {
-    public static class Program
+    internal static class Program
     {
         /// <summary>
         /// カウント
@@ -22,20 +42,20 @@ namespace MachShooting
         /// <summary>
         /// バージョン
         /// </summary>
-        public const string VER = "0.0.0";
+        internal const string VER = "0.0.0";
 
         /// <summary>
         /// 画面の幅
         /// </summary>
-        public const int WIDTH = 640;
+        internal const int WIDTH = 640;
         /// <summary>
         /// 画面の高さ
         /// </summary>
-        public const int HEIGHT = 480;
+        internal const int HEIGHT = 480;
         /// <summary>
         /// ルート2
         /// </summary>
-        public const double ROOT2 = 1.41421356;
+        internal const double ROOT2 = 1.41421356;
         #endregion
         #region 各画面
         /// <summary>
@@ -46,19 +66,19 @@ namespace MachShooting
         /// <summary>
         /// ミッション選択画面
         /// </summary>
-        private static MissionMenu missionMenu;
+        private static TreeMenu<EnemyHeader> missionMenu;
 
         /// <summary>
         /// 装備選択画面
         /// </summary>
-        private static EquipmentMenu equipmentMenu;
+        private static TreeMenu<PlayerHeader> equipmentMenu;
 
         /// <summary>
         /// ゲーム画面
         /// </summary>
         private static Game game;
         #endregion
-
+        private const string ZIKI_MSG = "自機を選択して下さい。";
         /*選択情報*/
         /// <summary>
         /// 選択しているクエスト
@@ -68,11 +88,11 @@ namespace MachShooting
         /// <summary>
         /// 選択している装備
         /// </summary>
-        private static Equipment equipment;
+        private static PlayerHeader equipment;
         /// <summary>
         /// メインメソッド
         /// </summary>
-        public static void Main()
+        internal static void Main()
         {
             /*前処理*/
             DX.SetOutApplicationLogValidFlag(DX.FALSE);//ログを出力しない
@@ -139,7 +159,7 @@ namespace MachShooting
                 if (!Program.title.Need)
                 {
                     Program.title = null;
-                    Program.equipmentMenu = new EquipmentMenu();
+                    Program.equipmentMenu = new TreeMenu<PlayerHeader>(Program.ZIKI_MSG,Script.PlayerH);
                 }
             }
             else if (Program.equipmentMenu != null)//装備選択画面なら
@@ -148,27 +168,27 @@ namespace MachShooting
                 if (count % Config.Instance.FrameSkip == 0) Program.equipmentMenu.Draw();
                 if (!Program.equipmentMenu.Need)
                 {
-                    Program.equipment = Program.equipmentMenu.Equipment;
+                    Program.equipment = Program.equipmentMenu.Header;
                     Program.equipmentMenu = null;
-                    Program.missionMenu = new MissionMenu(Script.EnemyH);
+                    Program.missionMenu = new TreeMenu<EnemyHeader>("敵を選択して下さい。",Script.EnemyH);
                 }
             }
             else if (Program.missionMenu != null)//敵選択画面なら
             {
-                Program.missionMenu.Process(key, key2);
+                Program.missionMenu.Process();
                 if (count % Config.Instance.FrameSkip == 0) Program.missionMenu.Draw();
                 if (!Program.missionMenu.Need)
                 {
                     if (Program.missionMenu.Decision)
                     {
-                        Program.missionData = Program.missionMenu.MissionData;//ミッションデータ取得
+                        Program.missionData = Program.missionMenu.Header;//ミッションデータ取得
                         Program.missionMenu = null;
                         Program.game = new Game(Program.missionData, Program.equipment);
                     }
                     else
                     {
                         Program.missionMenu = null;
-                        Program.equipmentMenu = new EquipmentMenu();
+                        Program.equipmentMenu = new TreeMenu<PlayerHeader>(Program.ZIKI_MSG, Script.PlayerH);
                     }
                 }
             }
@@ -180,7 +200,7 @@ namespace MachShooting
                 {
                     DX.SetBackgroundColor(0, 0, 0);
                     Program.game = null;
-                    Program.equipmentMenu = new EquipmentMenu();
+                    Program.equipmentMenu = new TreeMenu<PlayerHeader>(Program.ZIKI_MSG, Script.PlayerH);
                 }
             }
             count++;
@@ -191,7 +211,7 @@ namespace MachShooting
         /// </summary>
         /// <param name="str">文字列</param>
         /// <returns>バイト数</returns>
-        public static int GetStringByte(this string str)
+        internal static int GetStringByte(this string str)
         {
             return Encoding.GetEncoding("Shift_JIS").GetByteCount(str);
         }
@@ -203,7 +223,7 @@ namespace MachShooting
         /// <typeparam name="T"></typeparam>
         /// <param name="list1"></param>
         /// <param name="list2"></param>
-        public static void AddList<T>(this List<T> list1, List<T> list2)
+        internal static void AddList<T>(this List<T> list1, List<T> list2)
         {
             if (list2 != null)
             {
@@ -211,7 +231,7 @@ namespace MachShooting
             }
         }
 
-        public static int StringWidth(string str,int font)
+        internal static int StringWidth(string str,int font)
         {
             return DX.GetDrawStringWidthToHandle(str, Program.GetStringByte(str), font);
         }

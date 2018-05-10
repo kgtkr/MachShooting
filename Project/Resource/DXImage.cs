@@ -4,7 +4,6 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using DxLibDLL;
-using MachShooting.Graphic;
 using System.Collections.ObjectModel;
 
 namespace MachShooting
@@ -30,7 +29,7 @@ namespace MachShooting
         /// <summary>
         /// 背景画像
         /// </summary>
-        public int Back
+        internal int Back
         {
             get;
             private set;
@@ -39,7 +38,7 @@ namespace MachShooting
         /// <summary>
         /// 自機
         /// </summary>
-        public Image Player
+        internal Image Player
         {
             get;
             private set;
@@ -48,7 +47,7 @@ namespace MachShooting
         /// <summary>
         /// 時計
         /// </summary>
-        public int Clock
+        internal int Clock
         {
             get;
             private set;

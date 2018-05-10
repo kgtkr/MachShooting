@@ -1,10 +1,30 @@
-﻿using System;
+﻿/*
+メモ:公開メンバ
+-プロパティ
+X
+Y
+Rad
+R
+Power
+
+-getterのみ
+PlayerX
+PlayerY
+
+-メソッド
+DrawEnemy()
+AddAO(AttackObject)
+Move(Vec)
+MoveX(double)
+MoveY(double)
+*/
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using DxLibDLL;
-using MachShooting.Graphic;
 using NLua;
 
 namespace MachShooting
@@ -14,11 +34,75 @@ namespace MachShooting
     /// </summary>
     public class Enemy : GameObject, IDisposable
     {
+        #region GameObjectに追加で公開するプロパティ
+        public new double X
+        {
+            get
+            {
+                return base.X;
+            }
+
+            set
+            {
+                base.X = value;
+            }
+        }
+
+        public new double Y
+        {
+            get
+            {
+                return base.Y;
+            }
+
+            set
+            {
+                base.Y = value;
+            }
+        }
+
+        public new double Rad
+        {
+            get
+            {
+                return base.Rad;
+            }
+
+            set
+            {
+                base.Rad = value;
+            }
+        }
+
+        public new double R
+        {
+            get
+            {
+                return base.R;
+            }
+
+            set
+            {
+                base.R = value;
+            }
+        }
+
+        public new int Power
+        {
+            get { return base.Power; }
+            set { base.Power = value; }
+        }
+        #endregion
+
+        /// <summary>
+        /// まだ返していないアタックオブジェクト
+        /// </summary>
+        private List<AttackObject> ao;
         #region フィールド
         /// <summary>
         /// 名前
         /// </summary>
-        public string Name
+        internal string Name
         {
             get;
             private set;
@@ -27,7 +111,7 @@ namespace MachShooting
         /// <summary>
         /// 最大HP
         /// </summary>
-        public int MaxHp
+        internal int MaxHp
         {
             get;
             private set;
@@ -36,7 +120,7 @@ namespace MachShooting
         /// <summary>
         /// HP
         /// </summary>
-        public int HP
+        internal int HP
         {
             get;
             private set;
@@ -45,16 +129,12 @@ namespace MachShooting
         /// <summary>
         /// 自機
         /// </summary>
-        public Player Player
-        {
-            get;
-            private set;
-        }
+        private Player player;
 
         /// <summary>
         /// やられ判定があるか
         /// </summary>
-        public bool Hit
+        internal bool IsHit
         {
             get;
             private set;
@@ -66,19 +146,9 @@ namespace MachShooting
         private Lua lua;
 
         /// <summary>
-        /// API
-        /// </summary>
-        private EnemyAPI api;
-
-        /// <summary>
         /// luaオブジェクト
         /// </summary>
         private LuaTable luaObject;
-
-        /// <summary>
-        /// 初期化関数
-        /// </summary>
-        private LuaFunction initFunc;
 
         /// <summary>
         /// 処理関数
@@ -94,6 +164,16 @@ namespace MachShooting
         /// 終了関数
         /// </summary>
         private LuaFunction disposeFunc;
+
+        public double PlayerX
+        {
+            get { return this.player.X; }
+        }
+
+        public double PlayerY
+        {
+            get { return this.player.Y; }
+        }
         #endregion
         #region プロパティ
         #endregion
@@ -107,21 +187,20 @@ namespace MachShooting
         /// <param name="maxHP">最大HP</param>
         /// <param name="player">自機</param>
         /// <param name="image">画像</param>
-        public Enemy(EnemyHeader h, Player player)
+        internal Enemy(EnemyHeader h, Player player)
             : base(new Vec(Game.WINDOW_R, Game.WINDOW_R / 2), 0, new Image(DX.LoadGraph(h.image), h.r, new Vec(0, 1).Rad), new Vec(0, 1).Rad)
         {
             this.Name = h.name;
             this.HP = h.hp;
             this.MaxHp = h.hp;
-            this.Player = player;
-            this.Hit = true;
+            this.player = player;
+            this.IsHit = true;
             this.Draw = false;
 
-            this.api = new EnemyAPI(this);
             this.lua = Script.Instance.lua;
 
-            this.initFunc = (LuaFunction)((LuaTable)lua[h.className])["new"];
-            this.luaObject = (LuaTable)this.initFunc.Call(this.api)[0];
+            var initFunc = (LuaFunction)((LuaTable)this.lua[h.className])["new"];
+            this.luaObject = (LuaTable)initFunc.Call(this)[0];
 
             this.updateFunc = (LuaFunction)this.luaObject["update"];
             this.drawFunc = (LuaFunction)this.luaObject["draw"];
@@ -133,7 +212,7 @@ namespace MachShooting
         /// 処理を行います
         /// </summary>
         /// <returns>アタックオブジェクトリスト。ないならnull</returns>
-        public List<AttackObject> Process()
+        internal List<AttackObject> Process()
         {
             Next();
             if (this.HP != 0)//生きているなら
@@ -141,7 +220,10 @@ namespace MachShooting
                 this.updateFunc.Call(this.luaObject);
 
                 Input();
-                return this.api.getAattackObject();
+
+                var ao = this.ao;
+                this.ao = null;
+                return ao;
             }
             else//死んでいるなら
             {
@@ -159,9 +241,9 @@ namespace MachShooting
         /// </summary>
         /// <param name="power">攻撃力</param>
         /// <returns>受けたダメージ</returns>
-        public override int Suffer(int power)
+        internal override int Suffer(int power)
         {
-            if (this.HP != 0 && this.Hit)//生きているかつやられ判定がある
+            if (this.HP != 0 && this.IsHit)//生きているかつやられ判定がある
             {
                 this.HP -= power;
                 if (this.HP <= 0)
@@ -180,7 +262,7 @@ namespace MachShooting
         /// <summary>
         /// HPを描画します
         /// </summary>
-        public void DrawHP()
+        internal void DrawHP()
         {
             const int x = 100;
             const int y = 10;
@@ -204,6 +286,36 @@ namespace MachShooting
         {
             this.Dispose();
         }
+
+        public void AddAO(AttackObject ao)
+        {
+            if (this.ao == null)
+            {
+                this.ao = new List<AttackObject>();
+            }
+            this.ao.Add(ao);
+        }
+
+        public void DrawEnemy()
+        {
+            this.DrawGraph(this.Image);
+        }
+
+        public new void Move(Vec v)
+        {
+            base.Move(v);
+        }
+
+        public new void MoveX(double x)
+        {
+            base.MoveX(x);
+        }
+
+        public new void MoveY(double y)
+        {
+            base.MoveY(y);
+        }
+
     }
 
 

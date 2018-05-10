@@ -4,12 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MachShooting.Graphic
+namespace MachShooting
 {
     /// <summary>
     /// 図形操作
     /// </summary>
-    public static partial class GraphicProcess
+    internal static partial class GraphicProcess
     {
         /// <summary>
         /// 矩形と矩形の当たり判定を行います
@@ -17,7 +17,7 @@ namespace MachShooting.Graphic
         /// <param name="rect1">矩形1</param>
         /// <param name="rect2">矩形2</param>
         /// <returns></returns>
-        public static bool Hit(Rect rect1, Rect rect2)
+        internal static bool Hit(Rect rect1, Rect rect2)
         {
             return (rect2.L < rect1.R) &&
                     (rect2.R > rect1.L) &&
@@ -31,7 +31,7 @@ namespace MachShooting.Graphic
         /// <param name="capsule1"></param>
         /// <param name="capsule2"></param>
         /// <returns></returns>
-        public static bool Hit(Capsule capsule1,Capsule capsule2)
+        internal static bool Hit(Capsule capsule1,Capsule capsule2)
         {
             if (!Hit(capsule1.Rect, capsule2.Rect))
             {
@@ -47,7 +47,7 @@ namespace MachShooting.Graphic
         /// <param name="line1"></param>
         /// <param name="line2"></param>
         /// <returns></returns>
-        public static double Distance(Line line1, Line line2)
+        internal static double Distance(Line line1, Line line2)
         {
             Vec l1d1 = (Vec)line1.Dot1;
             Vec l1d2 = (Vec)line1.Dot2;

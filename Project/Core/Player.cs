@@ -1,10 +1,29 @@
-﻿using System;
+﻿/*
+メモ:公開メンバ
+-プロパティ
+Action
+Speed
+DopingTime
+
+-getterのみ
+IsDoping
+BulletDot
+BulletDotR
+BulletDotL
+
+-メソッド
+AddAO(AttackObject)
+SetActionNone()
+ResetSpeed()
+
+
+*/
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using DxLibDLL;
-using MachShooting.Graphic;
 using System.Drawing;
 using NLua;
 
@@ -15,6 +34,16 @@ namespace MachShooting
     /// </summary>
     public class Player : GameObject, IDisposable
     {
+        public void SetActionNone()
+        {
+            this.Action = PlayerAction.NONE;
+        }
+
+        public void ResetSpeed()
+        {
+            this.speed = Player.SPEED;
+        }
+
         #region 定数
         /// <summary>
         /// デフォルトスピード
@@ -37,15 +66,45 @@ namespace MachShooting
         /// </summary>
         private readonly string name;
 
+        private PlayerAction action自クラスからも絶対参照禁止プロパティ使え = PlayerAction.NONE;
+
         /// <summary>
         /// 現在の行動
         /// </summary>
-        public PlayerAction action { get; set; } = PlayerAction.NONE;
+        public PlayerAction Action {
+            get
+            {
+                return this.action自クラスからも絶対参照禁止プロパティ使え;
+            }
+            set
+            {
+                //スピードを元に戻す
+                this.speed = Player.SPEED;
+                this.action自クラスからも絶対参照禁止プロパティ使え = value;
+            }
+        }
 
         /// <summary>
         /// 自己強化の残り時間
         /// </summary>
-        private int strengthen;
+        public int DopingTime
+        {
+            get;
+            set;
+        }
+
+        public bool IsDoping
+        {
+            get
+            {
+                return this.DopingTime != 0;
+            }
+        }
+
+        /// <summary>
+        /// まだ返していないアタックオブジェクト
+        /// </summary>
+        private List<AttackObject> ao = new List<AttackObject>();
 
         /// <summary>
         /// スピード
@@ -111,11 +170,6 @@ namespace MachShooting
         /// </summary>
         private int maxStrengthenTime;
 
-        /// <summary>
-        /// まだ返していないアタックオブジェクト
-        /// </summary>
-        private List<AttackObject> attack;
-
         #region Lua
         /// <summary>
         /// luaオブジェクト
@@ -123,25 +177,20 @@ namespace MachShooting
         private Lua lua;
 
         /// <summary>
-        /// API
-        /// </summary>
-        private PlayerAPI api;
-
-        /// <summary>
         /// luaオブジェクト
         /// </summary>
         private LuaTable luaObject;
-
-        /// <summary>
-        /// 初期化関数
-        /// </summary>
-        private LuaFunction initFunc;
 
         /// <summary>
         /// 描画関数
         /// なくてもいい
         /// </summary>
         private LuaFunction drawFunc;
+
+        /// <summary>
+        /// アップデート
+        /// </summary>
+        private LuaFunction updateFunc;
 
         /// <summary>
         /// 終了関数
@@ -178,18 +227,9 @@ namespace MachShooting
         /// <summary>
         /// 名前
         /// </summary>
-        public string Name
+        internal string Name
         {
             get { return this.name; }
-        }
-
-        /// <summary>
-        /// 現在のアクション
-        /// </summary>
-        protected PlayerAction Action
-        {
-            get { return this.action; }
-            set { this.action = value; }
         }
 
         /// <summary>
@@ -202,56 +242,47 @@ namespace MachShooting
         }
 
         /// <summary>
-        /// 自己強化の残り時間
-        /// </summary>
-        protected int Strengthen
-        {
-            get { return this.strengthen; }
-            set { this.strengthen = value; }
-        }
-
-        /// <summary>
         /// スピード
         /// 毎フレームリセットされます
         /// </summary>
-        protected double Speed
+        public double Speed
         {
             get { return this.speed; }
             set { this.speed = value; }
         }
 
-        protected Vec BulletDotC
+        public Vec BulletDot
         {
             get
             {
                 Vec dot = this.Circle.Dot;
-                dot += Vec.NewRadLength(this.Rad, this.R);
+                dot += Vec.FromRadLength(this.Rad, this.R);
                 return dot;
             }
         }
 
-        protected Vec BulletDotR
+        public Vec BulletDotR
         {
             get
             {
                 Vec dot = this.Circle.Dot;
-                dot += Vec.NewRadLength(new Vec(1, -1).Rad + this.Rad - this.Image.rad, this.R * Program.ROOT2);
+                dot += Vec.FromRadLength(new Vec(1, -1).Rad + this.Rad - this.Image.rad, this.R * Program.ROOT2);
                 return dot;
             }
         }
 
-        protected Vec BulletDotL
+        public Vec BulletDotL
         {
             get
             {
                 Vec dot = this.Circle.Dot;
-                dot += Vec.NewRadLength(new Vec(-1, -1).Rad + this.Rad - this.Image.rad, this.R * Program.ROOT2);
+                dot += Vec.FromRadLength(new Vec(-1, -1).Rad + this.Rad - this.Image.rad, this.R * Program.ROOT2);
                 return dot;
             }
         }
         #endregion
         #region コンストラクタ
-        public Player(PlayerHeader h)
+        internal Player(PlayerHeader h)
             : base(new Vec(Game.WINDOW_R, Game.WINDOW_R), 0, DXImage.Instance.Player, new Vec(0, -1).Rad)
         {
             this.name = h.name;
@@ -259,10 +290,11 @@ namespace MachShooting
             this.maxSG = h.sg;
 
             this.lua = Script.Instance.lua;
-            this.api = new PlayerAPI(this);
 
-            this.initFunc = (LuaFunction)((LuaTable)lua[h.className])["new"];
-            this.luaObject = (LuaTable)this.initFunc.Call(this.api)[0];
+            var initFunc = (LuaFunction)((LuaTable)lua[h.className])["new"];
+            this.luaObject = (LuaTable)initFunc.Call(this)[0];
+
+            this.updateFunc = (LuaFunction)this.luaObject["update"];
 
             this.drawFunc = (LuaFunction)this.luaObject["draw"];
             this.disposeFunc = (LuaFunction)this.luaObject["dispose"];
@@ -274,7 +306,6 @@ namespace MachShooting
             this.counterFunc = (LuaFunction)this.luaObject["counter"];
 
             this.life = true;
-            this.attack = new List<AttackObject>();
         }
         #endregion
         #region メソッド
@@ -283,13 +314,10 @@ namespace MachShooting
         /// 処理を行います
         /// </summary>
         /// <returns>アタックオブジェクトリスト。ないならnull</returns>
-        public List<AttackObject> Process(Enemy enemy)
+        internal List<AttackObject> Process(Enemy enemy)
         {
             Next();
             this.Draw = this.hit;
-            this.attack.Clear();
-            //スピードを元に戻す
-            this.speed = Player.SPEED;
 
             //当たり判定
             this.hit = true;
@@ -321,7 +349,7 @@ namespace MachShooting
             }
 
             /*自己強化を行う*/
-            if (this.strengthen == 0)
+            if (this.DopingTime == 0)
             {
                 if (Key.Instance.GetKey(KeyComfig.GAME_STRENGTHEN))
                 {
@@ -330,31 +358,31 @@ namespace MachShooting
                         SE.Instance.Play(DXAudio.Instance.Strengthen);
                         this.strengthenGauge = 0;
                         Strengthen_(true);
-                        this.maxStrengthenTime = this.strengthen;
+                        this.maxStrengthenTime = this.DopingTime;
                     }
                 }
             }
-            if (this.strengthen != 0)
+            if (this.DopingTime != 0)
             {
                 Strengthen_(false);
             }
 
             //何もしてないならキー取得
-            if (this.action == PlayerAction.NONE)
+            if (this.Action == PlayerAction.NONE)
             {
                 if (Key.Instance.GetKey(Config.Instance.Key[KeyComfig.GAME_ATTACK]))
                 {
-                    this.action = PlayerAction.NORMAL;
+                    this.Action = PlayerAction.NORMAL;
                     ConventionalAttack(true);
                 }
                 else if (Key.Instance.GetKey(Config.Instance.Key[KeyComfig.GAME_SPECIAL]))
                 {
-                    this.action = PlayerAction.SPECIAL;
+                    this.Action = PlayerAction.SPECIAL;
                     SpecialAttack(true);
                 }
                 else if (Key.Instance.GetKey(Config.Instance.Key[KeyComfig.GAME_AVOIDANCE]))
                 {
-                    this.action = PlayerAction.AVOIDANCE;
+                    this.Action = PlayerAction.AVOIDANCE;
                     Avoidance(true);
                 }
                 else if (Key.Instance.GetKey(Config.Instance.Key[KeyComfig.GAME_DEATHBLOW]))
@@ -363,14 +391,14 @@ namespace MachShooting
                     {
                         SE.Instance.Play(DXAudio.Instance.Deathblow);
                         this.deathblowGauge = 0;
-                        this.action = PlayerAction.KILLER;
+                        this.Action = PlayerAction.KILLER;
                         Deathblow(true);
                     }
                 }
             }
 
             //アクションごとに処理分岐
-            switch (this.action)
+            switch (this.Action)
             {
                 case PlayerAction.NORMAL:
                     ConventionalAttack(false);
@@ -401,7 +429,10 @@ namespace MachShooting
             Process_Player();
 
             Input();
-            return this.attack;
+
+            var ao = this.ao;
+            this.ao = null;
+            return ao;
         }
 
         /// <summary>
@@ -412,6 +443,7 @@ namespace MachShooting
         /// <returns>アタックオブジェクトリスト。ないならnull</returns>
         protected void Process_Player()
         {
+            this.updateFunc.Call();
         }
 
         /// <summary>
@@ -452,7 +484,7 @@ namespace MachShooting
 
             if (d != Direction.NOTE)
             {
-                Vec v = Vec.NewRadLength(this.ToMapRad(rad), this.speed);
+                Vec v = Vec.FromRadLength(this.ToMapRad(rad), this.speed);
                 this.X += v.X;
                 this.Y += v.Y;
             }
@@ -546,7 +578,7 @@ namespace MachShooting
                 }
                 else if (this.avoidance.count == AvoidanceData.TIME)//終わり
                 {
-                    this.action = PlayerAction.NONE;
+                    this.Action = PlayerAction.NONE;
                 }
             }
             this.avoidance.count++;
@@ -557,12 +589,12 @@ namespace MachShooting
         /// </summary>
         /// <param name="power"></param>
         /// <returns></returns>
-        public override int Suffer(int power)
+        internal override int Suffer(int power)
         {
             if (power == 0) return power;
-            if (this.action == PlayerAction.AVOIDANCE && this.avoidance.count <= AvoidanceData.JUST_TIME)//ジャスト回避中
+            if (this.Action == PlayerAction.AVOIDANCE && this.avoidance.count <= AvoidanceData.JUST_TIME)//ジャスト回避中
             {
-                this.action = PlayerAction.DASH;
+                this.Action = PlayerAction.DASH;
                 Dash(true);
             }
             else if (this.hit)//判定がある
@@ -597,7 +629,7 @@ namespace MachShooting
             {
                 if (Key.Instance.GetKey(KeyComfig.GAME_ATTACK))//カウンター
                 {
-                    this.action = PlayerAction.COUNTER;
+                    this.Action = PlayerAction.COUNTER;
                     CounterAttack(true);
                 }
                 else if (this.justDash.count < JustDashData.TIME)//終わってない
@@ -610,7 +642,7 @@ namespace MachShooting
                 {
                     this.hp += 20;
                     if (this.hp > Player.MAX_HP) this.hp = Player.MAX_HP;
-                    this.action = PlayerAction.NONE;
+                    this.Action = PlayerAction.NONE;
                     SE.Instance.Play(DXAudio.Instance.HP2);
                 }
             }
@@ -621,7 +653,7 @@ namespace MachShooting
         /// コックピットを描画します
         /// <param name="time">経過時間</param>
         /// </summary>
-        public void DrawCockpit(int time)
+        internal void DrawCockpit(int time)
         {
             {//3ゲージ
                 //最大の長さ
@@ -640,7 +672,7 @@ namespace MachShooting
                 int hp = (int)((double)this.hp / (double)Player.MAX_HP * MAX_GAUGE);
                 int deathblow = (int)((double)this.deathblowGauge / (double)this.maxDG * MAX_GAUGE);
                 int strengthen = (int)((double)this.strengthenGauge / (double)this.maxSG * MAX_GAUGE);
-                int strengthen2 = this.maxStrengthenTime == 0 ? 0 : (int)((double)this.strengthen / (double)this.maxStrengthenTime * MAX_GAUGE);
+                int strengthen2 = this.maxStrengthenTime == 0 ? 0 : (int)((double)this.DopingTime / (double)this.maxStrengthenTime * MAX_GAUGE);
 
                 for (int i = 0; i < 3; i++)
                 {
@@ -662,7 +694,7 @@ namespace MachShooting
                             w = deathblow;
                             break;
                         case 2:
-                            if (this.strengthen == 0)
+                            if (this.DopingTime == 0)
                             {
                                 color = (this.strengthenGauge == (int)this.maxSG && this.Count % 30 < 15) ? DXColor.Instance.White : DXColor.Instance.Yellow;
                                 w = strengthen;
@@ -705,7 +737,7 @@ namespace MachShooting
                 }
                 else
                 {
-                    this.action = PlayerAction.NONE;
+                    this.Action = PlayerAction.NONE;
                 }
             }
 
@@ -720,7 +752,7 @@ namespace MachShooting
                 this.DrawGraph(this.Image);
             }
 
-            if (this.Strengthen != 0)
+            if (this.DopingTime != 0)
             {
                 DX.SetDrawBright(255, 255, 0);
                 DX.SetDrawBlendMode(DX.DX_BLENDMODE_ADD, 255);
@@ -754,35 +786,6 @@ namespace MachShooting
             DX.SetDrawBlendMode(DX.DX_BLENDMODE_NOBLEND, 0);
 
             this.drawFunc?.Call(this.luaObject);
-        }
-
-        /// <summary>
-        /// 弾をnewします
-        /// </summary>
-        /// <param name="circle"></param>
-        /// <param name="power"></param>
-        /// <param name="speed"></param>
-        /// <param name="rad"></param>
-        /// <param name="image"></param>
-        /// <returns></returns>
-        protected Bullet NewBullet(Vec dot, int power, Vec vec, Image image, Color color)
-        {
-            vec.Rad = this.ToMapRad(vec.Rad);
-            bool isDeathblow = this.action == PlayerAction.KILLER;
-            bool isStrengthen = this.strengthen != 0;
-            return new Bullet(dot, power, vec, image, color,
-            damage =>
-            {
-                if (!isDeathblow)
-                {
-                    this.deathblowGauge += damage;
-                    this.strengthenGauge += damage;
-
-                    //必殺技ゲージが最大以上なら最大にする
-                    if (this.deathblowGauge > (int)this.maxDG) this.deathblowGauge = (int)this.maxDG;
-                    if (this.strengthenGauge > (int)this.maxSG) this.strengthenGauge = (int)this.maxSG;
-                }
-            });
         }
         #endregion
         #region 実装メソッド
@@ -841,6 +844,39 @@ namespace MachShooting
         {
             this.Dispose();
         }
+
+        public void AddAO(AttackObject ao)
+        {
+            //ヒット時のコールバック
+            bool isDeathblow = this.Action == PlayerAction.KILLER;
+            bool isStrengthen = this.DopingTime != 0;
+            var call = ao.call;
+            ao.call=damage =>
+            {
+                if (!isDeathblow)
+                {
+                    this.deathblowGauge += damage;
+                    if (this.deathblowGauge > (int)this.maxDG) this.deathblowGauge = (int)this.maxDG;
+
+                }
+
+                if (!isStrengthen)
+                {
+                    this.strengthenGauge += damage;
+                    if (this.strengthenGauge > (int)this.maxSG) this.strengthenGauge = (int)this.maxSG;
+                }
+
+                call(damage);
+
+            };
+
+            //追加
+            if (this.ao == null)
+            {
+                this.ao = new List<AttackObject>();
+            }
+            this.ao.Add(ao);
+        }
     }
     #region その他
     #region 列挙
@@ -888,7 +924,7 @@ namespace MachShooting
     /// <summary>
     /// 方向
     /// </summary>
-    public enum Direction
+    internal enum Direction
     {
         /// <summary>
         /// 動かない
@@ -934,66 +970,66 @@ namespace MachShooting
     /// <summary>
     /// 回避
     /// </summary>
-    public struct AvoidanceData
+    internal struct AvoidanceData
     {
         /// <summary>
         /// 時間
         /// </summary>
-        public const int TIME = 50;
+        internal const int TIME = 50;
 
         /// <summary>
         /// 無敵時間
         /// </summary>
-        public const int INVINCIBLE_TIME = 30;
+        internal const int INVINCIBLE_TIME = 30;
 
         /// <summary>
         /// ジャスト判定の時間
         /// </summary>
-        public const int JUST_TIME = 9;
+        internal const int JUST_TIME = 9;
 
         /// <summary>
         /// カウント
         /// </summary>
-        public int count;
+        internal int count;
     }
     #endregion
     #region JustDashData
     /// <summary>
     /// ダッシュ
     /// </summary>
-    public struct JustDashData
+    internal struct JustDashData
     {
         /// <summary>
         /// 時間
         /// </summary>
-        public const int TIME = 120;
+        internal const int TIME = 120;
 
         /// <summary>
         /// スピード
         /// </summary>
-        public const int SPEED = 10;
+        internal const int SPEED = 10;
 
         /// <summary>
         /// カウント
         /// </summary>
-        public int count;
+        internal int count;
     }
     #endregion
     #region CrisisData
     /// <summary>
     /// 吹っ飛び
     /// </summary>
-    public struct CrisisData
+    internal struct CrisisData
     {
         /// <summary>
         /// 時間
         /// </summary>
-        public const int TIME = 120;
+        internal const int TIME = 120;
 
         /// <summary>
         /// カウント
         /// </summary>
-        public int count;
+        internal int count;
     }
     #endregion
     #endregion

@@ -10,7 +10,7 @@ namespace MachShooting
     /// <summary>
     /// 効果音管理クラス
     /// </summary>
-    public class DXAudio
+    internal class DXAudio
     {
         /// <summary>
         /// このクラスのインスタンスです
@@ -20,7 +20,7 @@ namespace MachShooting
         /// <summary>
         /// このクラスのインスタンス
         /// </summary>
-        public static DXAudio Instance
+        internal static DXAudio Instance
         {
             get
             {
@@ -34,61 +34,61 @@ namespace MachShooting
         }
 
         #region SE
-        public int Avoidance
+        internal int Avoidance
         {
             get;
             private set;
         }
 
-        public int Bom
+        internal int Bom
         {
             get;
             private set;
         }
 
-        public int Cancel
+        internal int Cancel
         {
             get;
             private set;
         }
 
-        public int Deathblow
+        internal int Deathblow
         {
             get;
             private set;
         }
 
-        public int HP1
+        internal int HP1
         {
             get;
             private set;
         }
 
-        public int HP2
+        internal int HP2
         {
             get;
             private set;
         }
 
-        public int OK
+        internal int OK
         {
             get;
             private set;
         }
 
-        public int Shot
+        internal int Shot
         {
             get;
             private set;
         }
 
-        public int ShotHit
+        internal int ShotHit
         {
             get;
             private set;
         }
 
-        public int Strengthen
+        internal int Strengthen
         {
             get;
             private set;

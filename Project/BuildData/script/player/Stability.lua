@@ -6,42 +6,23 @@ CLASS=Stability
 ]]
 
 Stability={
-    new=function(api)
-        local this={
-            api=api,
-            --その他メンバ変数
-        };
-        --初期化処理
+    new=function(player)
+        local this= EnemyCoBase.new(player);
+        this._dopingTime=900;
         return setmetatable(this, {__index = Stability}); 
     end,
-
-    dispose=function(this)
-        --リソース解放処理
+    _normal=function(this)
+        this.player:AddAO(Bullet(this.player.BulletDot,
+        this.player.IsDoping and 14 or 12,
+        this.player.ToMapRad(Vec(0,-10)),
         
+        ));
     end,
- 
-    draw=function(this)
-        --描画処理、任意
-        
+    _special=function(this)
     end,
- 
-    normal=function(this)
-        --通常攻撃
+    _killer=function(this)
     end,
- 
-    special=function(this)
-        --特殊攻撃
-    end,
- 
-    killer=function(this)
-        --必殺技
-    end,
- 
-    doping=function(this)
-        --自己強化
-    end,
- 
-    counter=function(this)
-        --カウンター攻撃
+    _counter=function(this)
     end
 };
+setmetatable(Stability, {__index = EnemyCoBase});

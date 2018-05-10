@@ -4,7 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MachShooting.Graphic
+namespace MachShooting
 {
     /// <summary>
     /// ベクトル
@@ -123,7 +123,7 @@ namespace MachShooting.Graphic
         /// <param name="rad"></param>
         /// <param name="length"></param>
         /// <returns></returns>
-        public static Vec NewRadLength(double rad, double length)
+        public static Vec FromRadLength(double rad, double length)
         {
             Vec vec = new Vec();
 

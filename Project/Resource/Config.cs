@@ -9,7 +9,7 @@ using System.Collections.ObjectModel;
 
 namespace MachShooting
 {
-    public class Config
+    internal class Config
     {
         /// <summary>
         /// このクラスのインスタンスです
@@ -19,7 +19,7 @@ namespace MachShooting
         /// <summary>
         /// キーコンフィグ
         /// </summary>
-        public IReadOnlyDictionary<KeyComfig, int> Key
+        internal IReadOnlyDictionary<KeyComfig, int> Key
         {
             get;
             private set;
@@ -28,7 +28,7 @@ namespace MachShooting
         /// <summary>
         /// フレームスキップ
         /// </summary>
-        public int FrameSkip
+        internal int FrameSkip
         {
             get;
             private set;
@@ -37,7 +37,7 @@ namespace MachShooting
         /// <summary>
         /// 低負荷モード
         /// </summary>
-        public bool Low
+        internal bool Low
         {
             get;
             private set;
@@ -46,7 +46,7 @@ namespace MachShooting
         /// <summary>
         /// フルスクリーン
         /// </summary>
-        public bool Full
+        internal bool Full
         {
             get;
             private set;
@@ -55,7 +55,7 @@ namespace MachShooting
         /// <summary>
         /// このクラスのインスタンス
         /// </summary>
-        public static Config Instance
+        internal static Config Instance
         {
             get
             {
@@ -90,7 +90,7 @@ namespace MachShooting
             }
         }
 
-        public static Dictionary<string,string> ReadINI(string path)
+        internal static Dictionary<string,string> ReadINI(string path)
         {
             Dictionary<string, string> ini;
 
@@ -103,7 +103,7 @@ namespace MachShooting
             return ini;
         }
 
-        public static Dictionary<string, string> ParseINI(string data)
+        internal static Dictionary<string, string> ParseINI(string data)
         {
             Dictionary<string, string> ini = new Dictionary<string, string>();
 
@@ -154,7 +154,7 @@ namespace MachShooting
         GAME_STOP
     }
 
-    public enum KeyList
+    internal enum KeyList
     {
         BACK = 14,
         TAB = 15,

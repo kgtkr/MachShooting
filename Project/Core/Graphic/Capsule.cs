@@ -4,12 +4,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace MachShooting.Graphic
+namespace MachShooting
 {
     /// <summary>
     /// カプセル
     /// </summary>
-    public struct Capsule
+    internal struct Capsule
     {
         #region フィールド
         /// <summary>
@@ -26,7 +26,7 @@ namespace MachShooting.Graphic
         /// <summary>
         /// 線分
         /// </summary>
-        public Line Line
+        internal Line Line
         {
             get { return this.line; }
             set { this.line = value; }
@@ -35,7 +35,7 @@ namespace MachShooting.Graphic
         /// <summary>
         /// 半径
         /// </summary>
-        public double R
+        internal double R
         {
             get { return this.r; }
             set { this.r = value; }
@@ -44,7 +44,7 @@ namespace MachShooting.Graphic
         /// <summary>
         /// 点1
         /// </summary>
-        public Vec Dot1
+        internal Vec Dot1
         {
             get { return this.line.Dot1; }
             set { this.line.Dot1 = value; }
@@ -53,7 +53,7 @@ namespace MachShooting.Graphic
         /// <summary>
         /// 点2
         /// </summary>
-        public Vec Dot2
+        internal Vec Dot2
         {
             get { return this.line.Dot2; }
             set { this.line.Dot2 = value; }
@@ -62,7 +62,7 @@ namespace MachShooting.Graphic
         /// <summary>
         /// 点1のX座標
         /// </summary>
-        public double Dot1X
+        internal double Dot1X
         {
             get { return this.Dot1.X; }
             set
@@ -76,7 +76,7 @@ namespace MachShooting.Graphic
         /// <summary>
         /// 点1のY座標
         /// </summary>
-        public double Dot1Y
+        internal double Dot1Y
         {
             get { return this.Dot1.Y; }
             set
@@ -90,7 +90,7 @@ namespace MachShooting.Graphic
         /// <summary>
         /// 点2のX座標
         /// </summary>
-        public double Dot2X
+        internal double Dot2X
         {
             get { return this.Dot2.X; }
             set
@@ -104,7 +104,7 @@ namespace MachShooting.Graphic
         /// <summary>
         /// 点2のY座標
         /// </summary>
-        public double Dot2Y
+        internal double Dot2Y
         {
             get { return this.Dot2.Y; }
             set
@@ -119,7 +119,7 @@ namespace MachShooting.Graphic
         /// <summary>
         /// この図形を囲む矩形
         /// </summary>
-        public Rect Rect
+        internal Rect Rect
         {
             get
             {
@@ -138,7 +138,7 @@ namespace MachShooting.Graphic
         /// </summary>
         /// <param name="line">線分</param>
         /// <param name="r">半径</param>
-        public Capsule(Line line, double r)
+        internal Capsule(Line line, double r)
         {
             this.line = line;
             this.r = r;

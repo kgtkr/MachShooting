@@ -7,7 +7,7 @@ using DxLibDLL;
 
 namespace MachShooting
 {
-    public class Key
+    internal class Key
     {
         /// <summary>
         /// このクラスのインスタンスです
@@ -17,7 +17,7 @@ namespace MachShooting
         /// <summary>
         /// このクラスのインスタンス
         /// </summary>
-        public static Key Instance
+        internal static Key Instance
         {
             get
             {
@@ -43,7 +43,7 @@ namespace MachShooting
 
         private byte[] keyOld;
 
-        public void Update()
+        internal void Update()
         {
             this.keyOld = this.key;
             this.key = new byte[256];

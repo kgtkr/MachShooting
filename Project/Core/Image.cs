@@ -14,17 +14,17 @@ namespace MachShooting
         /// <summary>
         /// 画像
         /// </summary>
-        public int image;
+        public int image { get; private set; }
 
         /// <summary>
         /// 半径
         /// </summary>
-        public double r;
+        public double r { get; private set; }
 
         /// <summary>
         /// 画像の向いている方向
         /// </summary>
-        public double rad;
+        public double rad { get; private set; }
 
         public Image(int image,double r,double rad)
         {

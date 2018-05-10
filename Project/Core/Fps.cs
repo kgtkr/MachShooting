@@ -10,11 +10,11 @@ namespace MachShooting
     /// <summary>
     /// FPSを管理するクラス
     /// </summary>
-    public class Fps
+    internal class Fps
     {
         private static Fps instance;
 
-        public static Fps Instance
+        internal static Fps Instance
         {
             get
             {
@@ -56,7 +56,7 @@ namespace MachShooting
         /// <summary>
         /// FPS
         /// </summary>
-        public double FPS
+        internal double FPS
         {
             get { return this.fps; }
         }
@@ -65,7 +65,7 @@ namespace MachShooting
         /// <summary>
         /// フレームを1進めます
         /// </summary>
-        public void Update()
+        internal void Update()
         {
             if (counter == 0) time[0] = DX.GetNowCount();//もし最後のカウントから50fたったなら一週目の時間取得
             if (counter == Fps.WAIT - 1)//時間ならfpsを取得

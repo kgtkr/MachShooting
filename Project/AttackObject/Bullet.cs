@@ -3,7 +3,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using MachShooting.Graphic;
 using System.Drawing;
 using DxLibDLL;
 using NLua;
@@ -22,6 +21,8 @@ namespace MachShooting
         private readonly Vec vec;
 
         private readonly Color color;
+
+
         #endregion
         #region プロパティ
         #endregion
@@ -35,13 +36,13 @@ namespace MachShooting
         /// <param name="rad">ラジアン</param>
         /// <param name="image">画像</param>
         /// <param name="meta">メタ情報</param>
-        public Bullet(LuaTable dot, int power, LuaTable vec, Image image, LuaTable color,LuaFunction call)
-            : base(new Vec((double)dot["x"],(double)dot["y"]), power, image, 0, call)
+        public Bullet(Vec dot, int power, Vec vec, Image image, Color color,LuaFunction call=null)
+            : base(dot, power, image, 0, call)
         {
-            this.color = Color.FromArgb((byte)color["r"], (byte)color["g"], (byte)color["b"]);
+            this.color = color;
             //角度計算
             SE.Instance.Play(DXAudio.Instance.Shot);
-            this.vec = new Vec((double)vec["x"],(double)vec["y"]);
+            this.vec = vec;
             this.Rad = this.vec.Rad;
         }
         #endregion
@@ -55,7 +56,7 @@ namespace MachShooting
             this.X += this.vec.X;
             this.Y += this.vec.Y;
             //もし外にいるなら
-            if (!this.In)
+            if (!this.IsIn)
             {
                 this.Life = false;
                 this.Need = false;

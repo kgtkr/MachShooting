@@ -73,28 +73,6 @@ namespace MachShooting
             return rad * 180 / Math.PI;
         }
         #endregion
-        #region オブジェクトに対するラジアン・マップに対するラジアン
-        /// <summary>
-        /// 特定のオブジェクトに対するラジアンを、マップに対するラジアンに変換します
-        /// </summary>
-        /// <param name="go">オブジェクト</param>
-        /// <param name="objectRad">オブジェクトに対するラジアン</param>
-        /// <returns>マップに対するラジアン</returns>
-        public static double ToMapRad(this GameObject go, double objectRad)
-        {
-            return objectRad + go.Rad - go.Image.rad;
-        }
-
-        /// <summary>
-        /// マップに対するラジアンを、特定のオブジェクトに対するラジアンに変換します
-        /// </summary>
-        /// <param name="go"></param>
-        /// <param name="mapRad"></param>
-        /// <returns></returns>
-        public static double ToObjectRad(this GameObject go, double mapRad)
-        {
-            return mapRad - go.Rad + go.Image.rad;
-        }
-        #endregion
+        
     }
 }

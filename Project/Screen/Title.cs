@@ -10,51 +10,51 @@ namespace MachShooting
     /// <summary>
     /// タイトル画面
     /// </summary>
-    public class Title : Screen
+    internal class Title : Screen
     {
         /*タイトル関係*/
         //最終的なx座標
-        public readonly int TITLE_X;
+        internal readonly int TITLE_X;
 
         //y座標
-        public const int TITLE_Y = 80;
+        internal const int TITLE_Y = 80;
 
         //スピード
-        public const int TITLE_SPEED = 10;
+        internal const int TITLE_SPEED = 10;
 
         //現在のx座標
-        public int titleNowX;
+        internal int titleNowX;
 
         //メッセージ
-        public const string TITLE_MESSAGE = "MachShooting";
+        internal const string TITLE_MESSAGE = "MachShooting";
 
         //メッセージのフォント
-        public readonly int TITLE_MESSAGE_FONT = Font.Instance.Font64;
+        internal readonly int TITLE_MESSAGE_FONT = Font.Instance.Font64;
 
 
         /*エンターキーを押して下さい関係*/
         //x座標
-        public readonly int ENTER_X;
+        internal readonly int ENTER_X;
 
         //y座標
-        public const int ENTER_Y = 300;
+        internal const int ENTER_Y = 300;
 
         //点滅切り替わり残りフレーム
-        public int enterFrame;
+        internal int enterFrame;
 
         //点滅間隔
-        public const int ENTER_INTERVAL = 30;
+        internal const int ENTER_INTERVAL = 30;
 
         //表示するか？(点滅)
-        public bool enterDisplay;
+        internal bool enterDisplay;
 
         //メッセージ
-        public const string ENTER_MESSAGE = "Zキーを押して下さい...";
+        internal const string ENTER_MESSAGE = "Zキーを押して下さい...";
 
         //メッセージのフォント
-        public readonly int ENTER_MESSAGE_FONT = Font.Instance.Font32;
+        internal readonly int ENTER_MESSAGE_FONT = Font.Instance.Font32;
 
-        public override void Draw()
+        internal override void Draw()
         {
             if (this.Need)//必要なら
             {
@@ -63,7 +63,7 @@ namespace MachShooting
             }
         }
 
-        public override void Process(byte[] key, byte[] key2)
+        internal override void Process()
         {
             if (this.Need)//必要なら
             {
@@ -80,7 +80,7 @@ namespace MachShooting
                 this.enterFrame--;//残り時間を減らす
 
                 //キーが押されたか？
-                if (key2[Config.Instance.Key[KeyComfig.MENU_OK]] == DX.TRUE)//Zが押されたなら
+                if (Key.Instance.GetKeyUP(KeyComfig.MENU_OK))//Zが押されたなら
                 {
                     SE.Instance.Play(DXAudio.Instance.OK);
                     this.Need = false;
@@ -89,7 +89,7 @@ namespace MachShooting
             }
         }
 
-        public Title()
+        internal Title()
         {
             //タイトル
             {
